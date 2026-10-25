@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="day">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>SheCreates Academy × sales.io | Results Report</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+:root,[data-theme="day"]{
+  --bg:#EAE4D9;--sidebar-bg:#0e0e0c;--sidebar-bdr:#1a1a18;
+  --card-bg:#F8F5EF;--card-bg-hv:#FFFFFF;--card-bdr:#E2DDD3;--card-bdr-hv:rgba(0,0,0,.18);
+  --card-shadow-hv:rgba(0,0,0,.10);
+  --text-primary:#0A0A08;--text-secondary:#444;--text-muted:#8F897F;--text-faint:#C8C2B8;
+  --accent:#A09070;--accent-soft:rgba(160,144,112,.14);--accent-bdr:rgba(160,144,112,.3);
+  --sec-bdr:#D5CFBF;--sec-desc:#999;--chip-bg:#F0EBE3;--chip-c:#7d7362;
+  --foot-bg:#F2EDE4;--grid:rgba(0,0,0,.06);--ink:#0A0A08;
+  --glow-c:transparent;--glow-rgb:160,144,112;
+}
+[data-theme="night"]{
+  --bg:#000000;--sidebar-bg:#060606;--sidebar-bdr:#111;
+  --card-bg:#0a0a0a;--card-bg-hv:#0d0d0d;--card-bdr:#161616;--card-bdr-hv:#1e3a24;
+  --card-shadow-hv:rgba(74,222,128,.06);
+  --text-primary:#FFFFFF;--text-secondary:#ccc;--text-muted:#6a6a6a;--text-faint:#2a2a2a;
+  --accent:#4ade80;--accent-soft:rgba(74,222,128,.08);--accent-bdr:#1a4a20;
+  --sec-bdr:#111;--sec-desc:#555;--chip-bg:#0d2b1a;--chip-c:#4ade80;
+  --foot-bg:#060606;--grid:rgba(255,255,255,.06);--ink:#FFFFFF;
+  --glow-c:rgba(74,222,128,.07);--glow-rgb:74,222,128;
+}
+body{background:var(--bg);color:var(--text-primary);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;display:flex;min-height:100vh;transition:background .3s,color .3s;}
+
+/* Sidebar (same system as Training Bible) */
+.sidebar{width:240px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--sidebar-bg);border-right:1px solid var(--sidebar-bdr);display:flex;flex-direction:column;z-index:3;}
+.sidebar-brand{padding:28px 24px 22px;border-bottom:1px solid var(--sidebar-bdr);}
+.brand-logo{font-size:12px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#fff;}
+.brand-logo i{font-style:normal;color:var(--accent);}
+.brand-sub{font-size:10px;color:#555;margin-top:4px;letter-spacing:.04em;}
+.client-tag{margin-top:14px;display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#bbb;background:#141412;border:1px solid #222;border-radius:6px;padding:4px 9px;}
+.client-tag b{color:var(--accent);}
+.nav-links{flex:1;padding:12px 0;}
+.nav-link{position:relative;display:flex;align-items:center;gap:10px;padding:8px 24px;text-decoration:none;border-left:2px solid transparent;transition:border-color .12s,background .12s;}
+.nav-link:hover .nl-name{color:#999;}
+.nav-link.active{border-left-color:var(--accent);background:var(--accent-soft);}
+.nav-link.active::before{content:'';position:absolute;left:-2px;top:.15rem;bottom:.15rem;width:2px;box-shadow:0 0 10px 1px rgba(var(--glow-rgb),.9);}
+.nav-link.active .nl-num{color:var(--accent);}
+.nav-link.active .nl-name{color:#ccc;}
+.nl-num{font-size:10px;font-weight:800;color:#3a3a3a;letter-spacing:.06em;width:28px;flex-shrink:0;}
+.nl-name{font-size:11px;color:#5a5a5a;flex:1;line-height:1.3;transition:color .12s;}
+.sidebar-footer{padding:16px 24px 24px;border-top:1px solid var(--sidebar-bdr);}
+.sf-meta{font-size:10px;color:#444;line-height:1.5;margin-bottom:14px;}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;}
+.toggle-mode-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555;}
+.toggle-switch{width:40px;height:22px;border-radius:11px;background:#1a1a18;border:1px solid var(--sidebar-bdr);position:relative;cursor:pointer;transition:background .25s;}
+.toggle-switch:hover{box-shadow:0 0 12px rgba(var(--glow-rgb),.5);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#555;transition:transform .25s,background .25s;}
+[data-theme="night"] .toggle-switch{background:#0d2b1a;}
+[data-theme="night"] .toggle-thumb{background:#4ade80;transform:translateX(18px);}
+
+/* Main */
+.main{flex:1;padding:72px 56px 120px;max-width:1120px;margin:0 auto;position:relative;z-index:1;min-width:0;}
+.hero{margin-bottom:88px;}
+.hero-eyebrow{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;}
+.hero-title{font-size:76px;font-weight:900;line-height:.95;letter-spacing:-4px;margin-bottom:24px;}
+.hero-title span{display:block;}
+.hero-title .x{display:inline;color:var(--accent);-webkit-text-fill-color:var(--accent);}
+.hero-title span:last-child{background:linear-gradient(100deg,var(--text-primary) 30%,rgba(var(--glow-rgb),1) 50%,var(--text-primary) 70%);background-size:250% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shineText 6.5s ease-in-out .3s infinite;}
+@keyframes shineText{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+.hero-quote{font-size:15px;color:var(--text-muted);margin-bottom:36px;line-height:1.65;max-width:640px;padding-left:16px;border-left:2px solid var(--text-faint);}
+.hero-quote strong{color:var(--text-primary);font-weight:700;}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap;}
+.stat{transition:transform .2s;cursor:default;}
+.stat:hover{transform:translateY(-2px);}
+.stat:hover .stat-num{text-shadow:0 0 20px rgba(var(--glow-rgb),.65);}
+.stat-num{font-size:30px;font-weight:900;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums;}
+.stat-lbl{font-size:10.5px;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:5px;}
+.stat-from{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.stat-div{width:1px;background:var(--sec-bdr);align-self:stretch;margin:4px 0;}
+
+/* Section header (dark band in day mode, like the bible) */
+.sec-block{margin-bottom:84px;scroll-margin-top:24px;}
+.sec-header{position:relative;margin-bottom:20px;padding-bottom:22px;border-bottom:1px solid var(--sec-bdr);overflow:hidden;}
+[data-theme="day"] .sec-header{background:#0a0a0a;border-radius:14px;padding:26px 30px 24px;border-bottom:none;}
+.sec-meta{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.sec-label{position:relative;padding-left:14px;font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
+.sec-label::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:rgba(var(--glow-rgb),1);box-shadow:0 0 8px 1px rgba(var(--glow-rgb),.9);animation:dotPulse 2s ease-in-out infinite;}
+@keyframes dotPulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.sec-pill{font-size:10px;font-weight:700;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-bdr);border-radius:4px;padding:2px 8px;letter-spacing:.04em;}
+h2{font-size:30px;font-weight:900;letter-spacing:-.5px;line-height:1.05;margin-bottom:7px;}
+[data-theme="day"] .sec-header h2{color:#fff;}
+.sec-desc{font-size:13px;color:var(--sec-desc);line-height:1.6;max-width:720px;}
+.sec-ghost{position:absolute;right:-8px;top:-22px;font-size:140px;font-weight:900;letter-spacing:-6px;line-height:1;color:rgba(var(--glow-rgb),.06);pointer-events:none;user-select:none;animation:ghostFloat 9s ease-in-out infinite;}
+[data-theme="day"] .sec-ghost{color:rgba(255,255,255,.05);}
+@keyframes ghostFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+
+/* Cards */
+.card{position:relative;background:var(--card-bg);border:1px solid var(--card-bdr);border-radius:14px;overflow:hidden;transition:opacity .45s,transform .45s,border-color .15s,box-shadow .2s,background .3s;}
+.reveal{opacity:0;transform:translateY(16px);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.card.hov:hover{border-color:var(--card-bdr-hv);background:var(--card-bg-hv);box-shadow:0 14px 42px var(--card-shadow-hv),0 0 28px rgba(var(--glow-rgb),.2);transform:translateY(-3px);}
+.card-glow{position:absolute;inset:0;border-radius:14px;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(220px circle at var(--cx,50%) var(--cy,0%),rgba(var(--glow-rgb),.35) 0%,transparent 70%);}
+.card.hov:hover .card-glow{opacity:1;}
+.card.hov::after{content:'';position:absolute;inset:0;border-radius:14px;pointer-events:none;background:linear-gradient(115deg,transparent 42%,rgba(var(--glow-rgb),.22) 50%,transparent 58%);background-size:250% 250%;background-position:150% 150%;opacity:0;}
+.card.hov:hover::after{opacity:1;animation:shineSweep 1s ease forwards;}
+@keyframes shineSweep{from{background-position:150% 150%;}to{background-position:-60% -60%;}}
+.pad{padding:20px 22px;}
+.eyebrow{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);}
+.tag{display:inline-block;font-size:9px;font-weight:800;background:var(--chip-bg);color:var(--chip-c);border-radius:4px;padding:2px 7px;letter-spacing:.06em;text-transform:uppercase;}
+.tag.acc{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-bdr);}
+
+/* KPI grid */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.kpi{padding:18px 18px 16px;display:flex;flex-direction:column;}
+.kpi.lead{grid-column:span 2;grid-row:span 2;padding:24px 26px;}
+.kpi .k-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;}
+.kpi .k-num{font-size:30px;font-weight:900;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums;}
+.kpi.lead .k-num{font-size:64px;letter-spacing:-3px;margin:6px 0 10px;}
+.kpi .k-lbl{font-size:12.5px;font-weight:700;color:var(--text-secondary);margin-top:8px;}
+.kpi .k-sub{font-size:11.5px;color:var(--text-muted);line-height:1.5;margin-top:4px;}
+.pace{margin-top:auto;padding-top:18px;}
+.pace-row{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:6px;}
+.pace-row b{color:var(--text-primary);}
+.pace-track{height:10px;border-radius:6px;background:var(--chip-bg);overflow:hidden;position:relative;}
+.pace-fill{height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,rgba(var(--glow-rgb),.55),rgba(var(--glow-rgb),1));box-shadow:0 0 14px rgba(var(--glow-rgb),.6);transition:width 1.6s cubic-bezier(.2,.8,.2,1);}
+.pace-mark{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.35;}
+.pace-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10.5px;color:var(--text-muted);margin-top:8px;}
+
+/* Explainer accordion */
+.acc-item{margin-top:10px;}
+.acc-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;background:none;border:0;cursor:pointer;font:inherit;color:var(--text-primary);text-align:left;padding:16px 22px;}
+.acc-btn .q{font-size:13.5px;font-weight:700;}
+.acc-btn .plus{width:24px;height:24px;border-radius:50%;border:1px solid var(--card-bdr);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--accent);flex-shrink:0;transition:transform .25s;}
+.acc-item.open .plus{transform:rotate(45deg);}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+.acc-inner{padding:0 22px 18px;font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.acc-inner table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px;}
+.acc-inner th,.acc-inner td{text-align:left;padding:8px 10px;border-top:1px solid var(--card-bdr);}
+.acc-inner th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);}
+
+/* Product breakdown */
+.prod-grid{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:center;}
+.donut-wrap{position:relative;height:240px;}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center;}
+.donut-center b{font-size:22px;font-weight:900;letter-spacing:-.5px;}
+.donut-center span{font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.prod-row{display:grid;grid-template-columns:14px 1fr 96px;gap:10px;align-items:center;padding:10px 4px;border-top:1px solid var(--card-bdr);cursor:default;transition:background .15s;}
+.prod-row:first-child{border-top:0;}
+.prod-row:hover,.prod-row.hl{background:var(--accent-soft);}
+.prod-dot{width:10px;height:10px;border-radius:3px;}
+.prod-name{font-size:13px;font-weight:700;}
+.prod-name small{display:block;font-size:11px;color:var(--text-muted);font-weight:500;}
+.prod-bar{height:4px;border-radius:3px;background:var(--chip-bg);margin-top:6px;overflow:hidden;}
+.prod-bar i{display:block;height:100%;width:0;background:var(--accent);transition:width 1.2s ease;}
+.prod-val{font-size:14px;font-weight:800;text-align:right;font-variant-numeric:tabular-nums;}
+.prod-val small{display:block;font-size:10.5px;color:var(--text-muted);font-weight:600;}
+
+/* Chart card + toggles */
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--chip-bg);border-radius:10px;padding:4px;}
+.seg button{font:inherit;font-size:11.5px;font-weight:700;border:0;background:transparent;color:var(--text-muted);padding:7px 12px;border-radius:7px;cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;}
+.seg button:hover{color:var(--text-primary);}
+.seg button.on{background:var(--ink);color:var(--bg);box-shadow:0 0 14px rgba(var(--glow-rgb),.35);}
+[data-theme="night"] .seg button.on{background:#4ade80;color:#000;}
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:6px;}
+.chart-title{font-size:20px;font-weight:900;letter-spacing:-.4px;}
+.chart-note{font-size:12px;color:var(--text-muted);margin-top:2px;max-width:560px;}
+.chart-box{position:relative;height:320px;margin-top:14px;}
+.range-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:var(--text-muted);cursor:pointer;user-select:none;}
+.chk input{accent-color:var(--accent);}
+.big-delta{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--card-bdr);}
+.big-delta div b{display:block;font-size:20px;font-weight:900;letter-spacing:-.5px;font-variant-numeric:tabular-nums;}
+.big-delta div span{font-size:10.5px;color:var(--text-muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+
+/* Month selector */
+.months{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px;}
+.months button{font:inherit;border:1px solid var(--card-bdr);background:var(--card-bg);color:var(--text-secondary);border-radius:10px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .15s;}
+.months button b{display:block;font-size:13px;font-weight:800;}
+.months button span{font-size:10px;color:var(--text-muted);font-weight:600;}
+.months button:hover{border-color:var(--card-bdr-hv);}
+.months button.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 18px rgba(var(--glow-rgb),.25);}
+.months button.on b{color:var(--accent);}
+.month-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px;}
+.mp{padding:14px 16px;}
+.mp b{display:block;font-size:22px;font-weight:900;letter-spacing:-.5px;font-variant-numeric:tabular-nums;}
+.mp span{font-size:10.5px;color:var(--text-muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.mp em{display:block;font-style:normal;font-size:11px;font-weight:700;margin-top:3px;color:var(--text-muted);}
+.mp em.up{color:#3f8f5a;}
+[data-theme="night"] .mp em.up{color:#4ade80;}
+.month-caption{font-size:12px;color:var(--text-muted);margin-top:10px;}
+
+/* Before/after compare */
+.ba-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.ba{padding:20px 22px;}
+.ba h3{font-size:14px;font-weight:800;margin:6px 0 14px;}
+.ba-row{display:grid;grid-template-columns:78px 1fr 84px;gap:10px;align-items:center;margin-top:8px;font-size:11.5px;color:var(--text-muted);font-weight:700;}
+.ba-track{height:14px;border-radius:7px;background:var(--chip-bg);overflow:hidden;}
+.ba-fill{height:100%;width:0;border-radius:7px;transition:width 1.4s cubic-bezier(.2,.8,.2,1);}
+.ba-fill.before{background:var(--text-faint);}
+.ba-fill.after{background:linear-gradient(90deg,rgba(var(--glow-rgb),.6),rgba(var(--glow-rgb),1));box-shadow:0 0 12px rgba(var(--glow-rgb),.45);}
+.ba-val{text-align:right;color:var(--text-primary);font-weight:800;font-variant-numeric:tabular-nums;}
+.ba-mult{position:absolute;top:18px;right:20px;font-size:24px;font-weight:900;color:var(--accent);letter-spacing:-.5px;}
+
+/* Timeline */
+.tl{position:relative;padding-left:28px;}
+.tl::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--accent),var(--text-faint));opacity:.6;}
+.tl-phase{margin-bottom:22px;}
+.tl-phase-h{display:flex;align-items:baseline;gap:12px;margin:0 0 10px;position:relative;}
+.tl-phase-h::before{content:'';position:absolute;left:-26px;top:7px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--accent);box-shadow:0 0 12px rgba(var(--glow-rgb),.6);}
+.tl-phase-h h3{font-size:18px;font-weight:900;letter-spacing:-.3px;}
+.tl-phase-h span{font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.tl-item{margin-top:8px;}
+.tl-item .acc-btn{padding:13px 18px;}
+.tl-item .q{font-size:13px;}
+.tl-item .when{display:inline-block;min-width:74px;font-size:10px;font-weight:800;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-right:10px;white-space:nowrap;}
+.tl-item .acc-inner{padding:0 18px 16px;font-size:12.5px;}
+.tl-ctrl{display:flex;justify-content:flex-end;margin-bottom:10px;}
+.linkbtn{font:inherit;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:none;border:1px solid var(--accent-bdr);border-radius:6px;padding:6px 10px;cursor:pointer;}
+.rhythm{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px;}
+.rh{padding:16px 18px;}
+.rh b{display:block;font-size:26px;font-weight:900;letter-spacing:-.5px;color:var(--accent);}
+.rh span{font-size:12px;color:var(--text-secondary);}
+.themes{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.themes span{font-size:11.5px;font-weight:700;padding:6px 11px;border-radius:20px;background:var(--card-bg);border:1px solid var(--card-bdr);color:var(--text-secondary);}
+
+/* Honest read */
+.honest{padding:26px 28px;}
+.honest p{font-size:14px;color:var(--text-secondary);line-height:1.7;max-width:780px;}
+.honest p strong{color:var(--text-primary);}
+.mini{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;}
+.mini div{background:var(--chip-bg);border-radius:10px;padding:12px 14px;}
+.mini b{display:block;font-size:22px;font-weight:900;letter-spacing:-.5px;}
+.mini span{font-size:11px;color:var(--text-muted);font-weight:600;}
+
+/* Levers */
+.lever{margin-top:10px;cursor:pointer;}
+.lever-h{display:grid;grid-template-columns:54px 1fr auto;gap:16px;align-items:center;padding:20px 22px;}
+.lever-n{font-size:30px;font-weight:900;color:var(--text-faint);letter-spacing:-1px;transition:color .2s;}
+.lever:hover .lever-n,.lever.open .lever-n{color:var(--accent);}
+.lever-h h3{font-size:16px;font-weight:800;letter-spacing:-.2px;line-height:1.3;}
+.lever-h p{font-size:12.5px;color:var(--text-muted);margin-top:3px;}
+.lever-stat{text-align:right;}
+.lever-stat b{display:block;font-size:22px;font-weight:900;letter-spacing:-.5px;white-space:nowrap;}
+.lever-stat span{font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.lever-body{max-height:0;overflow:hidden;transition:max-height .45s ease;}
+.lever-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 22px 20px 92px;}
+.lever-box{background:var(--chip-bg);border-radius:10px;padding:14px 16px;font-size:12.5px;color:var(--text-secondary);line-height:1.6;}
+.lever-box .eyebrow{margin-bottom:6px;color:var(--accent);}
+.lever-box ul{padding-left:16px;}
+.lever-box li{margin:3px 0;}
+.lever-box .num{font-size:26px;font-weight:900;color:var(--text-primary);letter-spacing:-.5px;line-height:1.1;}
+.lever-up{grid-column:1/-1;font-size:12.5px;font-weight:700;color:var(--text-primary);padding:10px 14px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;}
+.lever .hint{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
+
+/* Path to goal */
+.gap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.gap{padding:18px 18px 16px;}
+.gap b{display:block;font-size:30px;font-weight:900;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums;margin:8px 0 6px;}
+.gap b.acc{color:var(--accent);}
+.gap span{font-size:11.5px;color:var(--text-muted);line-height:1.5;display:block;}
+.proj-flag{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px dashed var(--accent-bdr);border-radius:4px;padding:2px 7px;}
+.ptable{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px;font-variant-numeric:tabular-nums;}
+.ptable th,.ptable td{text-align:left;padding:10px 12px;border-top:1px solid var(--card-bdr);}
+.ptable th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);border-top:0;}
+.ptable td:first-child{font-weight:700;color:var(--text-secondary);}
+.ptable td.goal{font-weight:900;color:var(--accent);}
+.ptable tr:hover td{background:var(--accent-soft);}
+.alt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px;}
+.alt{padding:18px 20px;font-size:12.5px;color:var(--text-secondary);line-height:1.6;}
+.alt h4{font-size:13.5px;font-weight:800;color:var(--text-primary);margin:6px 0 6px;}
+.alt .big{font-size:24px;font-weight:900;color:var(--text-primary);letter-spacing:-.5px;line-height:1.1;margin-bottom:4px;}
+.calc{padding:24px 26px;margin-top:10px;}
+.calc-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;margin-top:16px;align-items:start;}
+.sl{margin-bottom:16px;}
+.sl-top{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;}
+.sl-top b{font-size:15px;color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.sl-top small{font-weight:600;color:var(--text-muted);}
+.sl input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;}
+.sl-ref{font-size:10.5px;color:var(--text-muted);margin-top:2px;}
+.calc-out{background:var(--chip-bg);border-radius:12px;padding:20px 22px;}
+.calc-out .big{font-size:48px;font-weight:900;letter-spacing:-2px;line-height:1;font-variant-numeric:tabular-nums;margin:6px 0 4px;}
+.calc-out .vs{font-size:12px;font-weight:700;color:var(--text-muted);}
+.calc-out .pace-track{margin-top:14px;height:12px;}
+.calc-out .pace-fill{transition:width .35s ease;}
+.calc-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:16px;}
+.calc-stats div{background:var(--card-bg);border:1px solid var(--card-bdr);border-radius:10px;padding:10px 12px;}
+.calc-stats b{display:block;font-size:18px;font-weight:900;font-variant-numeric:tabular-nums;}
+.calc-stats span{font-size:10.5px;color:var(--text-muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+.calc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.calc-btns button{font:inherit;font-size:11.5px;font-weight:800;border:1px solid var(--accent-bdr);background:var(--card-bg);color:var(--text-primary);padding:9px 14px;border-radius:8px;cursor:pointer;transition:all .15s;}
+.calc-btns button:hover{box-shadow:0 0 14px rgba(var(--glow-rgb),.35);}
+.calc-btns button.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+[data-theme="night"] .calc-btns button.primary{background:#4ade80;color:#000;border-color:#4ade80;}
+.calc-note{font-size:11px;color:var(--text-muted);margin-top:14px;line-height:1.55;}
+.hit{color:#3f8f5a !important;}
+[data-theme="night"] .hit{color:#4ade80 !important;}
+
+/* Footer */
+.foot{margin-top:40px;padding:24px 26px;background:var(--foot-bg);border:1px solid var(--card-bdr);border-radius:14px;}
+.foot h4{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.foot li{font-size:12px;color:var(--text-muted);margin:4px 0 4px 16px;}
+.sig{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--card-bdr);font-size:12px;color:var(--text-muted);}
+.sig b{color:var(--text-primary);}
+
+/* Flash pass (same as bible) */
+.scroll-progress{position:fixed;top:0;left:0;height:3px;width:0%;z-index:10000;background:linear-gradient(90deg,rgba(var(--glow-rgb),.5),rgba(var(--glow-rgb),1));box-shadow:0 0 14px rgba(var(--glow-rgb),.85);pointer-events:none;}
+.ambient-glow{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.ambient-glow span{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;background:radial-gradient(circle,rgba(var(--glow-rgb),.4),transparent 70%);animation:driftBlob 25s ease-in-out infinite alternate;}
+.ambient-glow span:nth-child(1){width:480px;height:480px;top:-160px;left:20%;animation-duration:27s;}
+.ambient-glow span:nth-child(2){width:380px;height:380px;top:8%;right:-120px;animation-duration:22s;animation-delay:-6s;}
+.ambient-glow span:nth-child(3){width:320px;height:320px;top:60%;left:40%;animation-duration:31s;animation-delay:-15s;opacity:.32;}
+@keyframes driftBlob{from{transform:translate(0,0) scale(1);}to{transform:translate(55px,-45px) scale(1.2);}}
+.cursor-spot{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(560px circle at var(--mx,50%) var(--my,50%),rgba(var(--glow-rgb),.09),transparent 72%);transition:opacity .3s;}
+.cursor-spot.active{opacity:1;}
+@media(prefers-reduced-motion:reduce){.ambient-glow span,.sec-ghost,.hero-title span:last-child{animation:none;}}
+
+/* Mobile */
+.m-bar{display:none;}
+.m-toggle{display:none;position:fixed;top:12px;right:12px;z-index:9999;background:#0e0e0c;border:1px solid #1a1a1a;border-radius:24px;padding:7px 12px 7px 10px;align-items:center;gap:8px;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 2px 12px rgba(0,0,0,.4);}
+.m-toggle-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;}
+.m-toggle-track{width:32px;height:18px;border-radius:9px;background:#1a1a18;position:relative;}
+.m-toggle-dot{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#555;transition:transform .2s,background .2s;}
+[data-theme="night"] .m-toggle-dot{transform:translateX(14px);background:#4ade80;}
+@media(max-width:960px){
+  .sidebar,.cursor-spot{display:none;}
+  .m-toggle{display:flex;}
+  .m-bar{display:block;position:sticky;top:0;z-index:50;background:#0e0e0c;border-bottom:1px solid #1a1a18;padding:12px 16px 0;}
+  .m-brand{font-size:11px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#fff;padding-right:110px;}
+  .m-brand i{font-style:normal;color:var(--accent);}
+  .m-nav{display:flex;gap:4px;overflow-x:auto;padding:10px 0 10px;scrollbar-width:none;}
+  .m-nav::-webkit-scrollbar{display:none;}
+  .m-nav a{flex-shrink:0;font-size:11px;font-weight:700;color:#777;text-decoration:none;padding:6px 10px;border-radius:14px;border:1px solid #1e1e1e;}
+  .m-nav a.active{color:#0e0e0c;background:var(--accent);border-color:var(--accent);}
+  body{flex-direction:column;}
+  .main{padding:36px 18px 70px;max-width:100%;}
+  .hero{margin-bottom:56px;}
+  .hero-title{font-size:46px;letter-spacing:-2px;}
+  .hero-stats{gap:18px 22px;}
+  .stat-div{display:none;}
+  .stat{width:calc(50% - 11px);}
+  .stat-num{font-size:26px;}
+  .sec-ghost{font-size:90px;}
+  [data-theme="day"] .sec-header{padding:22px 20px 20px;}
+  h2{font-size:24px;}
+  .kpi-grid{grid-template-columns:1fr 1fr;}
+  .kpi.lead{grid-column:span 2;grid-row:auto;}
+  .kpi.lead .k-num{font-size:46px;letter-spacing:-2px;}
+  .kpi .k-num{font-size:24px;}
+  .prod-grid{grid-template-columns:1fr;}
+  .donut-wrap{height:210px;}
+  .chart-box{height:260px;}
+  .months{grid-template-columns:repeat(3,1fr);}
+  .month-panel,.rhythm,.mini{grid-template-columns:1fr 1fr;}
+  .ba-grid{grid-template-columns:1fr;}
+  .lever-h{grid-template-columns:36px 1fr;gap:12px;padding:18px;}
+  .lever-stat{grid-column:2;text-align:left;}
+  .lever-grid{grid-template-columns:1fr;padding:0 18px 18px;}
+  .tl{padding-left:22px;}
+  .tl-phase-h::before{left:-21px;}
+  .tl::before{left:5px;}
+  .tl-item .when{display:block;margin-bottom:2px;}
+  .lever.open .lever-stat{display:none;}
+  .gap-grid{grid-template-columns:1fr 1fr;}
+  .gap b{font-size:24px;}
+  .alt-grid,.calc-grid{grid-template-columns:1fr;}
+  .calc{padding:20px 18px;}
+  .calc-out .big{font-size:38px;}
+  .ptable{font-size:11.5px;}
+  .ptable th,.ptable td{padding:8px 6px;}
+}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scroll-progress"></div>
+<div class="ambient-glow" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="cursor-spot" id="cursor-spot"></div>
+
+<button class="m-toggle" id="mob-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+  <span class="m-toggle-lbl">Day</span><div class="m-toggle-track"><div class="m-toggle-dot"></div></div>
+</button>
+
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">Sales<i>.</i>io</div>
+    <div class="brand-sub">Results Report · Oct 25, 2026</div>
+    <div class="client-tag">Client <b>SheCreates Academy</b></div>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="#s1"><span class="nl-num">S01</span><span class="nl-name">October at a Glance</span></a>
+    <a class="nav-link" href="#s2"><span class="nl-num">S02</span><span class="nl-name">The Trend, Month by Month</span></a>
+    <a class="nav-link" href="#s3"><span class="nl-num">S03</span><span class="nl-name">Before vs After</span></a>
+    <a class="nav-link" href="#s4"><span class="nl-num">S04</span><span class="nl-name">What We Built Together</span></a>
+    <a class="nav-link" href="#s5"><span class="nl-num">S05</span><span class="nl-name">A Straight Read on October</span></a>
+    <a class="nav-link" href="#s6"><span class="nl-num">S06</span><span class="nl-name">The Path to 250 Students</span></a>
+    <a class="nav-link" href="#s7"><span class="nl-num">S07</span><span class="nl-name">The Levers We'd Pull Together</span></a>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sf-meta">Prepared by JJ Hernandez<br>Engagement since Oct 5, 2026</div>
+    <div class="toggle-row">
+      <span class="toggle-mode-lbl" id="mode-lbl">Day</span>
+      <div class="toggle-switch" onclick="toggleTheme()" role="switch" aria-label="Toggle theme"><div class="toggle-thumb"></div></div>
+    </div>
+  </div>
+</nav>
+
+<div class="m-bar">
+  <div class="m-brand">Sales<i>.</i>io · SheCreates Academy</div>
+  <div class="m-nav">
+    <a href="#s1">October</a><a href="#s2">Trend</a><a href="#s3">Before / After</a><a href="#s4">What we built</a><a href="#s5">Straight read</a><a href="#s6">Path to 250</a><a href="#s7">Levers</a>
+  </div>
+</div>
+
+<main class="main">
+  <div class="hero">
+    <div class="hero-eyebrow">JJ Hernandez · Sales.io · Results Report</div>
+    <h1 class="hero-title"><span>SheCreates Academy</span><span><b class="x">×</b> Sales.io.</span></h1>
+    <p class="hero-quote">We started on <strong>October 5</strong>. In the three weeks since, applications went from <strong>12.8 to 16.3 a day (+27%)</strong>, qualified applications rose <strong>33%</strong>, and booked strategy calls rose <strong>16%</strong>, while webinar registrations fell 36%. October already has <strong>402 applications</strong> through the 25th, 12 short of all of September, and the week of Oct 18 was the <strong>best application week since tracking began in August</strong>. Here's what moved, what we built to move it, an honest read on cash, and the math to Gigi's <strong>250 students</strong>.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num" data-count="402">402</div><div class="stat-lbl">Applications · Oct 1–25</div><div class="stat-from">All of September: 414</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-num" data-count="33" data-prefix="+" data-suffix="%">+33%</div><div class="stat-lbl">Qualified applications / day</div><div class="stat-from">3.3 → 4.4 since Oct 5</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-num" data-count="16" data-prefix="+" data-suffix="%">+16%</div><div class="stat-lbl">Booked strategy calls / day</div><div class="stat-from">3.2 → 3.7 since Oct 5</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-num" data-count="0" data-prefix="$">$0</div><div class="stat-lbl">Refunds</div><div class="stat-from">Since Sep 1 · July was $2,640</div></div>
+    </div>
+  </div>
+
+  <!-- S01 -->
+  <section id="s1" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 01</span><span class="sec-pill">Oct 1–25</span></div>
+      <h2>October at a Glance</h2>
+      <p class="sec-desc">Demand is the headline: more people are applying and booking. Cash is covered honestly in Section 05.</p>
+      <div class="sec-ghost">01</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="card hov kpi lead reveal">
+        <div class="k-top"><span class="eyebrow">Applications · Oct 1–25</span><span class="tag acc">Verified</span></div>
+        <div class="k-num" data-count="402">402</div>
+        <div class="k-sub">Typeform applications to the Academy. GoHighLevel's pipeline shows the same climb: 348 new opportunities in Oct 1–25 vs 229 in all of September.</div>
+        <div class="pace">
+          <div class="pace-row"><span>Oct 1–25 <b>402</b></span><span>September <b>414</b></span></div>
+          <div class="pace-track"><div class="pace-fill" data-w="97.1"></div><div class="pace-mark" style="left:99.9%"></div></div>
+          <div class="pace-legend"><span>97% of September's total with 6 days to go</span><span>Best week ever: Oct 18–24, 133</span></div>
+        </div>
+        <div class="card-glow"></div>
+      </div>
+      <div class="card hov kpi reveal">
+        <div class="k-top"><span class="eyebrow">Qualified applications</span><span class="tag">Oct 1–25</span></div>
+        <div class="k-num" data-count="104">104</div>
+        <div class="k-sub">39 in the week of Oct 18 alone, the most of any week tracked.</div>
+        <div class="card-glow"></div>
+      </div>
+      <div class="card hov kpi reveal">
+        <div class="k-top"><span class="eyebrow">Booked strategy calls</span><span class="tag acc">Verified</span></div>
+        <div class="k-num" data-count="85">85</div>
+        <div class="k-sub">On the main strategy calendar, Oct 1–25. GoHighLevel matches the dashboard exactly.</div>
+        <div class="card-glow"></div>
+      </div>
+      <div class="card hov kpi reveal">
+        <div class="k-top"><span class="eyebrow">Paid in full</span><span class="tag">New students</span></div>
+        <div class="k-num" data-count="40" data-suffix="%">40%</div>
+        <div class="k-sub">Of October's new students paid in full, up from 23% in September.</div>
+        <div class="card-glow"></div>
+      </div>
+      <div class="card hov kpi reveal">
+        <div class="k-top"><span class="eyebrow">Refunds</span><span class="tag">Since Sep 1</span></div>
+        <div class="k-num" data-count="0" data-prefix="$">$0</div>
+        <div class="k-sub">Zero refunds in September or October.</div>
+        <div class="card-glow"></div>
+      </div>
+    </div>
+
+    <div class="card acc-item reveal" style="margin-top:10px">
+      <button class="acc-btn" aria-expanded="false"><span class="q">Why applications and booked calls lead this report</span><span class="plus">+</span></button>
+      <div class="acc-body"><div class="acc-inner">
+        <p>We started on Oct 5, so October is three weeks of the new system. Applications and booked calls move first. Students and cash follow, because a call booked today often closes, and gets paid, weeks later. Every number here comes from SheCreates' own dashboard (Whop, GoHighLevel, Typeform, Zoom), and the booked-call counts were checked a second time straight in GoHighLevel.</p>
+        <table><tr><th>Since Oct 5 vs the 30 days before</th><th>Before</th><th>Since</th></tr>
+          <tr><td>Applications / day</td><td>12.8</td><td><b>16.3</b></td></tr>
+          <tr><td>Qualified applications / day</td><td>3.3</td><td><b>4.4</b></td></tr>
+          <tr><td>Booked strategy calls / day</td><td>3.2</td><td><b>3.7</b></td></tr>
+          <tr><td>Webinar registrations / day</td><td>58</td><td>37</td></tr></table>
+      </div></div>
+    </div>
+
+    <div class="card pad reveal" style="margin-top:10px">
+      <div class="chart-head"><div><div class="chart-title">Where applications came from</div><div class="chart-note" id="prodNote">Oct 1–25. Hover a slice or a row to highlight it.</div></div><div class="seg" id="prodSeg"><button data-p="sep">September</button><button data-p="oct" class="on">Oct 1–25</button></div></div>
+      <div class="prod-grid" style="margin-top:12px">
+        <div class="donut-wrap"><canvas id="cProd"></canvas><div class="donut-center"><b id="prodTot">312</b><span id="prodLbl">Oct 1–25</span></div></div>
+        <div id="prodList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S02 -->
+  <section id="s2" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 02</span><span class="sec-pill">Jul – Oct</span></div>
+      <h2>The Trend, Month by Month</h2>
+      <p class="sec-desc">Straight from the SheCreates dashboard. Pick a metric to chart, or pick a month to see all of its numbers. October is Oct 1–25 only.</p>
+      <div class="sec-ghost">02</div>
+    </div>
+    <div class="card pad reveal">
+      <div class="chart-head">
+        <div><div class="chart-title" id="chartTitle">Applications</div><div class="chart-note" id="chartNote"></div></div>
+        <div class="seg" id="metricSeg">
+          <button data-m="apps" class="on">Applications</button>
+          <button data-m="booked">Booked calls</button>
+          <button data-m="students">New students</button>
+          <button data-m="cash">Cash collected</button>
+        </div>
+      </div>
+      <div class="chart-box"><canvas id="cTrend"></canvas></div>
+      <div class="range-row">
+        <span class="chart-note">Shaded bar = September, the month before sales.io. Full bars = October, with sales.io from Oct 5.</span>
+      </div>
+      <div class="big-delta" id="bigDelta"></div>
+    </div>
+
+    <div class="months" id="monthSel"></div>
+    <div class="month-panel" id="monthPanel"></div>
+    <div class="month-caption" id="monthCap"></div>
+  </section>
+
+  <!-- S03 -->
+  <section id="s3" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 03</span><span class="sec-pill">30 days before vs since</span></div>
+      <h2>Before vs After</h2>
+      <p class="sec-desc">"Before" is the 30 days before we started (Sep 5 – Oct 4). "Since" is Oct 5 – 25. Rates are per day so the two windows compare fairly.</p>
+      <div class="sec-ghost">03</div>
+    </div>
+    <div class="ba-grid" id="baGrid"></div>
+  </section>
+
+  <!-- S04 -->
+  <section id="s4" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 04</span><span class="sec-pill">Oct 5 – Oct 25</span></div>
+      <h2>What We Built Together</h2>
+      <p class="sec-desc">Three weeks, one system, put in place piece by piece and run every weekday. Tap any item to see what it was and why it mattered.</p>
+      <div class="sec-ghost">04</div>
+    </div>
+    <div class="tl-ctrl"><button class="linkbtn" id="expandAll">Expand all</button></div>
+    <div class="tl" id="timeline"></div>
+
+    <div class="rhythm">
+      <div class="card hov rh reveal"><b>5x</b><span>Sales syncs a week, Monday to Friday</span><div class="card-glow"></div></div>
+      <div class="card hov rh reveal"><b>Live</b><span>Call reviews and role-plays inside the syncs</span><div class="card-glow"></div></div>
+      <div class="card hov rh reveal"><b>1x</b><span>Ops meeting a week with Gigi, Maya and Patrick</span><div class="card-glow"></div></div>
+      <div class="card hov rh reveal"><b>1:1s</b><span>Strategy syncs with Gigi</span><div class="card-glow"></div></div>
+    </div>
+    <p class="chart-note" style="margin-top:22px;font-weight:700">What we drill on in call reviews</p>
+    <div class="themes"><span>Transference of belief</span><span>Ask, don't state</span><span>Open, not leading, questions</span><span>Let them name the pain</span><span>Pre-frame for depth</span><span>The 5-minute pitch</span></div>
+  </section>
+
+  <!-- S05 -->
+  <section id="s5" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 05</span><span class="sec-pill">Honest read</span></div>
+      <h2>A Straight Read on October</h2>
+      <p class="sec-desc">The good, and the part we're fixing.</p>
+      <div class="sec-ghost">05</div>
+    </div>
+    <div class="card honest reveal">
+      <p>The front of the funnel is growing: more applications, more qualified applications and more booked calls per day than before we started. <strong>Cash hasn't caught up yet.</strong> Whop shows <strong>$20,800</strong> collected Oct 1–25 from <strong>10 new students</strong>, after $33,700 and 22 new students in September. Webinar registrations fell by about half (947 vs 1,975), and live attendance went from 84–157 a webinar in September to 48–93 in October. Failed financing approvals also cost us paid-in-full sales, which is why a backup processor is being added. Now that every call result is recorded (since Oct 15), we can finally see the real picture: <strong>a 37% show rate and a 40% close rate</strong>. That's the starting line for levers 1 and 2, not a ceiling.</p>
+      <div class="mini">
+        <div><b>$20.8k</b><span>Cash collected, Oct 1–25</span></div>
+        <div><b>10</b><span>New students, Oct 1–25</span></div>
+        <div><b>37%</b><span>Show rate (since Oct 15, 27 calls)</span></div>
+        <div><b>40%</b><span>Close rate (since Oct 15, 10 shows)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S06 -->
+  <section id="s6" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 06</span><span class="sec-pill">Projection</span></div>
+      <h2>The Path to 250 Students</h2>
+      <p class="sec-desc">SheCreates' own dashboard tracks the "Road to 250 students." This is the math from where October is today, built only from SheCreates' own numbers. Everything in this section is a projection, not a result or a guarantee.</p>
+      <div class="sec-ghost">06</div>
+    </div>
+
+    <div class="gap-grid">
+      <div class="card hov gap reveal"><span class="eyebrow">Today</span><b data-count="121">121</b><span>Students since Apr 16: 51 paid in full and 70 on payment plans.</span><div class="card-glow"></div></div>
+      <div class="card hov gap reveal"><span class="eyebrow">Goal</span><b class="acc">250</b><span>The "Road to 250 students" on SheCreates' own dashboard.</span><div class="card-glow"></div></div>
+      <div class="card hov gap reveal"><span class="eyebrow">The gap</span><b data-count="129">129</b><span>Students to go. At October's funnel (~16 a month) that's about 8 months.</span><div class="card-glow"></div></div>
+      <div class="card hov gap reveal"><span class="eyebrow">On the path</span><b data-count="3" data-prefix="~">~3</b><span>Months to 250 at ~44 new students a month, which puts it around the end of January 2027.</span><div class="card-glow"></div></div>
+    </div>
+
+    <div class="card pad reveal" style="margin-top:10px">
+      <div class="chart-head"><div><div class="chart-title">One realistic path: ~16 → ~44 new students a month</div><div class="chart-note">Each bar adds one lever on top of the last. Hover a bar for the math.</div></div><span class="proj-flag">Projection</span></div>
+      <div class="chart-box"><canvas id="cPath"></canvas></div>
+      <table class="ptable">
+        <tr><th>Funnel</th><th>Today (Oct pace)</th><th>Best so far (actual)</th><th>Path (projection)</th></tr>
+        <tr><td>Booked calls / mo</td><td>~110</td><td>274 (Aug)</td><td class="goal">160</td></tr>
+        <tr><td>Show rate</td><td>37%</td><td>not tracked before Oct 15</td><td class="goal">55%</td></tr>
+        <tr><td>Calls held / mo</td><td>~41</td><td>–</td><td class="goal">88</td></tr>
+        <tr><td>Close rate</td><td>40%</td><td>50–60% (Gigi's own calls)</td><td class="goal">50%</td></tr>
+        <tr><td>New students / mo</td><td>~16</td><td>29 (Aug)</td><td class="goal">44</td></tr>
+        <tr><td>Avg contract value</td><td>$3,200</td><td>$3,200 (Oct)</td><td class="goal">$3,200</td></tr>
+        <tr><td>Contract value sold / mo</td><td>~$52k</td><td>$83.8k (Aug)</td><td class="goal">~$141k</td></tr>
+        <tr><td>Months to 250 students</td><td>~8</td><td>–</td><td class="goal">~3</td></tr>
+      </table>
+      <p class="calc-note">The model: new students = booked calls × show rate × close rate. "Today" uses October's booked-call pace (89 in Oct 1–25, ~110 for the month) and the show and close rates recorded since Oct 15, when every call result started being logged. That's a small sample (27 calls held), and the model gives ~16 a month vs 10 actual new students in Oct 1–25, so treat it as directional. Contract value sold = new students × $3,200, October's average contract. Cash arrives over time because most students are on payment plans.</p>
+    </div>
+
+    <div class="alt-grid">
+      <div class="card hov alt reveal"><span class="eyebrow">Conversion first</span><div class="big">~30</div><h4>Students a month at 55% show and 50% close</h4>On today's ~110 booked calls alone. That's nearly double October's pace without a single extra lead.<div class="card-glow"></div></div>
+      <div class="card hov alt reveal"><span class="eyebrow">Done before</span><div class="big">274</div><h4>Calls booked in August</h4>August also brought 29 new students and 62% paid in full. The calendar has carried more than the path needs.<div class="card-glow"></div></div>
+      <div class="card hov alt reveal"><span class="eyebrow">The leads exist</span><div class="big">~133</div><h4>Qualified applications a month at today's pace</h4>4.4 a day since Oct 5, plus ~370 more applications a month on the Lite tier. 160 booked calls a month means booking about 1 in 3 applicants.<div class="card-glow"></div></div>
+      <div class="card hov alt reveal"><span class="eyebrow">iMessage works</span><div class="big">63% vs 16%</div><h4>Reply rate: iMessage vs regular SMS</h4>Since Sep 30, 538 iMessages got 337 replies. 5,098 regular texts got 799. Personal iMessage is the cheapest show-rate lever we have.<div class="card-glow"></div></div>
+      <div class="card hov alt reveal"><span class="eyebrow">Cash up front</span><div class="big">62%</div><h4>Paid in full in August</h4>October is at 40%. With working financing, more students pay in full, and the first payment averaged $1,903 in August vs $1,500 in October.<div class="card-glow"></div></div>
+      <div class="card hov alt reveal"><span class="eyebrow">Webinar volume</span><div class="big">~25 / day</div><h4>Applications if registrations return to September's pace</h4>Registrations fell from 58 to 37 a day, but the share who apply doubled from 22% to 44%. At September's registration pace and today's apply rate, that's about 25 applications a day.<div class="card-glow"></div></div>
+    </div>
+
+    <div class="card calc reveal">
+      <div class="chart-head"><div><div class="chart-title">Scenario calculator</div><div class="chart-note">Move the sliders to see what a month could look like. It opens on October's numbers.</div></div><span class="proj-flag">Projection</span></div>
+      <div class="calc-grid">
+        <div>
+          <div class="sl"><div class="sl-top"><span>Booked calls / month</span><b id="vB"></b></div><input type="range" id="iB" min="40" max="300" step="1"><div class="sl-ref">October pace ~110 · August 274</div></div>
+          <div class="sl"><div class="sl-top"><span>Show rate</span><b id="vS"></b></div><input type="range" id="iS" min="20" max="80" step="1"><div class="sl-ref">Since Oct 15: 37% · setter target: 50%+</div></div>
+          <div class="sl"><div class="sl-top"><span>Close rate</span><b id="vC"></b></div><input type="range" id="iC" min="20" max="70" step="1"><div class="sl-ref">Since Oct 15: 40% · Gigi's calls: 50–60%</div></div>
+          <div class="sl"><div class="sl-top"><span>Average contract value</span><b id="vA"></b></div><input type="range" id="iA" min="2000" max="5000" step="50"><div class="sl-ref">October $3,200 · August $2,890</div></div>
+          <div class="calc-btns"><button id="pOct">October today</button><button id="pPath" class="primary">Show a realistic path to 250</button></div>
+        </div>
+        <div class="calc-out">
+          <span class="eyebrow">Projected new students / month</span>
+          <div class="big" id="oRev">0</div>
+          <div class="vs" id="oVs"></div>
+          <div class="pace-track"><div class="pace-fill" id="oBar" style="width:0"></div><div class="pace-mark" style="left:99.6%"></div></div>
+          <div class="pace-legend"><span>121 today</span><span style="margin-left:auto">250 goal</span></div>
+          <div class="calc-stats">
+            <div><b id="oT"></b><span>Calls held</span></div>
+            <div><b id="oD"></b><span>Months to 250</span></div>
+            <div><b id="oCpc"></b><span>Contract value / mo</span></div>
+            <div><b id="oCl"></b><span>Students by Jan 31</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="calc-note">Projection only, not a forecast or guarantee. New students = booked × show × close. The bar shows projected students by Jan 31, 2027 (121 today plus Nov, Dec and Jan at the monthly rate). Contract value = students × average contract; most of it is collected over the payment plan. It doesn't model refunds, defaults or seasonality.</p>
+    </div>
+  </section>
+
+  <!-- S07 -->
+  <section id="s7" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 07</span><span class="sec-pill">5 levers</span></div>
+      <h2>The Levers We'd Pull Together</h2>
+      <p class="sec-desc">The system is in place and demand is rising. If we keep going, these are the five levers we'd pull, in order, on the way to 250 students. Tap one to see the number behind it and what we'd do.</p>
+      <div class="sec-ghost">07</div>
+    </div>
+    <div id="levers"></div>
+  </section>
+
+  <div class="foot">
+    <h4>Data sources & notes</h4>
+    <ul>
+      <li>SheCreates Academy sales dashboard (Whop, GoHighLevel, Typeform, Zoom, dispo form, texts), pulled Oct 25, 2026. Booked-call counts were checked a second time directly in GoHighLevel and match.</li>
+      <li>Months use Pacific Time, like the dashboard. October covers Oct 1–25. "Since we started" is Oct 5–25; "before" is Sep 5 – Oct 4.</li>
+      <li>Cash collected = SheCreates Academy payments on Whop, net of refunds. New students = new Academy deals started on Whop (paid in full or first plan payment).</li>
+      <li>Booked calls = the main "Book a Strategy Session" calendar, by the date the call was booked. August's all-calendar total (274) also includes the retired Discovery Call calendar.</li>
+      <li>Show and close rates are only recorded from Oct 15, when the dispo form went live, so there's no earlier show or close rate to compare against.</li>
+      <li>Application sources show tagged applications only. Applications were first tracked on Aug 9.</li>
+      <li>Sections 06–07 are projections built from the numbers above. They are not results or guarantees.</li>
+      <li>Engagement details come from sales.io team syncs, ops meetings and working notes, Oct 5 – Oct 25, 2026.</li>
+    </ul>
+    <div class="sig"><div>Prepared by <b>JJ Hernandez · Sales.io</b></div><div>Oct 25, 2026</div></div>
+  </div>
+</main>
+
+
+<script>
+/* ---------- Data (SheCreates dashboard, pulled Oct 25, 2026; months in Pacific Time) ---------- */
+const MONTHS=['Jul','Aug','Sep','Oct'];
+const BASE=2; /* September = month before sales.io */
+const D={
+  apps:[null,278,414,402],
+  qual:[null,74,117,104],
+  booked:[178,109,115,85],
+  regs:[2309,2581,1975,947],
+  students:[24,29,22,10],
+  cash:[47960,62097,33700,20800],
+  contract:[3015,2890,3091,3200],
+  pif:[54,62,23,40]
+};
+const METRICS={
+  apps:{title:'Applications',note:'Typeform applications to the Academy. Tracking started Aug 9, so August is partial and July has none. October is Oct 1–25.',fmt:'n',
+    deltas:[['414','September, the month before'],['402','Oct 1–25'],['+27%','Applications / day since Oct 5'],['133','Best week ever (Oct 18–24)']]},
+  booked:{title:'Booked strategy calls',note:'Calls booked on the main "Book a Strategy Session" calendar, by booking date. Checked against GoHighLevel. October is Oct 1–25.',fmt:'n',
+    deltas:[['115','September'],['85','Oct 1–25'],['+16%','Calls / day since Oct 5'],['Verified','Matches GoHighLevel']]},
+  students:{title:'New students',note:'New Academy deals started on Whop, paid in full or first plan payment. October is Oct 1–25.',fmt:'n',
+    deltas:[['22','September'],['10','Oct 1–25'],['40%','Paid in full in October (Sep: 23%)'],['$3,200','Avg contract in October']]},
+  cash:{title:'Cash collected',note:'SheCreates Academy payments on Whop, net of refunds. Most students pay over a plan, so cash trails new sales.',fmt:'$k',
+    deltas:[['$33.7k','September'],['$20.8k','Oct 1–25'],['$0','Refunds since Sep 1'],['$1,500','Avg first payment in Oct (Sep: $1,055)']]}
+};
+const PROD={
+  oct:{lbl:'Oct 1–25',items:[{n:'Affiliates',v:181},{n:'Direct',v:86},{n:'Email',v:40},{n:'GoHighLevel',v:5}]},
+  sep:{lbl:'September',items:[{n:'Direct',v:318},{n:'Affiliates',v:83},{n:'GoHighLevel',v:7},{n:'Email',v:6}]}
+};
+let prodKey='oct';let PRODUCTS=PROD.oct.items;
+const TIMELINE=[
+  {h:'Kickoff',sub:'Oct 5 – Oct 9',items:[
+    ['Oct 5','Into the systems on day one','Access to GoHighLevel and the SheCreates workspace, so changes could ship the same week instead of waiting on hand-offs.'],
+    ['Oct 7','Daily sales syncs and one team channel','A Monday-to-Friday sync for numbers, wins and blockers, and one Slack channel so every change is visible to the whole team.'],
+    ['Oct 8','A new way to sell: transference of belief','Moved calls from high energy to authority and trust, with a Current Reality → Problem → Solution framework and a pitch kept under five minutes.'],
+    ['Oct 9','Setting team in place','An experienced setting lead and a dialer joined, taking triage and confirmations off the closers and off Gigi\'s plate.']]},
+  {h:'Build the machine',sub:'Oct 12 – Oct 16',items:[
+    ['Oct 12','One scoreboard: show, close, AOV, cash per call','Defined the KPIs and the dashboard behind them, so decisions run on numbers instead of feel.'],
+    ['Oct 12','Cancellation prevention and recovery','A recovery cadence for no-shows and cancels (3, 7, 10, 14, 21 and 30+ days), objection videos for the post-booking page, the pre-call text flow, and dialer calls 1–2 hours before each appointment.'],
+    ['Oct 13','DM setting and pre-call priming','A new DM setting channel from Gigi\'s stories, plus a required pre-call email (Masterclass replay, case studies, Academy walkthrough), a text, and a confirmation call. Quora became a lead magnet, not just a downsell.'],
+    ['Oct 15','Setter playbook: speed to lead and 5 priority lists','Applications first, then booked-call triage, webinar registrants, attendees, and no-shows. A soft money-qualification script went into an A/B test that Gigi approved.'],
+    ['Oct 15','Every call result recorded','The dispo form went live, so every call now ends with a logged result. Calls with no recorded result fell from 43% in September to 12% in October.'],
+    ['Oct 16','Faster DM replies','The ManyChat flow was simplified so a person replies right away instead of a second automated message.']]},
+  {h:'Sharpen',sub:'Oct 19 – Oct 22',items:[
+    ['Oct 19','One-reschedule policy and same-day cancel follow-up','Clear booking-page rules, the cancelled-calls list cleared within 24 hours, and a call-recording channel for targeted coaching.'],
+    ['Oct 19','Fixing financing approvals','The current financing provider was declining buyers and costing paid-in-full sales, so a backup processor and Affirm are being added.'],
+    ['Oct 20–21','Clear roles: dialing vs DMs','One person owns the phones and one owns Instagram and TikTok DMs, so each channel gets full attention.'],
+    ['Oct 22','Closers own their leads, plus an overdue-payment SOP','Once a call is booked, one person owns that lead, so prospects hear from a single contact. Late payments get a standard, friendly push-out process.'],
+    ['Oct 22','Webinar-day calling and end-of-day reports','Setters call this week\'s registrants before the webinar, and setters and dialers joined the end-of-day report.']]}
+];
+const LEVERS=[
+  {t:'Show rate to 55% with one locked confirmation flow',p:'More of the calls we already book actually happen.',stat:'+8 / mo',sl:'Projected students · show 37% → 55%',
+   num:'37% → 55%',numTxt:'Show rate since Oct 15 is 37% (10 of 27 calls). The setter plan targets 50%+. iMessage gets a 63% reply rate vs 16% for regular texts. Projection: on today\'s ~110 calls, 55% show takes ~16 students a month to ~24.',
+   do:['Lock one confirmation flow for every booking: priming email, text and a confirmation call','Speed to lead on every new booking, and a personal iMessage before every call','Hold the one-reschedule rule and track show rate by source every week'],
+   up:'Every point of show rate is more calls held with zero extra marketing.'},
+  {t:'Close rate back to 50%',p:'Closers spend their time on people who are ready.',stat:'+6 / mo',sl:'Projected students · close 40% → 50%',
+   num:'40% → 50%',numTxt:'Close rate since Oct 15 is 40% (4 of 10 shows). Gigi closed 50–60% on her own calls. Projection: 50% close on top of 55% show takes it from ~24 to ~30 students a month.',
+   do:['Pre-call priming for every prospect, so they show up knowing the program and the investment','Finish the soft money-qualification A/B test and keep the winner','Weekly call reviews on recorded calls, and financing that actually approves buyers'],
+   up:'More students from the same closer hours.'},
+  {t:'Fill the calendar: 160 booked calls a month',p:'The biggest single step, and the applications are already coming in.',stat:'+14 / mo',sl:'Projected students · ~110 → 160 calls',
+   num:'16 / day',numTxt:'Applications since Oct 5, with 4.4 qualified a day (~133 a month). The best week ever was Oct 18–24 with 133. August booked 274 calls. Projection: 160 calls at 55% show and 50% close is ~44 students a month.',
+   do:['Speed-to-lead calls on every new application','Call webinar registrants before and attendees after every webinar','Fix the affiliate funnel so affiliate leads know who they\'re booking with, and keep DM setting running daily'],
+   up:'Volume on top of better conversion is what gets to 250 in about three months.'},
+  {t:'More cash up front',p:'Turn more yeses into paid-in-full students.',stat:'40% → 60%',sl:'Paid-in-full share target',
+   num:'62%',numTxt:'Paid-in-full share in August. October is at 40%, up from 23% in September. The first payment averaged $1,903 in August vs $1,500 in October. Failed financing approvals have been the main block.',
+   do:['Get the backup processor and Affirm live','Standard payment-plan and overdue-payment SOPs for every closer','Keep refunds at $0 with clear expectations on every call'],
+   up:'More cash in the month a student joins, not just over the plan.'},
+  {t:'Rebuild webinar volume',p:'Feed a funnel that now converts twice as well.',stat:'~25 / day',sl:'Projected applications at Sep registrations',
+   num:'22% → 44%',numTxt:'The share of webinar registrants who apply doubled since Oct 5, while registrations fell from 58 to 37 a day. Projection: September\'s registration pace at today\'s apply rate is about 25 applications a day.',
+   do:['One sustainable weekly webinar, run the same way every week','Setters call every registrant before the webinar to lift attendance','Lead with the sources that convert, and keep the landing page focused on one problem and one solution'],
+   up:'More applications without changing the sales process at all.'}
+];
+const GOAL=250, NOW=121;
+const PATH=[['October pace',110,.37,.40],['Show 55%',110,.55,.40],['Close 50%',110,.55,.50],['160 calls',160,.55,.50]];
+const proj=(b,sh,c)=>b*sh*c;
+
+/* ---------- Helpers ---------- */
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const fmtUSD=v=>'$'+Math.round(v).toLocaleString('en-US');
+const fmtK=v=>'$'+(v/1000).toFixed(v>=100000?0:1)+'k';
+const fmtV=(m,v)=>v==null?'–':(METRICS[m]&&METRICS[m].fmt==='$k'?fmtK(v):Math.round(v).toLocaleString('en-US'));
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+function rgba(a){return 'rgba('+css('--glow-rgb')+','+a+')';}
+
+/* ---------- Theme ---------- */
+function setLabels(t){const l=t==='day'?'Day':'Night';const a=$('#mode-lbl');if(a)a.textContent=l;const b=$('#mob-toggle .m-toggle-lbl');if(b)b.textContent=l;}
+function toggleTheme(){const h=document.documentElement;const n=h.dataset.theme==='day'?'night':'day';h.dataset.theme=n;setLabels(n);try{localStorage.setItem('sca-report-theme',n);}catch(e){}renderCharts();}
+try{const s=localStorage.getItem('sca-report-theme');if(s){document.documentElement.dataset.theme=s;setLabels(s);}}catch(e){}
+
+/* ---------- Build: sources ---------- */
+const prodColors=()=>[rgba(1),css('--ink'),rgba(.55),rgba(.3),css('--text-faint')];
+function buildProducts(){
+  PRODUCTS=PROD[prodKey].items;
+  const tot=PRODUCTS.reduce((a,p)=>a+p.v,0);
+  $('#prodTot').textContent=tot.toLocaleString('en-US');$('#prodLbl').textContent=PROD[prodKey].lbl;
+  $('#prodNote').textContent=PROD[prodKey].lbl+', tagged applications. Hover a slice or a row to highlight it.';
+  $('#prodList').innerHTML=PRODUCTS.map((p,i)=>`<div class="prod-row" data-i="${i}"><span class="prod-dot"></span><div class="prod-name">${p.n}<small>${p.v} applications</small><div class="prod-bar"><i data-w="${(p.v/PRODUCTS[0].v*100).toFixed(1)}" style="width:${prodKey==='sep'||document.querySelector('#prodList').dataset.shown?(p.v/PRODUCTS[0].v*100).toFixed(1):0}%"></i></div></div><div class="prod-val">${p.v}<small>${(p.v/tot*100).toFixed(1)}%</small></div></div>`).join('');
+  $$('.prod-row').forEach(r=>{r.addEventListener('mouseenter',()=>hlProd(+r.dataset.i));r.addEventListener('mouseleave',()=>hlProd(-1));});
+}
+function hlProd(i){
+  $$('.prod-row').forEach(r=>r.classList.toggle('hl',+r.dataset.i===i));
+  if(!charts.prod)return;
+  charts.prod.setActiveElements(i<0?[]:[{datasetIndex:0,index:i}]);
+  charts.prod.tooltip.setActiveElements(i<0?[]:[{datasetIndex:0,index:i}],{x:0,y:0});
+  charts.prod.update();
+}
+
+/* ---------- Build: months ---------- */
+let selMonth=3;
+function buildMonths(){
+  $('#monthSel').innerHTML=MONTHS.map((m,i)=>`<button data-i="${i}" class="${i===selMonth?'on':''}"><b>${m}${i===3?' 1–25':''}</b><span>${i<2?'Before':i===2?'Baseline':'With sales.io'}</span></button>`).join('');
+  $$('#monthSel button').forEach(b=>b.onclick=()=>{selMonth=+b.dataset.i;$$('#monthSel button').forEach(x=>x.classList.toggle('on',x===b));renderMonth();});
+  renderMonth();
+}
+function renderMonth(){
+  const i=selMonth;
+  const cell=(lbl,val,cur,bv,isPct)=>{
+    let em='';
+    if(cur==null){em='<em>Not tracked yet</em>';}
+    else if(i>BASE){const d=isPct?(cur-bv):((cur-bv)/bv*100);em=`<em class="${d>=0?'up':''}">${d>=0?'+':''}${d.toFixed(0)}${isPct?' pts':'%'} vs Sep${i===3?' (25 days)':''}</em>`;}
+    else if(i===BASE){em='<em>Baseline month</em>';}
+    else em='<em>Before sales.io</em>';
+    return `<div class="card mp"><span>${lbl}</span><b>${val}</b>${em}</div>`;
+  };
+  $('#monthPanel').innerHTML=
+    cell('Applications',D.apps[i]==null?'–':D.apps[i]+(i===1?'*':''),D.apps[i],D.apps[BASE])+
+    cell('Qualified applications',D.qual[i]==null?'–':D.qual[i]+(i===1?'*':''),D.qual[i],D.qual[BASE])+
+    cell('Booked strategy calls',D.booked[i],D.booked[i],D.booked[BASE])+
+    cell('Webinar registrations',D.regs[i].toLocaleString('en-US'),D.regs[i],D.regs[BASE])+
+    cell('New students',D.students[i],D.students[i],D.students[BASE])+
+    cell('Cash collected',fmtK(D.cash[i]),D.cash[i],D.cash[BASE])+
+    cell('Avg contract value',fmtUSD(D.contract[i]),D.contract[i],D.contract[BASE])+
+    cell('Paid in full',D.pif[i]+'%',D.pif[i],D.pif[BASE],true);
+  $('#monthCap').textContent=i===3?'October covers Oct 1–25 only, so totals are compared against a full September. sales.io started Oct 5.':i<2?(i===1?'Before sales.io. *Applications were first tracked on Aug 9.':'Before sales.io. Applications were not tracked yet.'):'September is the baseline: the last full month before sales.io started on Oct 5.';
+}
+
+/* ---------- Build: before/after ---------- */
+const BA=[
+  {t:'Applications per day',e:'Typeform',b:12.8,a:16.3,bl:'12.8',al:'16.3',m:'+27%'},
+  {t:'Qualified applications per day',e:'Typeform',b:3.33,a:4.43,bl:'3.3',al:'4.4',m:'+33%'},
+  {t:'Booked strategy calls per day',e:'GoHighLevel · verified',b:3.2,a:3.71,bl:'3.2',al:'3.7',m:'+16%'},
+  {t:'Registrants who apply',e:'Webinar → application',b:22,a:44,bl:'22%',al:'44%',m:'2x'},
+  {t:'New students paid in full',e:'Whop',b:26,a:38,bl:'26%',al:'38%',m:'+12 pts'},
+  {t:'Average first payment',e:'Whop · new students',b:1152,a:1438,bl:'$1,152',al:'$1,438',m:'+25%'}
+];
+function buildBA(){
+  $('#baGrid').innerHTML=BA.map(x=>{const mx=Math.max(x.b,x.a);return `<div class="card hov ba reveal"><span class="eyebrow">${x.e}</span><h3>${x.t}</h3><div class="ba-mult">${x.m}</div>
+   <div class="ba-row"><span>Before</span><div class="ba-track"><div class="ba-fill before" data-w="${(x.b/mx*100).toFixed(1)}"></div></div><span class="ba-val">${x.bl}</span></div>
+   <div class="ba-row"><span>Since Oct 5</span><div class="ba-track"><div class="ba-fill after" data-w="${(x.a/mx*100).toFixed(1)}"></div></div><span class="ba-val">${x.al}</span></div><div class="card-glow"></div></div>`;}).join('');
+}
+
+/* ---------- Build: timeline ---------- */
+function buildTimeline(){
+  $('#timeline').innerHTML=TIMELINE.map(ph=>`<div class="tl-phase"><div class="tl-phase-h"><h3>${ph.h}</h3><span>${ph.sub}</span></div>${ph.items.map(it=>`<div class="card acc-item tl-item reveal"><button class="acc-btn" aria-expanded="false"><span class="q"><span class="when">${it[0]}</span>${it[1]}</span><span class="plus">+</span></button><div class="acc-body"><div class="acc-inner">${it[2]}</div></div></div>`).join('')}</div>`).join('');
+}
+
+/* ---------- Build: levers ---------- */
+function buildLevers(){
+  $('#levers').innerHTML=LEVERS.map((l,i)=>`<div class="card hov lever reveal" tabindex="0" role="button" aria-expanded="false">
+   <div class="lever-h"><div class="lever-n">0${i+1}</div><div><h3>${l.t}</h3><p>${l.p} <span class="hint">· Tap to open</span></p></div><div class="lever-stat"><b>${l.stat}</b><span>${l.sl}</span></div></div>
+   <div class="lever-body"><div class="lever-grid">
+    <div class="lever-box"><div class="eyebrow">The number behind it</div><div class="num">${l.num}</div><div style="margin-top:6px">${l.numTxt}</div></div>
+    <div class="lever-box"><div class="eyebrow">What we'll do</div><ul>${l.do.map(d=>`<li>${d}</li>`).join('')}</ul></div>
+    <div class="lever-up">Upside: ${l.up}</div>
+   </div></div><div class="card-glow"></div></div>`).join('');
+  $$('.lever').forEach(el=>{
+    const tog=()=>{const open=!el.classList.contains('open');el.classList.toggle('open',open);el.setAttribute('aria-expanded',open);const b=el.querySelector('.lever-body');b.style.maxHeight=open?b.scrollHeight+'px':'0';const h=el.querySelector('.hint');if(h)h.textContent=open?'· Tap to close':'· Tap to open';};
+    el.addEventListener('click',tog);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tog();}});
+  });
+}
+
+/* ---------- Accordions ---------- */
+function setAcc(item,open){item.classList.toggle('open',open);const b=item.querySelector('.acc-body');b.style.maxHeight=open?b.scrollHeight+'px':'0';item.querySelector('.acc-btn').setAttribute('aria-expanded',open);}
+function bindAcc(){
+  $$('.acc-item').forEach(it=>it.querySelector('.acc-btn').addEventListener('click',()=>setAcc(it,!it.classList.contains('open'))));
+  const ea=$('#expandAll');let all=false;
+  ea.onclick=()=>{all=!all;$$('#timeline .acc-item').forEach(it=>setAcc(it,all));ea.textContent=all?'Collapse all':'Expand all';};
+}
+
+/* ---------- Charts ---------- */
+const charts={};let curMetric='apps';
+function baseOpts(){
+  const tc=css('--text-muted'),gc=css('--grid');
+  Chart.defaults.font.family="'Inter',sans-serif";Chart.defaults.color=tc;
+  return {responsive:true,maintainAspectRatio:false,animation:{duration:700},
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'#0e0e0c',titleColor:'#fff',bodyColor:'#ddd',borderColor:rgba(.6),borderWidth:1,padding:10,cornerRadius:8,displayColors:false}},
+    scales:{x:{grid:{display:false},ticks:{font:{weight:700}}},y:{grid:{color:gc},border:{display:false},beginAtZero:true}}};
+}
+function renderTrend(){
+  const m=METRICS[curMetric],vals=D[curMetric];
+  const labels=MONTHS.map(x=>x==='Oct'?'Oct 1–25':(x==='Aug'&&curMetric==='apps'?'Aug (from 9th)':x));
+  const colors=labels.map((l,i)=>i<BASE?css('--text-faint'):i===BASE?rgba(.35):rgba(1));
+  const ds=[{label:m.title,data:vals,backgroundColor:colors,borderRadius:8,borderSkipped:false,maxBarThickness:64}];
+  const o=baseOpts();
+  o.scales.y.ticks={callback:v=>m.fmt==='$k'?'$'+(v/1000)+'k':v.toLocaleString()};
+  o.plugins.tooltip.callbacks={
+    title:it=>it[0].label,
+    label:c=>m.title+': '+(m.fmt==='$k'?fmtUSD(c.raw):c.raw.toLocaleString('en-US')),
+    afterLabel:c=>{const idx=c.dataIndex;if(idx<=BASE)return idx===BASE?'Baseline (month before sales.io)':'Before sales.io';const b=D[curMetric][BASE];const d=(c.raw-b)/b*100;return (d>=0?'+':'')+d.toFixed(0)+'% vs September (Oct is 25 days)';}
+  };
+  if(charts.trend)charts.trend.destroy();
+  charts.trend=new Chart($('#cTrend'),{type:'bar',data:{labels,datasets:ds},options:o});
+  $('#chartTitle').textContent=m.title;$('#chartNote').textContent=m.note;
+  $('#bigDelta').innerHTML=m.deltas.map(d=>`<div><b>${d[0]}</b><span>${d[1]}</span></div>`).join('');
+}
+function renderProd(){
+  if(charts.prod)charts.prod.destroy();
+  const cols=prodColors();
+  $$('.prod-row .prod-dot').forEach((d,i)=>d.style.background=cols[i]);
+  const o=baseOpts();delete o.scales;o.cutout='68%';
+  o.plugins.tooltip.callbacks={label:c=>{const p=PRODUCTS[c.dataIndex];return p.v+' applications';}};
+  o.onHover=(e,els)=>{$$('.prod-row').forEach(r=>r.classList.toggle('hl',els.length&&+r.dataset.i===els[0].index));};
+  charts.prod=new Chart($('#cProd'),{type:'doughnut',data:{labels:PRODUCTS.map(p=>p.n),datasets:[{data:PRODUCTS.map(p=>p.v),backgroundColor:cols,borderColor:css('--card-bg'),borderWidth:3,hoverOffset:8}]},options:o});
+}
+function renderPath(){
+  if(charts.path)charts.path.destroy();
+  const vals=PATH.map(p=>proj(p[1],p[2],p[3]));
+  const data=vals.map((v,i)=>i===0?[0,v]:[vals[i-1],v]);
+  const labels=PATH.map(p=>p[0]);
+  const cols=labels.map((l,i)=>i===0?css('--ink'):rgba(i===3?1:.55+i*.1));
+  const o=baseOpts();
+  o.scales.y.max=50;o.scales.y.ticks={stepSize:10,callback:v=>v+' / mo'};
+  o.plugins.tooltip.callbacks={title:it=>it[0].label,label:c=>{const i=c.dataIndex;const p=PATH[i];const v=vals[i];
+    return ['Projected: ~'+Math.round(v)+' new students / month'+(i?' (+'+Math.round(v-vals[i-1])+')':''),p[1]+' booked × '+Math.round(p[2]*100)+'% show × '+Math.round(p[3]*100)+'% close','~'+((GOAL-NOW)/v).toFixed(1)+' months to 250 students'];}};
+  charts.path=new Chart($('#cPath'),{type:'bar',data:{labels,datasets:[{data,backgroundColor:cols,borderRadius:8,borderSkipped:false,maxBarThickness:72}]},options:o});
+}
+function calc(){
+  const b=+$('#iB').value,sh=+$('#iS').value/100,c=+$('#iC').value/100,a=+$('#iA').value;
+  $('#vB').textContent=b;$('#vS').textContent=Math.round(sh*100)+'%';$('#vC').textContent=Math.round(c*100)+'%';$('#vA').textContent=fmtUSD(a);
+  const t=b*sh,s=proj(b,sh,c),months=(GOAL-NOW)/s,byJan=Math.min(999,Math.round(NOW+3*s));
+  const ro=$('#oRev');ro.textContent='~'+Math.round(s);ro.classList.toggle('hit',byJan>=GOAL);
+  $('#oVs').textContent=byJan>=GOAL?'Reaches 250 students by Jan 31, 2027':'About '+byJan+' students by Jan 31, 2027 · '+(GOAL-byJan)+' short of 250';
+  $('#oBar').style.width=Math.min(100,Math.max(0,(byJan-NOW)/(GOAL-NOW)*100)).toFixed(1)+'%';
+  $('#oT').textContent=Math.round(t);$('#oD').textContent=months.toFixed(1);$('#oCpc').textContent=fmtK(s*a);$('#oCl').textContent=byJan;
+}
+function setCalc(v){['iB','iS','iC','iA'].forEach((k,i)=>$('#'+k).value=v[i]);calc();}
+function bindCalc(){
+  ['iB','iS','iC','iA'].forEach(k=>$('#'+k).addEventListener('input',calc));
+  $('#pOct').onclick=()=>setCalc([110,37,40,3200]);
+  $('#pPath').onclick=()=>setCalc([160,55,50,3200]);
+  setCalc([110,37,40,3200]);
+}
+function renderCharts(){if(typeof Chart==='undefined')return;renderTrend();renderProd();renderPath();}
+
+/* ---------- Count-up ---------- */
+function countUp(el){
+  if(el.dataset.done)return;el.dataset.done=1;
+  const end=+el.dataset.count,dec=+(el.dataset.dec||0),pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';
+  const t0=performance.now(),dur=1400;
+  const step=t=>{const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3),v=end*e;
+    el.textContent=pre+(dec?v.toFixed(dec):Math.round(v).toLocaleString('en-US'))+suf;if(p<1)requestAnimationFrame(step);};
+  requestAnimationFrame(step);
+}
+
+/* ---------- Init ---------- */
+buildProducts();buildMonths();buildBA();buildTimeline();buildLevers();bindAcc();bindCalc();renderCharts();
+$$('#prodSeg button').forEach(b=>b.onclick=()=>{prodKey=b.dataset.p;$$('#prodSeg button').forEach(x=>x.classList.toggle('on',x===b));$('#prodList').dataset.shown=1;buildProducts();renderProd();});
+$$('#metricSeg button').forEach(b=>b.onclick=()=>{curMetric=b.dataset.m;$$('#metricSeg button').forEach(x=>x.classList.toggle('on',x===b));renderTrend();});
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const t=e.target;
+  t.classList.add('visible');
+  t.querySelectorAll('[data-count]').forEach(countUp);
+  t.querySelectorAll('[data-w]').forEach(f=>f.style.width=f.dataset.w+'%');
+  io.unobserve(t);}),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+$$('.reveal,.hero,#prodList').forEach(el=>io.observe(el));
+
+const secs=$$('.sec-block'),links=$$('.nav-link,.m-nav a');
+const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id));const a=document.querySelector('.m-nav a.active');if(a&&a.scrollIntoView&&window.innerWidth<=960)a.parentNode.scrollTo({left:a.offsetLeft-16,behavior:'smooth'});}}),{rootMargin:'-10% 0px -80% 0px'});
+secs.forEach(s=>so.observe(s));
+
+const bar=$('#scroll-progress');
+function prog(){const h=document.documentElement,st=h.scrollTop||document.body.scrollTop,ht=h.scrollHeight-h.clientHeight;bar.style.width=(ht>0?st/ht*100:0)+'%';}
+document.addEventListener('scroll',prog,{passive:true});prog();
+
+const spot=$('#cursor-spot');let raf=false,lm=null;
+document.addEventListener('mousemove',e=>{lm=e;if(raf)return;raf=true;requestAnimationFrame(()=>{raf=false;spot.style.setProperty('--mx',lm.clientX+'px');spot.style.setProperty('--my',lm.clientY+'px');spot.classList.add('active');
+  const c=lm.target.closest&&lm.target.closest('.card.hov');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--cx',((lm.clientX-r.left)/r.width*100).toFixed(1)+'%');c.style.setProperty('--cy',((lm.clientY-r.top)/r.height*100).toFixed(1)+'%');}});});
+document.addEventListener('mouseleave',()=>spot.classList.remove('active'));
+window.addEventListener('resize',()=>{$$('.acc-item.open .acc-body,.lever.open .lever-body').forEach(b=>b.style.maxHeight=b.scrollHeight+'px');});
+</script>
+</body>
+</html>
