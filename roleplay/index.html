@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Role Play Avatar Builder | sales.io</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:#0d0d12;color:#ececf1;padding:32px 16px}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:900px){.wrap{grid-template-columns:1fr}}
+h1{max-width:1100px;margin:0 auto 6px;font-size:26px}.sub{max-width:1100px;margin:0 auto 24px;color:#9a9aa8;font-size:14px}
+.card{background:#17171f;border:1px solid #2a2a36;border-radius:14px;padding:22px}
+label.q{display:block;font-weight:600;font-size:14px;margin:18px 0 8px}label.q:first-child{margin-top:0}
+.req{color:#ff5a5a}.opt{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:7px 0;cursor:pointer;color:#d6d6de}
+.opt input{margin-top:3px;accent-color:#7c5cff}
+input[type=text],input[type=number],textarea,select{width:100%;background:#0f0f15;border:1px solid #2f2f3c;border-radius:8px;color:#ececf1;padding:9px 11px;font:inherit;font-size:14px}
+textarea{min-height:64px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btns{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}button{border:0;border-radius:9px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer}
+.primary{background:linear-gradient(135deg,#7c5cff,#c04cff);color:#fff}.ghost{background:#24242f;color:#ececf1}
+#avatar{position:sticky;top:20px;align-self:start}.empty{color:#7b7b88;font-size:14px;text-align:center;padding:60px 10px}
+.head{display:flex;gap:14px;align-items:center}.pic{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#7c5cff,#ff4c9a);display:grid;place-items:center;font-size:26px;font-weight:800}
+.name{font-size:20px;font-weight:800}.tag{color:#a99bff;font-size:13px;font-weight:600}
+.pill{display:inline-block;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:700;margin:4px 4px 0 0}
+.hot{background:#183a25;color:#5ee38c}.warm{background:#3a3218;color:#ffd35e}.cold{background:#3a1818;color:#ff7a7a}
+h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8a8a98;margin:20px 0 8px}
+ul{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:#d6d6de}p{font-size:14px;line-height:1.55;color:#d6d6de;margin:0}
+.quote{border-left:3px solid #7c5cff;padding:8px 12px;background:#1d1d27;border-radius:0 8px 8px 0;font-style:italic;margin:6px 0;font-size:14px}
+@media print{body{background:#fff;color:#000}.card{border-color:#ccc;background:#fff}#form{display:none}.wrap{grid-template-columns:1fr}}
+</style></head><body>
+<h1>Role Play Avatar Builder</h1><div class="sub">Fill it out the way a lead would on the booking form, then build the prospect avatar to role-play against.</div>
+<div class="wrap">
+<form class="card" id="form" onsubmit="build(event)">
+<div class="row"><div><label class="q">Prospect name</label><input type="text" id="pname" placeholder="e.g. Jessica"></div>
+<div><label class="q">Age</label><input type="number" id="age" placeholder="e.g. 34"></div></div>
+<div class="row"><div><label class="q">What they do now</label><input type="text" id="job" placeholder="e.g. Nurse, coach, agency owner"></div>
+<div><label class="q">Followers / audience size</label><input type="text" id="aud" placeholder="e.g. 2,400 on IG"></div></div>
+
+<label class="q">What do you need the most help with right NOW in your content journey? <span class="req">*</span></label>
+<label class="opt"><input type="checkbox" name="help" value="Posting my first video">Posting my first video</label>
+<label class="opt"><input type="checkbox" name="help" value="Growing an existing personal brand">Growing an existing personal brand</label>
+<label class="opt"><input type="checkbox" name="help" value="Editing my videos takes too much time/money">Editing my videos takes too much time/money</label>
+<label class="opt"><input type="checkbox" name="help" value="Monetizing with UGC">Monetizing with UGC (user generated content)</label>
+<label class="opt"><input type="checkbox" name="help" value="Generating more leads for my business">Generating more leads for my business (coaches, agencies, etc.)</label>
+
+<label class="q">What best describes your current editing process? <span class="req">*</span></label>
+<label class="opt"><input type="radio" name="edit" value="never" required>I've never edited a video</label>
+<label class="opt"><input type="radio" name="edit" value="self">I edit all my videos myself</label>
+<label class="opt"><input type="radio" name="edit" value="editor">I have an editor</label>
+<label class="opt"><input type="radio" name="edit" value="team">I have a team of editors</label>
+
+<label class="q">If you found a proven system to grow your audience and turn your content into real income, would you be willing (and able) to invest in getting the help to get there? <span class="req">*</span></label>
+<label class="opt"><input type="radio" name="invest" value="cash" required>Yes, I have the cash flow to invest in myself right now</label>
+<label class="opt"><input type="radio" name="invest" value="resourceful">Yes, I may or may not have the cash flow, but I'm resourceful and/or have access to credit</label>
+<label class="opt"><input type="radio" name="invest" value="no">No, my cash flow is month to month and I have no access to credit</label>
+
+<label class="q">Our team operates on a tight schedule. Do you confirm that you will attend this call at the scheduled time? <span class="req">*</span></label>
+<label class="opt"><input type="radio" name="attend" value="yes" required>Yes</label>
+<label class="opt"><input type="radio" name="attend" value="no">No</label>
+
+<label class="q">Hidden objection (for the role-player)</label>
+<select id="obj"><option value="">Random</option><option>I need to talk to my spouse</option><option>I can't afford it right now</option><option>I need to think about it</option><option>I've bought courses before and they didn't work</option><option>I don't have time</option><option>I'm not sure it works in my niche</option></select>
+<label class="q">Extra backstory (optional)</label><textarea id="story" placeholder="Anything else the rep should know or discover on the call"></textarea>
+<div class="btns"><button class="primary" type="submit">Build avatar</button><button class="ghost" type="button" onclick="randomize()">Random prospect</button><button class="ghost" type="button" onclick="window.print()">Print / save PDF</button></div>
+</form>
+<div class="card" id="avatar"><div class="empty">The prospect avatar shows up here once you hit "Build avatar."</div></div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const editMap={never:"Has never edited a video",self:"Edits everything themselves",editor:"Has one editor",team:"Has a team of editors"};
+const helpPain={
+"Posting my first video":["Scared of being judged on camera","Has drafts saved but never posts"],
+"Growing an existing personal brand":["Stuck at the same follower count for months","Posts consistently but views are flat"],
+"Editing my videos takes too much time/money":["Spends 5+ hours editing each video","Paying for editing with no return yet"],
+"Monetizing with UGC":["Wants brand deals but doesn't know how to pitch","Has done free UGC and wants to get paid"],
+"Generating more leads for my business":["Content gets likes but no DMs or booked calls","Relies on referrals and wants a predictable pipeline"]};
+function build(e){e&&e.preventDefault();
+const help=$$('input[name=help]:checked').map(i=>i.value);if(!help.length){alert('Pick at least one "need help with" option.');return;}
+const edit=$('input[name=edit]:checked').value,invest=$('input[name=invest]:checked').value,attend=$('input[name=attend]:checked').value;
+const name=$('#pname').value||'Prospect',age=$('#age').value,job=$('#job').value,aud=$('#aud').value,story=$('#story').value;
+const obj=$('#obj').value||pick([...$('#obj').options].slice(1).map(o=>o.text));
+let score=0;score+=invest==='cash'?3:invest==='resourceful'?2:0;score+=attend==='yes'?1:0;score+=edit==='editor'||edit==='team'?1:0;
+const temp=score>=4?['hot','Hot lead']:score>=2?['warm','Warm lead']:['cold','Likely unqualified'];
+const money={cash:"Has the cash today. Will move fast if the value is clear.",resourceful:"Doesn't have it all in the bank. Will need financing or a payment plan, so expect a money objection.",no:"Month to month with no credit. Qualify hard, and be ready to disqualify kindly."}[invest];
+const pains=help.flatMap(h=>helpPain[h]||[]);
+const personality=invest==='cash'?pick(["Direct and a little skeptical","Analytical, asks lots of questions","Confident, wants proof fast"]):pick(["Friendly but guarded about money","Excited but nervous","Polite and agreeable, hides doubts"]);
+const goals=help.map(h=>({"Posting my first video":"Finally post consistently and build confidence on camera","Growing an existing personal brand":"Break through the plateau and grow a real audience","Editing my videos takes too much time/money":"Get a faster, cheaper content workflow","Monetizing with UGC":"Land paid brand deals every month","Generating more leads for my business":"Turn content into booked calls and clients"})[h]);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+$('#avatar').innerHTML=`<div class="head"><div class="pic">${esc(name[0].toUpperCase())}</div><div><div class="name">${esc(name)}${age?', '+esc(age):''}</div><div class="tag">${esc(job||'Aspiring creator')}${aud?' · '+esc(aud):''}</div>
+<span class="pill ${temp[0]}">${temp[1]}</span><span class="pill" style="background:#24243a;color:#a99bff">${esc(personality)}</span>${attend==='no'?'<span class="pill cold">Show risk</span>':''}</div></div>
+<h3>Where they are</h3><ul><li>${editMap[edit]}</li>${help.map(h=>`<li>Wants help with: ${esc(h)}</li>`).join('')}</ul>
+<h3>Pain points to uncover</h3><ul>${pains.map(p=>`<li>${p}</li>`).join('')}</ul>
+<h3>What they want</h3><ul>${goals.map(g=>`<li>${g}</li>`).join('')}</ul>
+<h3>Money situation</h3><p>${money}</p>
+<h3>Hidden objection (role-player only)</h3><div class="quote">"${esc(obj)}"</div>
+${story?`<h3>Backstory</h3><p>${esc(story)}</p>`:''}
+<h3>Rep goals for this role play</h3><ul><li>Uncover the real pain behind "${esc(help[0])}"</li><li>Get them to say what it costs them to stay stuck</li><li>${invest==='no'?'Qualify honestly and decide whether to disqualify':'Handle "'+esc(obj)+'" without discounting'}</li><li>Ask for the close and get a clear yes or no</li></ul>`;}
+function randomize(){$$('input[name=help]').forEach(i=>i.checked=Math.random()<.4);if(!$$('input[name=help]:checked').length)pick($$('input[name=help]')).checked=true;
+['edit','invest','attend'].forEach(n=>{const r=$$(`input[name=${n}]`);(n==='attend'&&Math.random()<.85?r[0]:pick(r)).checked=true});
+$('#pname').value=pick(["Jessica","Marcus","Priya","Tyler","Danielle","Andre","Sofia","Kevin"]);$('#age').value=22+Math.floor(Math.random()*25);
+$('#job').value=pick(["Nurse","Fitness coach","Real estate agent","Stay-at-home parent","Agency owner","Teacher","Software engineer"]);
+$('#aud').value=pick(["0 followers","800 on IG","3,200 on TikTok","12k on IG","45k on TikTok"]);$('#obj').value='';$('#story').value='';build();}
+</script></body></html>
