@@ -23,7 +23,8 @@ textarea{min-height:64px;resize:vertical}.row{display:grid;grid-template-columns
 h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8a8a98;margin:20px 0 8px}
 ul{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:#d6d6de}p{font-size:14px;line-height:1.55;color:#d6d6de;margin:0}
 .quote{border-left:3px solid #7c5cff;padding:8px 12px;background:#1d1d27;border-radius:0 8px 8px 0;font-style:italic;margin:6px 0;font-size:14px}
-@media print{body{background:#fff;color:#000}.card{border-color:#ccc;background:#fff}#form{display:none}.wrap{grid-template-columns:1fr}}
+/*tabs*/.tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}.tab{background:#24242f;color:#c8c8d2;padding:9px 14px}.tab.on{background:linear-gradient(135deg,#7c5cff,#c04cff);color:#fff}.copy{margin-left:auto;padding:9px 14px}
+@media print{.tabs{display:none}.pane{display:block!important;margin-bottom:24px}body{background:#fff;color:#000}.card{border-color:#ccc;background:#fff}#form{display:none}.wrap{grid-template-columns:1fr}}
 </style></head><body>
 <h1>Role Play Avatar Builder</h1><div class="sub">Fill it out the way a lead would on the booking form, then build the prospect avatar to role-play against.</div>
 <div class="wrap">
@@ -60,7 +61,7 @@ ul{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:#d6d6de}p{fo
 <label class="q">Extra backstory (optional)</label><textarea id="story" placeholder="Anything else the rep should know or discover on the call"></textarea>
 <div class="btns"><button class="primary" type="submit">Build avatar</button><button class="ghost" type="button" onclick="randomize()">Random prospect</button><button class="ghost" type="button" onclick="window.print()">Print / save PDF</button></div>
 </form>
-<div class="card" id="avatar"><div class="empty">The prospect avatar shows up here once you hit "Build avatar."</div></div>
+<div class="card" id="avatar"><div class="empty">The closer and prospect context show up here once you hit "Build avatar."</div></div>
 </div>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -84,15 +85,33 @@ const pains=help.flatMap(h=>helpPain[h]||[]);
 const personality=invest==='cash'?pick(["Direct and a little skeptical","Analytical, asks lots of questions","Confident, wants proof fast"]):pick(["Friendly but guarded about money","Excited but nervous","Polite and agreeable, hides doubts"]);
 const goals=help.map(h=>({"Posting my first video":"Finally post consistently and build confidence on camera","Growing an existing personal brand":"Break through the plateau and grow a real audience","Editing my videos takes too much time/money":"Get a faster, cheaper content workflow","Monetizing with UGC":"Land paid brand deals every month","Generating more leads for my business":"Turn content into booked calls and clients"})[h]);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-$('#avatar').innerHTML=`<div class="head"><div class="pic">${esc(name[0].toUpperCase())}</div><div><div class="name">${esc(name)}${age?', '+esc(age):''}</div><div class="tag">${esc(job||'Aspiring creator')}${aud?' · '+esc(aud):''}</div>
-<span class="pill ${temp[0]}">${temp[1]}</span><span class="pill" style="background:#24243a;color:#a99bff">${esc(personality)}</span>${attend==='no'?'<span class="pill cold">Show risk</span>':''}</div></div>
-<h3>Where they are</h3><ul><li>${editMap[edit]}</li>${help.map(h=>`<li>Wants help with: ${esc(h)}</li>`).join('')}</ul>
-<h3>Pain points to uncover</h3><ul>${pains.map(p=>`<li>${p}</li>`).join('')}</ul>
-<h3>What they want</h3><ul>${goals.map(g=>`<li>${g}</li>`).join('')}</ul>
-<h3>Money situation</h3><p>${money}</p>
-<h3>Hidden objection (role-player only)</h3><div class="quote">"${esc(obj)}"</div>
+const budget={cash:pick(["Has about $5k–$10k saved and can pay in full today","Business is doing well and can put it on a card today"]),resourceful:pick(["Has about $1k–$2k cash and would need a payment plan or credit card for the rest","Could use a credit card but is nervous about the debt"]),no:"Lives month to month, has under $500 spare and no credit available"}[invest];
+const buyIf=invest==='no'?"You can't actually buy. Only agree if the closer finds a real path to the money; otherwise end with \"I just can't right now.\"":pick(["You buy if the closer makes you feel understood and shows a clear plan for YOUR situation.","You buy if the closer handles your objection calmly without pushing or discounting.","You buy if the closer gets you to say out loud what staying stuck is costing you."]);
+const reveal=pick(["Only reveal your real pain if the closer asks a follow-up question at least twice.","Give short surface answers until the closer builds rapport.","Open up quickly, but get defensive when money comes up."]);
+const discovery=[`What made you book the call now and not 6 months ago?`,`You said "${esc(help[0])}". What's that looked like day to day?`,`What have you tried so far, and why didn't it work?`,`Where do you want to be in 90 days, and what would that change for you?`,`What does staying where you are cost you?`];
+$('#avatar').innerHTML=`<div class="tabs"><button type="button" class="tab on" onclick="tab(0)">Closer context</button><button type="button" class="tab" onclick="tab(1)">Prospect context</button><button type="button" class="ghost copy" onclick="copyPane()">Copy</button></div>
+<div class="pane" id="pane0">
+<div class="head"><div class="pic">${esc(name[0].toUpperCase())}</div><div><div class="name">${esc(name)}${age?', '+esc(age):''}</div><div class="tag">${esc(job||'Aspiring creator')}${aud?' · '+esc(aud):''}</div>
+<span class="pill ${temp[0]}">${temp[1]}</span>${attend==='no'?'<span class="pill cold">Show risk</span>':''}</div></div>
+<p style="margin-top:12px;color:#8a8a98;font-size:13px">This is everything you'd know before the call: the application answers only.</p>
+<h3>Application answers</h3><ul>${help.map(h=>`<li>Needs help with: ${esc(h)}</li>`).join('')}<li>Editing: ${editMap[edit]}</li><li>Investment: ${{cash:"Says they have the cash flow to invest now",resourceful:"Says they may not have the cash but are resourceful or have credit",no:"Says month to month with no access to credit"}[invest]}</li><li>Confirmed attendance: ${attend==='yes'?'Yes':'No'}</li></ul>
+<h3>Discovery questions to ask</h3><ul>${discovery.map(q=>`<li>${q}</li>`).join('')}</ul>
+<h3>Your goals for this call</h3><ul><li>Find the real pain behind "${esc(help[0])}"</li><li>Get them to say what staying stuck costs them</li><li>${invest==='no'?'Qualify honestly and decide whether to disqualify':'Uncover and handle the hidden objection without discounting'}</li><li>Ask for the close and get a clear yes or no</li></ul>
+<h3>Watch out for</h3><ul>${invest==='resourceful'?'<li>Likely money objection, so have financing ready</li>':''}${invest==='no'?'<li>May not be able to buy at all</li>':''}${attend==='no'?'<li>Didn\'t confirm attendance, so confirm commitment early</li>':''}<li>There's a hidden objection you have to uncover</li></ul>
+</div>
+<div class="pane" id="pane1" style="display:none">
+<div class="head"><div class="pic" style="background:linear-gradient(135deg,#ff4c9a,#ffb84c)">${esc(name[0].toUpperCase())}</div><div><div class="name">You are ${esc(name)}${age?', '+esc(age):''}</div><div class="tag">${esc(job||'Aspiring creator')}${aud?' · '+esc(aud):''}</div>
+<span class="pill" style="background:#24243a;color:#a99bff">${esc(personality)}</span></div></div>
+<p style="margin-top:12px;color:#8a8a98;font-size:13px">For the person playing the prospect only. Don't show this to the closer.</p>
+<h3>Your situation</h3><ul><li>${editMap[edit]}</li>${pains.map(p=>`<li>${p}</li>`).join('')}</ul>
+<h3>What you want</h3><ul>${goals.map(g=>`<li>${g}</li>`).join('')}</ul>
+<h3>Your money</h3><p>${budget}</p>
+<h3>Your hidden objection</h3><div class="quote">"${esc(obj)}"</div><p>Don't bring it up first. Use it when the closer asks for the sale.</p>
+<h3>How to play it</h3><ul><li>Personality: ${esc(personality)}</li><li>${reveal}</li><li>${buyIf}</li></ul>
 ${story?`<h3>Backstory</h3><p>${esc(story)}</p>`:''}
-<h3>Rep goals for this role play</h3><ul><li>Uncover the real pain behind "${esc(help[0])}"</li><li>Get them to say what it costs them to stay stuck</li><li>${invest==='no'?'Qualify honestly and decide whether to disqualify':'Handle "'+esc(obj)+'" without discounting'}</li><li>Ask for the close and get a clear yes or no</li></ul>`;}
+</div>`;}
+function tab(i){$$('.pane').forEach((p,j)=>p.style.display=i===j?'':'none');$$('.tab').forEach((t,j)=>t.classList.toggle('on',i===j));}
+function copyPane(){const p=$$('.pane').find(p=>p.style.display!=='none');navigator.clipboard.writeText(p.innerText).then(()=>{const b=$('.copy');b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1200)});}
 function randomize(){$$('input[name=help]').forEach(i=>i.checked=Math.random()<.4);if(!$$('input[name=help]:checked').length)pick($$('input[name=help]')).checked=true;
 ['edit','invest','attend'].forEach(n=>{const r=$$(`input[name=${n}]`);(n==='attend'&&Math.random()<.85?r[0]:pick(r)).checked=true});
 $('#pname').value=pick(["Jessica","Marcus","Priya","Tyler","Danielle","Andre","Sofia","Kevin"]);$('#age').value=22+Math.floor(Math.random()*25);
