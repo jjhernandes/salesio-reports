@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="day">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Content Academy × sales.io | Results Report</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+:root,[data-theme="day"]{
+  --bg:#EAE4D9;--sidebar-bg:#0e0e0c;--sidebar-bdr:#1a1a18;
+  --card-bg:#F8F5EF;--card-bg-hv:#FFFFFF;--card-bdr:#E2DDD3;--card-bdr-hv:rgba(0,0,0,.18);
+  --card-shadow-hv:rgba(0,0,0,.10);
+  --text-primary:#0A0A08;--text-secondary:#444;--text-muted:#8F897F;--text-faint:#C8C2B8;
+  --accent:#A09070;--accent-soft:rgba(160,144,112,.14);--accent-bdr:rgba(160,144,112,.3);
+  --sec-bdr:#D5CFBF;--sec-desc:#999;--chip-bg:#F0EBE3;--chip-c:#7d7362;
+  --foot-bg:#F2EDE4;--grid:rgba(0,0,0,.06);--ink:#0A0A08;
+  --glow-c:transparent;--glow-rgb:160,144,112;
+}
+[data-theme="night"]{
+  --bg:#000000;--sidebar-bg:#060606;--sidebar-bdr:#111;
+  --card-bg:#0a0a0a;--card-bg-hv:#0d0d0d;--card-bdr:#161616;--card-bdr-hv:#1e3a24;
+  --card-shadow-hv:rgba(74,222,128,.06);
+  --text-primary:#FFFFFF;--text-secondary:#ccc;--text-muted:#6a6a6a;--text-faint:#2a2a2a;
+  --accent:#4ade80;--accent-soft:rgba(74,222,128,.08);--accent-bdr:#1a4a20;
+  --sec-bdr:#111;--sec-desc:#555;--chip-bg:#0d2b1a;--chip-c:#4ade80;
+  --foot-bg:#060606;--grid:rgba(255,255,255,.06);--ink:#FFFFFF;
+  --glow-c:rgba(74,222,128,.07);--glow-rgb:74,222,128;
+}
+body{background:var(--bg);color:var(--text-primary);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;display:flex;min-height:100vh;transition:background .3s,color .3s;}
+
+/* Sidebar (same system as Training Bible) */
+.sidebar{width:240px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--sidebar-bg);border-right:1px solid var(--sidebar-bdr);display:flex;flex-direction:column;z-index:3;}
+.sidebar-brand{padding:28px 24px 22px;border-bottom:1px solid var(--sidebar-bdr);}
+.brand-logo{font-size:12px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#fff;}
+.brand-logo i{font-style:normal;color:var(--accent);}
+.brand-sub{font-size:10px;color:#555;margin-top:4px;letter-spacing:.04em;}
+.client-tag{margin-top:14px;display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#bbb;background:#141412;border:1px solid #222;border-radius:6px;padding:4px 9px;}
+.client-tag b{color:var(--accent);}
+.nav-links{flex:1;padding:12px 0;}
+.nav-link{position:relative;display:flex;align-items:center;gap:10px;padding:8px 24px;text-decoration:none;border-left:2px solid transparent;transition:border-color .12s,background .12s;}
+.nav-link:hover .nl-name{color:#999;}
+.nav-link.active{border-left-color:var(--accent);background:var(--accent-soft);}
+.nav-link.active::before{content:'';position:absolute;left:-2px;top:.15rem;bottom:.15rem;width:2px;box-shadow:0 0 10px 1px rgba(var(--glow-rgb),.9);}
+.nav-link.active .nl-num{color:var(--accent);}
+.nav-link.active .nl-name{color:#ccc;}
+.nl-num{font-size:10px;font-weight:800;color:#3a3a3a;letter-spacing:.06em;width:28px;flex-shrink:0;}
+.nl-name{font-size:11px;color:#5a5a5a;flex:1;line-height:1.3;transition:color .12s;}
+.sidebar-footer{padding:16px 24px 24px;border-top:1px solid var(--sidebar-bdr);}
+.sf-meta{font-size:10px;color:#444;line-height:1.5;margin-bottom:14px;}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;}
+.toggle-mode-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555;}
+.toggle-switch{width:40px;height:22px;border-radius:11px;background:#1a1a18;border:1px solid var(--sidebar-bdr);position:relative;cursor:pointer;transition:background .25s;}
+.toggle-switch:hover{box-shadow:0 0 12px rgba(var(--glow-rgb),.5);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#555;transition:transform .25s,background .25s;}
+[data-theme="night"] .toggle-switch{background:#0d2b1a;}
+[data-theme="night"] .toggle-thumb{background:#4ade80;transform:translateX(18px);}
+
+/* Main */
+.main{flex:1;padding:72px 56px 120px;max-width:1120px;margin:0 auto;position:relative;z-index:1;min-width:0;}
+.hero{margin-bottom:88px;}
+.hero-eyebrow{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;}
+.hero-title{font-size:76px;font-weight:900;line-height:.95;letter-spacing:-4px;margin-bottom:24px;}
+.hero-title span{display:block;}
+.hero-title .x{display:inline;color:var(--accent);-webkit-text-fill-color:var(--accent);}
+.hero-title span:last-child{background:linear-gradient(100deg,var(--text-primary) 30%,rgba(var(--glow-rgb),1) 50%,var(--text-primary) 70%);background-size:250% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shineText 6.5s ease-in-out .3s infinite;}
+@keyframes shineText{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+.hero-quote{font-size:15px;color:var(--text-muted);margin-bottom:36px;line-height:1.65;max-width:640px;padding-left:16px;border-left:2px solid var(--text-faint);}
+.hero-quote strong{color:var(--text-primary);font-weight:700;}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap;}
+.stat{transition:transform .2s;cursor:default;}
+.stat:hover{transform:translateY(-2px);}
+.stat:hover .stat-num{text-shadow:0 0 20px rgba(var(--glow-rgb),.65);}
+.stat-num{font-size:30px;font-weight:900;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums;}
+.stat-lbl{font-size:10.5px;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:5px;}
+.stat-from{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.stat-div{width:1px;background:var(--sec-bdr);align-self:stretch;margin:4px 0;}
+
+/* Section header (dark band in day mode, like the bible) */
+.sec-block{margin-bottom:84px;scroll-margin-top:24px;}
+.sec-header{position:relative;margin-bottom:20px;padding-bottom:22px;border-bottom:1px solid var(--sec-bdr);overflow:hidden;}
+[data-theme="day"] .sec-header{background:#0a0a0a;border-radius:14px;padding:26px 30px 24px;border-bottom:none;}
+.sec-meta{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.sec-label{position:relative;padding-left:14px;font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
+.sec-label::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:rgba(var(--glow-rgb),1);box-shadow:0 0 8px 1px rgba(var(--glow-rgb),.9);animation:dotPulse 2s ease-in-out infinite;}
+@keyframes dotPulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.sec-pill{font-size:10px;font-weight:700;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-bdr);border-radius:4px;padding:2px 8px;letter-spacing:.04em;}
+h2{font-size:30px;font-weight:900;letter-spacing:-.5px;line-height:1.05;margin-bottom:7px;}
+[data-theme="day"] .sec-header h2{color:#fff;}
+.sec-desc{font-size:13px;color:var(--sec-desc);line-height:1.6;max-width:720px;}
+.sec-ghost{position:absolute;right:-8px;top:-22px;font-size:140px;font-weight:900;letter-spacing:-6px;line-height:1;color:rgba(var(--glow-rgb),.06);pointer-events:none;user-select:none;animation:ghostFloat 9s ease-in-out infinite;}
+[data-theme="day"] .sec-ghost{color:rgba(255,255,255,.05);}
+@keyframes ghostFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+
+/* Cards */
+.card{position:relative;background:var(--card-bg);border:1px solid var(--card-bdr);border-radius:14px;overflow:hidden;transition:opacity .45s,transform .45s,border-color .15s,box-shadow .2s,background .3s;}
+.reveal{opacity:0;transform:translateY(16px);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.card.hov:hover{border-color:var(--card-bdr-hv);background:var(--card-bg-hv);box-shadow:0 14px 42px var(--card-shadow-hv),0 0 28px rgba(var(--glow-rgb),.2);transform:translateY(-3px);}
+.card-glow{position:absolute;inset:0;border-radius:14px;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(220px circle at var(--cx,50%) var(--cy,0%),rgba(var(--glow-rgb),.35) 0%,transparent 70%);}
+.card.hov:hover .card-glow{opacity:1;}
+.card.hov::after{content:'';position:absolute;inset:0;border-radius:14px;pointer-events:none;background:linear-gradient(115deg,transparent 42%,rgba(var(--glow-rgb),.22) 50%,transparent 58%);background-size:250% 250%;background-position:150% 150%;opacity:0;}
+.card.hov:hover::after{opacity:1;animation:shineSweep 1s ease forwards;}
+@keyframes shineSweep{from{background-position:150% 150%;}to{background-position:-60% -60%;}}
+.pad{padding:20px 22px;}
+.eyebrow{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);}
+.tag{display:inline-block;font-size:9px;font-weight:800;background:var(--chip-bg);color:var(--chip-c);border-radius:4px;padding:2px 7px;letter-spacing:.06em;text-transform:uppercase;}
+.tag.acc{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-bdr);}
+
+/* KPI grid */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.kpi{padding:18px 18px 16px;display:flex;flex-direction:column;}
+.kpi.lead{grid-column:span 2;grid-row:span 2;padding:24px 26px;}
+.kpi .k-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;}
+.kpi .k-num{font-size:30px;font-weight:900;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums;}
+.kpi.lead .k-num{font-size:64px;letter-spacing:-3px;margin:6px 0 10px;}
+.kpi .k-lbl{font-size:12.5px;font-weight:700;color:var(--text-secondary);margin-top:8px;}
+.kpi .k-sub{font-size:11.5px;color:var(--text-muted);line-height:1.5;margin-top:4px;}
+.pace{margin-top:auto;padding-top:18px;}
+.pace-row{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:6px;}
+.pace-row b{color:var(--text-primary);}
+.pace-track{height:10px;border-radius:6px;background:var(--chip-bg);overflow:hidden;position:relative;}
+.pace-fill{height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,rgba(var(--glow-rgb),.55),rgba(var(--glow-rgb),1));box-shadow:0 0 14px rgba(var(--glow-rgb),.6);transition:width 1.6s cubic-bezier(.2,.8,.2,1);}
+.pace-mark{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.35;}
+.pace-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10.5px;color:var(--text-muted);margin-top:8px;}
+
+/* Explainer accordion */
+.acc-item{margin-top:10px;}
+.acc-btn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;background:none;border:0;cursor:pointer;font:inherit;color:var(--text-primary);text-align:left;padding:16px 22px;}
+.acc-btn .q{font-size:13.5px;font-weight:700;}
+.acc-btn .plus{width:24px;height:24px;border-radius:50%;border:1px solid var(--card-bdr);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--accent);flex-shrink:0;transition:transform .25s;}
+.acc-item.open .plus{transform:rotate(45deg);}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+.acc-inner{padding:0 22px 18px;font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.acc-inner table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px;}
+.acc-inner th,.acc-inner td{text-align:left;padding:8px 10px;border-top:1px solid var(--card-bdr);}
+.acc-inner th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);}
+
+/* Product breakdown */
+.prod-grid{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:center;}
+.donut-wrap{position:relative;height:240px;}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center;}
+.donut-center b{font-size:22px;font-weight:900;letter-spacing:-.5px;}
+.donut-center span{font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.prod-row{display:grid;grid-template-columns:14px 1fr 96px;gap:10px;align-items:center;padding:10px 4px;border-top:1px solid var(--card-bdr);cursor:default;transition:background .15s;}
+.prod-row:first-child{border-top:0;}
+.prod-row:hover,.prod-row.hl{background:var(--accent-soft);}
+.prod-dot{width:10px;height:10px;border-radius:3px;}
+.prod-name{font-size:13px;font-weight:700;}
+.prod-name small{display:block;font-size:11px;color:var(--text-muted);font-weight:500;}
+.prod-bar{height:4px;border-radius:3px;background:var(--chip-bg);margin-top:6px;overflow:hidden;}
+.prod-bar i{display:block;height:100%;width:0;background:var(--accent);transition:width 1.2s ease;}
+.prod-val{font-size:14px;font-weight:800;text-align:right;font-variant-numeric:tabular-nums;}
+.prod-val small{display:block;font-size:10.5px;color:var(--text-muted);font-weight:600;}
+
+/* Chart card + toggles */
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--chip-bg);border-radius:10px;padding:4px;}
+.seg button{font:inherit;font-size:11.5px;font-weight:700;border:0;background:transparent;color:var(--text-muted);padding:7px 12px;border-radius:7px;cursor:pointer;transition:background .15s,color .15s,box-shadow .15s;}
+.seg button:hover{color:var(--text-primary);}
+.seg button.on{background:var(--ink);color:var(--bg);box-shadow:0 0 14px rgba(var(--glow-rgb),.35);}
+[data-theme="night"] .seg button.on{background:#4ade80;color:#000;}
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:6px;}
+.chart-title{font-size:20px;font-weight:900;letter-spacing:-.4px;}
+.chart-note{font-size:12px;color:var(--text-muted);margin-top:2px;max-width:560px;}
+.chart-box{position:relative;height:320px;margin-top:14px;}
+.range-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:var(--text-muted);cursor:pointer;user-select:none;}
+.chk input{accent-color:var(--accent);}
+.big-delta{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--card-bdr);}
+.big-delta div b{display:block;font-size:20px;font-weight:900;letter-spacing:-.5px;font-variant-numeric:tabular-nums;}
+.big-delta div span{font-size:10.5px;color:var(--text-muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+
+/* Month selector */
+.months{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px;}
+.months button{font:inherit;border:1px solid var(--card-bdr);background:var(--card-bg);color:var(--text-secondary);border-radius:10px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .15s;}
+.months button b{display:block;font-size:13px;font-weight:800;}
+.months button span{font-size:10px;color:var(--text-muted);font-weight:600;}
+.months button:hover{border-color:var(--card-bdr-hv);}
+.months button.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 18px rgba(var(--glow-rgb),.25);}
+.months button.on b{color:var(--accent);}
+.month-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px;}
+.mp{padding:14px 16px;}
+.mp b{display:block;font-size:22px;font-weight:900;letter-spacing:-.5px;font-variant-numeric:tabular-nums;}
+.mp span{font-size:10.5px;color:var(--text-muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.mp em{display:block;font-style:normal;font-size:11px;font-weight:700;margin-top:3px;color:var(--text-muted);}
+.mp em.up{color:#3f8f5a;}
+[data-theme="night"] .mp em.up{color:#4ade80;}
+.month-caption{font-size:12px;color:var(--text-muted);margin-top:10px;}
+
+/* Before/after compare */
+.ba-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.ba{padding:20px 22px;}
+.ba h3{font-size:14px;font-weight:800;margin:6px 0 14px;}
+.ba-row{display:grid;grid-template-columns:78px 1fr 84px;gap:10px;align-items:center;margin-top:8px;font-size:11.5px;color:var(--text-muted);font-weight:700;}
+.ba-track{height:14px;border-radius:7px;background:var(--chip-bg);overflow:hidden;}
+.ba-fill{height:100%;width:0;border-radius:7px;transition:width 1.4s cubic-bezier(.2,.8,.2,1);}
+.ba-fill.before{background:var(--text-faint);}
+.ba-fill.after{background:linear-gradient(90deg,rgba(var(--glow-rgb),.6),rgba(var(--glow-rgb),1));box-shadow:0 0 12px rgba(var(--glow-rgb),.45);}
+.ba-val{text-align:right;color:var(--text-primary);font-weight:800;font-variant-numeric:tabular-nums;}
+.ba-mult{position:absolute;top:18px;right:20px;font-size:24px;font-weight:900;color:var(--accent);letter-spacing:-.5px;}
+
+/* Timeline */
+.tl{position:relative;padding-left:28px;}
+.tl::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--accent),var(--text-faint));opacity:.6;}
+.tl-phase{margin-bottom:22px;}
+.tl-phase-h{display:flex;align-items:baseline;gap:12px;margin:0 0 10px;position:relative;}
+.tl-phase-h::before{content:'';position:absolute;left:-26px;top:7px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--accent);box-shadow:0 0 12px rgba(var(--glow-rgb),.6);}
+.tl-phase-h h3{font-size:18px;font-weight:900;letter-spacing:-.3px;}
+.tl-phase-h span{font-size:11px;color:var(--text-muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.tl-item{margin-top:8px;}
+.tl-item .acc-btn{padding:13px 18px;}
+.tl-item .q{font-size:13px;}
+.tl-item .when{display:inline-block;min-width:74px;font-size:10px;font-weight:800;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-right:10px;white-space:nowrap;}
+.tl-item .acc-inner{padding:0 18px 16px;font-size:12.5px;}
+.tl-ctrl{display:flex;justify-content:flex-end;margin-bottom:10px;}
+.linkbtn{font:inherit;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:none;border:1px solid var(--accent-bdr);border-radius:6px;padding:6px 10px;cursor:pointer;}
+.rhythm{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px;}
+.rh{padding:16px 18px;}
+.rh b{display:block;font-size:26px;font-weight:900;letter-spacing:-.5px;color:var(--accent);}
+.rh span{font-size:12px;color:var(--text-secondary);}
+.themes{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.themes span{font-size:11.5px;font-weight:700;padding:6px 11px;border-radius:20px;background:var(--card-bg);border:1px solid var(--card-bdr);color:var(--text-secondary);}
+
+/* Honest read */
+.honest{padding:26px 28px;}
+.honest p{font-size:14px;color:var(--text-secondary);line-height:1.7;max-width:780px;}
+.honest p strong{color:var(--text-primary);}
+.mini{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;}
+.mini div{background:var(--chip-bg);border-radius:10px;padding:12px 14px;}
+.mini b{display:block;font-size:22px;font-weight:900;letter-spacing:-.5px;}
+.mini span{font-size:11px;color:var(--text-muted);font-weight:600;}
+
+/* Levers */
+.lever{margin-top:10px;cursor:pointer;}
+.lever-h{display:grid;grid-template-columns:54px 1fr auto;gap:16px;align-items:center;padding:20px 22px;}
+.lever-n{font-size:30px;font-weight:900;color:var(--text-faint);letter-spacing:-1px;transition:color .2s;}
+.lever:hover .lever-n,.lever.open .lever-n{color:var(--accent);}
+.lever-h h3{font-size:16px;font-weight:800;letter-spacing:-.2px;line-height:1.3;}
+.lever-h p{font-size:12.5px;color:var(--text-muted);margin-top:3px;}
+.lever-stat{text-align:right;}
+.lever-stat b{display:block;font-size:22px;font-weight:900;letter-spacing:-.5px;white-space:nowrap;}
+.lever-stat span{font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.lever-body{max-height:0;overflow:hidden;transition:max-height .45s ease;}
+.lever-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 22px 20px 92px;}
+.lever-box{background:var(--chip-bg);border-radius:10px;padding:14px 16px;font-size:12.5px;color:var(--text-secondary);line-height:1.6;}
+.lever-box .eyebrow{margin-bottom:6px;color:var(--accent);}
+.lever-box ul{padding-left:16px;}
+.lever-box li{margin:3px 0;}
+.lever-box .num{font-size:26px;font-weight:900;color:var(--text-primary);letter-spacing:-.5px;line-height:1.1;}
+.lever-up{grid-column:1/-1;font-size:12.5px;font-weight:700;color:var(--text-primary);padding:10px 14px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;}
+.lever .hint{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
+
+/* Path to $1M */
+.gap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.gap{padding:18px 18px 16px;}
+.gap b{display:block;font-size:30px;font-weight:900;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums;margin:8px 0 6px;}
+.gap b.acc{color:var(--accent);}
+.gap span{font-size:11.5px;color:var(--text-muted);line-height:1.5;display:block;}
+.proj-flag{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px dashed var(--accent-bdr);border-radius:4px;padding:2px 7px;}
+.ptable{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px;font-variant-numeric:tabular-nums;}
+.ptable th,.ptable td{text-align:left;padding:10px 12px;border-top:1px solid var(--card-bdr);}
+.ptable th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);border-top:0;}
+.ptable td:first-child{font-weight:700;color:var(--text-secondary);}
+.ptable td.goal{font-weight:900;color:var(--accent);}
+.ptable tr:hover td{background:var(--accent-soft);}
+.alt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px;}
+.alt{padding:18px 20px;font-size:12.5px;color:var(--text-secondary);line-height:1.6;}
+.alt h4{font-size:13.5px;font-weight:800;color:var(--text-primary);margin:6px 0 6px;}
+.alt .big{font-size:24px;font-weight:900;color:var(--text-primary);letter-spacing:-.5px;line-height:1.1;margin-bottom:4px;}
+.calc{padding:24px 26px;margin-top:10px;}
+.calc-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;margin-top:16px;align-items:start;}
+.sl{margin-bottom:16px;}
+.sl-top{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;}
+.sl-top b{font-size:15px;color:var(--text-primary);font-variant-numeric:tabular-nums;}
+.sl-top small{font-weight:600;color:var(--text-muted);}
+.sl input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;}
+.sl-ref{font-size:10.5px;color:var(--text-muted);margin-top:2px;}
+.calc-out{background:var(--chip-bg);border-radius:12px;padding:20px 22px;}
+.calc-out .big{font-size:48px;font-weight:900;letter-spacing:-2px;line-height:1;font-variant-numeric:tabular-nums;margin:6px 0 4px;}
+.calc-out .vs{font-size:12px;font-weight:700;color:var(--text-muted);}
+.calc-out .pace-track{margin-top:14px;height:12px;}
+.calc-out .pace-fill{transition:width .35s ease;}
+.calc-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:16px;}
+.calc-stats div{background:var(--card-bg);border:1px solid var(--card-bdr);border-radius:10px;padding:10px 12px;}
+.calc-stats b{display:block;font-size:18px;font-weight:900;font-variant-numeric:tabular-nums;}
+.calc-stats span{font-size:10.5px;color:var(--text-muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+.calc-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.calc-btns button{font:inherit;font-size:11.5px;font-weight:800;border:1px solid var(--accent-bdr);background:var(--card-bg);color:var(--text-primary);padding:9px 14px;border-radius:8px;cursor:pointer;transition:all .15s;}
+.calc-btns button:hover{box-shadow:0 0 14px rgba(var(--glow-rgb),.35);}
+.calc-btns button.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+[data-theme="night"] .calc-btns button.primary{background:#4ade80;color:#000;border-color:#4ade80;}
+.calc-note{font-size:11px;color:var(--text-muted);margin-top:14px;line-height:1.55;}
+.hit{color:#3f8f5a !important;}
+[data-theme="night"] .hit{color:#4ade80 !important;}
+
+/* Footer */
+.foot{margin-top:40px;padding:24px 26px;background:var(--foot-bg);border:1px solid var(--card-bdr);border-radius:14px;}
+.foot h4{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.foot li{font-size:12px;color:var(--text-muted);margin:4px 0 4px 16px;}
+.sig{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--card-bdr);font-size:12px;color:var(--text-muted);}
+.sig b{color:var(--text-primary);}
+
+/* Flash pass (same as bible) */
+.scroll-progress{position:fixed;top:0;left:0;height:3px;width:0%;z-index:10000;background:linear-gradient(90deg,rgba(var(--glow-rgb),.5),rgba(var(--glow-rgb),1));box-shadow:0 0 14px rgba(var(--glow-rgb),.85);pointer-events:none;}
+.ambient-glow{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.ambient-glow span{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;background:radial-gradient(circle,rgba(var(--glow-rgb),.4),transparent 70%);animation:driftBlob 25s ease-in-out infinite alternate;}
+.ambient-glow span:nth-child(1){width:480px;height:480px;top:-160px;left:20%;animation-duration:27s;}
+.ambient-glow span:nth-child(2){width:380px;height:380px;top:8%;right:-120px;animation-duration:22s;animation-delay:-6s;}
+.ambient-glow span:nth-child(3){width:320px;height:320px;top:60%;left:40%;animation-duration:31s;animation-delay:-15s;opacity:.32;}
+@keyframes driftBlob{from{transform:translate(0,0) scale(1);}to{transform:translate(55px,-45px) scale(1.2);}}
+.cursor-spot{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(560px circle at var(--mx,50%) var(--my,50%),rgba(var(--glow-rgb),.09),transparent 72%);transition:opacity .3s;}
+.cursor-spot.active{opacity:1;}
+@media(prefers-reduced-motion:reduce){.ambient-glow span,.sec-ghost,.hero-title span:last-child{animation:none;}}
+
+/* Mobile */
+.m-bar{display:none;}
+.m-toggle{display:none;position:fixed;top:12px;right:12px;z-index:9999;background:#0e0e0c;border:1px solid #1a1a1a;border-radius:24px;padding:7px 12px 7px 10px;align-items:center;gap:8px;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 2px 12px rgba(0,0,0,.4);}
+.m-toggle-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;}
+.m-toggle-track{width:32px;height:18px;border-radius:9px;background:#1a1a18;position:relative;}
+.m-toggle-dot{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#555;transition:transform .2s,background .2s;}
+[data-theme="night"] .m-toggle-dot{transform:translateX(14px);background:#4ade80;}
+@media(max-width:960px){
+  .sidebar,.cursor-spot{display:none;}
+  .m-toggle{display:flex;}
+  .m-bar{display:block;position:sticky;top:0;z-index:50;background:#0e0e0c;border-bottom:1px solid #1a1a18;padding:12px 16px 0;}
+  .m-brand{font-size:11px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#fff;padding-right:110px;}
+  .m-brand i{font-style:normal;color:var(--accent);}
+  .m-nav{display:flex;gap:4px;overflow-x:auto;padding:10px 0 10px;scrollbar-width:none;}
+  .m-nav::-webkit-scrollbar{display:none;}
+  .m-nav a{flex-shrink:0;font-size:11px;font-weight:700;color:#777;text-decoration:none;padding:6px 10px;border-radius:14px;border:1px solid #1e1e1e;}
+  .m-nav a.active{color:#0e0e0c;background:var(--accent);border-color:var(--accent);}
+  body{flex-direction:column;}
+  .main{padding:36px 18px 70px;max-width:100%;}
+  .hero{margin-bottom:56px;}
+  .hero-title{font-size:46px;letter-spacing:-2px;}
+  .hero-stats{gap:18px 22px;}
+  .stat-div{display:none;}
+  .stat{width:calc(50% - 11px);}
+  .stat-num{font-size:26px;}
+  .sec-ghost{font-size:90px;}
+  [data-theme="day"] .sec-header{padding:22px 20px 20px;}
+  h2{font-size:24px;}
+  .kpi-grid{grid-template-columns:1fr 1fr;}
+  .kpi.lead{grid-column:span 2;grid-row:auto;}
+  .kpi.lead .k-num{font-size:46px;letter-spacing:-2px;}
+  .kpi .k-num{font-size:24px;}
+  .prod-grid{grid-template-columns:1fr;}
+  .donut-wrap{height:210px;}
+  .chart-box{height:260px;}
+  .months{grid-template-columns:repeat(3,1fr);}
+  .month-panel,.rhythm,.mini{grid-template-columns:1fr 1fr;}
+  .ba-grid{grid-template-columns:1fr;}
+  .lever-h{grid-template-columns:36px 1fr;gap:12px;padding:18px;}
+  .lever-stat{grid-column:2;text-align:left;}
+  .lever-grid{grid-template-columns:1fr;padding:0 18px 18px;}
+  .tl{padding-left:22px;}
+  .tl-phase-h::before{left:-21px;}
+  .tl::before{left:5px;}
+  .tl-item .when{display:block;margin-bottom:2px;}
+  .lever.open .lever-stat{display:none;}
+  .gap-grid{grid-template-columns:1fr 1fr;}
+  .gap b{font-size:24px;}
+  .alt-grid,.calc-grid{grid-template-columns:1fr;}
+  .calc{padding:20px 18px;}
+  .calc-out .big{font-size:38px;}
+  .ptable{font-size:11.5px;}
+  .ptable th,.ptable td{padding:8px 6px;}
+}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scroll-progress"></div>
+<div class="ambient-glow" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="cursor-spot" id="cursor-spot"></div>
+
+<button class="m-toggle" id="mob-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+  <span class="m-toggle-lbl">Day</span><div class="m-toggle-track"><div class="m-toggle-dot"></div></div>
+</button>
+
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">Sales<i>.</i>io</div>
+    <div class="brand-sub">Results Report · Oct 25, 2026</div>
+    <div class="client-tag">Client <b>Content Academy</b></div>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="#s1"><span class="nl-num">S01</span><span class="nl-name">October at a Glance</span></a>
+    <a class="nav-link" href="#s2"><span class="nl-num">S02</span><span class="nl-name">The Trend, Month by Month</span></a>
+    <a class="nav-link" href="#s3"><span class="nl-num">S03</span><span class="nl-name">Before vs After</span></a>
+    <a class="nav-link" href="#s4"><span class="nl-num">S04</span><span class="nl-name">What We Built Together</span></a>
+    <a class="nav-link" href="#s5"><span class="nl-num">S05</span><span class="nl-name">A Straight Read on October</span></a>
+    <a class="nav-link" href="#s6"><span class="nl-num">S06</span><span class="nl-name">The Path to $1M a Month</span></a>
+    <a class="nav-link" href="#s7"><span class="nl-num">S07</span><span class="nl-name">The Levers We'd Pull Together</span></a>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sf-meta">Prepared by JJ Hernandez<br>Engagement since Jul 28, 2026</div>
+    <div class="toggle-row">
+      <span class="toggle-mode-lbl" id="mode-lbl">Day</span>
+      <div class="toggle-switch" onclick="toggleTheme()" role="switch" aria-label="Toggle theme"><div class="toggle-thumb"></div></div>
+    </div>
+  </div>
+</nav>
+
+<div class="m-bar">
+  <div class="m-brand">Sales<i>.</i>io · Content Academy</div>
+  <div class="m-nav">
+    <a href="#s1">October</a><a href="#s2">Trend</a><a href="#s3">Before / After</a><a href="#s4">What we built</a><a href="#s5">Straight read</a><a href="#s6">Path to $1M</a><a href="#s7">Levers</a>
+  </div>
+</div>
+
+<main class="main">
+  <div class="hero">
+    <div class="hero-eyebrow">JJ Hernandez · Sales.io · Results Report</div>
+    <h1 class="hero-title"><span>Content Academy</span><span><b class="x">×</b> Sales.io.</span></h1>
+    <p class="hero-quote">We started on <strong>July 28</strong>. Revenue went from <strong>$218k in July to $404k in September (+85%)</strong>, and October is already at <strong>$320,390</strong> through the 25th, pacing for about <strong>$405k</strong>. The sales team went from <strong>$139k to about $340k a month in cash collected</strong>, and every call got more valuable. Here's what moved, what we built to move it, and the math for Mino's <strong>$1M month</strong>.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num" data-count="320390" data-prefix="$">$320,390</div><div class="stat-lbl">Revenue · Oct 1–25</div><div class="stat-from">Pacing ~$405k · July was $218k</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-num" data-count="2.4" data-dec="1" data-suffix="x">2.4x</div><div class="stat-lbl">Cash collected / mo</div><div class="stat-from">$139k → ~$340k</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-num" data-count="3135" data-prefix="$">$3,135</div><div class="stat-lbl">Average order</div><div class="stat-from">from $1,907 in July</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-num" data-count="1016" data-prefix="$">$1,016</div><div class="stat-lbl">Cash per call</div><div class="stat-from">from $487 in July</div></div>
+    </div>
+  </div>
+
+  <!-- S01 -->
+  <section id="s1" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 01</span><span class="sec-pill">Oct 1–25</span></div>
+      <h2>October at a Glance</h2>
+      <p class="sec-desc">Revenue is the headline. Cash collected by the sales team is its own number, shown separately below.</p>
+      <div class="sec-ghost">01</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="card hov kpi lead reveal">
+        <div class="k-top"><span class="eyebrow">Revenue · Oct 1–25</span><span class="tag acc">Verified</span></div>
+        <div class="k-num" data-count="320390" data-prefix="$">$320,390</div>
+        <div class="k-sub">Gross revenue across every Content Academy product on Whop, before refunds and fees.</div>
+        <div class="pace">
+          <div class="pace-row"><span>Oct 1–25 <b>$320,390</b></span><span>Pacing <b>~$405k</b></span></div>
+          <div class="pace-track"><div class="pace-fill" data-w="79.1"></div><div class="pace-mark" style="left:99.9%"></div></div>
+          <div class="pace-legend"><span>79% of the October pace with 6 days to go</span><span>Aug $416k · Sep $404k</span></div>
+        </div>
+        <div class="card-glow"></div>
+      </div>
+      <div class="card hov kpi reveal">
+        <div class="k-top"><span class="eyebrow">Cash collected</span><span class="tag">Sales team</span></div>
+        <div class="k-num" data-count="286178" data-prefix="$">$286,178</div>
+        <div class="k-sub">Collected on sales calls (iClosed), Oct 1–25.</div>
+        <div class="card-glow"></div>
+      </div>
+      <div class="card hov kpi reveal">
+        <div class="k-top"><span class="eyebrow">Last 7 days</span><span class="tag">Cash</span></div>
+        <div class="k-num" data-count="118921" data-prefix="$">$118,921</div>
+        <div class="k-sub">Sales team cash in a single week. The $100k weekly goal was hit Oct 19.</div>
+        <div class="card-glow"></div>
+      </div>
+      <div class="card hov kpi reveal">
+        <div class="k-top"><span class="eyebrow">Booked calls</span><span class="tag">Record</span></div>
+        <div class="k-num" data-count="577">577</div>
+        <div class="k-sub">Most of any month so far, with 6 days still to go.</div>
+        <div class="card-glow"></div>
+      </div>
+      <div class="card hov kpi reveal">
+        <div class="k-top"><span class="eyebrow">Average order</span><span class="tag">Sales team</span></div>
+        <div class="k-num" data-count="3135" data-prefix="$">$3,135</div>
+        <div class="k-sub">Up 64% from $1,907 in July.</div>
+        <div class="card-glow"></div>
+      </div>
+    </div>
+
+    <div class="card acc-item reveal" style="margin-top:10px">
+      <button class="acc-btn" aria-expanded="false"><span class="q">Revenue vs cash collected: why there are two numbers</span><span class="plus">+</span></button>
+      <div class="acc-body"><div class="acc-inner">
+        <p><b>Revenue</b> is everything Content Academy sold on Whop, across every product, before refunds and fees. <b>Cash collected</b> is only what the sales team closed on calls, tracked in iClosed. The gap is mostly MinoAI subscriptions, MinoAI Frontier and other sales that didn't come through a closer.</p>
+        <table><tr><th>Oct 1–25</th><th>Amount</th><th>What it counts</th></tr>
+          <tr><td>Revenue</td><td><b>$320,390</b></td><td>All CA products on Whop, gross</td></tr>
+          <tr><td>Cash collected</td><td><b>$286,178</b></td><td>Sales team closes (iClosed)</td></tr>
+          <tr><td>Difference</td><td><b>$34,212</b></td><td>Mostly subscriptions and sales outside the closers</td></tr></table>
+      </div></div>
+    </div>
+
+    <div class="card pad reveal" style="margin-top:10px">
+      <div class="chart-head"><div><div class="chart-title">Revenue by product</div><div class="chart-note" id="prodNote">Oct 1–25. Hover a slice or a row to highlight it.</div></div><div class="seg" id="prodSeg"><button data-p="jul">July</button><button data-p="oct" class="on">Oct 1–25</button></div></div>
+      <div class="prod-grid" style="margin-top:12px">
+        <div class="donut-wrap"><canvas id="cProd"></canvas><div class="donut-center"><b id="prodTot">$320,390</b><span id="prodLbl">Oct 1–25</span></div></div>
+        <div id="prodList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S02 -->
+  <section id="s2" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 02</span><span class="sec-pill">May – Oct</span></div>
+      <h2>The Trend, Month by Month</h2>
+      <p class="sec-desc">Straight from the Content Academy dashboard. Pick a metric to chart, or pick a month to see all of its numbers. October is Oct 1–25 only.</p>
+      <div class="sec-ghost">02</div>
+    </div>
+    <div class="card pad reveal">
+      <div class="chart-head">
+        <div><div class="chart-title" id="chartTitle">Revenue</div><div class="chart-note" id="chartNote"></div></div>
+        <div class="seg" id="metricSeg">
+          <button data-m="revenue" class="on">Revenue</button>
+          <button data-m="cash">Cash collected</button>
+          <button data-m="aov">AOV</button>
+          <button data-m="cpc">Cash per call</button>
+        </div>
+      </div>
+      <div class="chart-box"><canvas id="cTrend"></canvas></div>
+      <div class="range-row">
+        <label class="chk"><input type="checkbox" id="showEarly"> Show May–Jun too</label>
+        <span class="chart-note">Shaded bar = the month before sales.io (July). Outlined bar = rest of the ~$405k October pace.</span>
+      </div>
+      <div class="big-delta" id="bigDelta"></div>
+    </div>
+
+    <div class="months" id="monthSel"></div>
+    <div class="month-panel" id="monthPanel"></div>
+    <div class="month-caption" id="monthCap"></div>
+  </section>
+
+  <!-- S03 -->
+  <section id="s3" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 03</span><span class="sec-pill">Jul vs now</span></div>
+      <h2>Before vs After</h2>
+      <p class="sec-desc">July is the baseline, the month before sales.io started. "Now" is the average of August and September, the two full months since, unless it says otherwise.</p>
+      <div class="sec-ghost">03</div>
+    </div>
+    <div class="ba-grid" id="baGrid"></div>
+  </section>
+
+  <!-- S04 -->
+  <section id="s4" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 04</span><span class="sec-pill">Jul 28 – Oct 25</span></div>
+      <h2>What We Built Together</h2>
+      <p class="sec-desc">None of this was one big switch. It was a system, put in place piece by piece and run every week. Tap any item to see what it was and why it mattered.</p>
+      <div class="sec-ghost">04</div>
+    </div>
+    <div class="tl-ctrl"><button class="linkbtn" id="expandAll">Expand all</button></div>
+    <div class="tl" id="timeline"></div>
+
+    <div class="rhythm">
+      <div class="card hov rh reveal"><b>3x</b><span>Team syncs a week, Mon / Wed / Fri</span><div class="card-glow"></div></div>
+      <div class="card hov rh reveal"><b>2x</b><span>Call reviews and role-plays a week, Tue / Thu</span><div class="card-glow"></div></div>
+      <div class="card hov rh reveal"><b>1x</b><span>Leadership call a week with Mino and Justin</span><div class="card-glow"></div></div>
+      <div class="card hov rh reveal"><b>1:1s</b><span>One-on-one coaching with reps</span><div class="card-glow"></div></div>
+    </div>
+    <p class="chart-note" style="margin-top:22px;font-weight:700">What we drill on in call reviews</p>
+    <div class="themes"><span>Holding frame</span><span>Sell the person, not the process</span><span>Clarity before certainty</span><span>Pain before goals</span><span>"I can do it myself"</span><span>Price conviction</span></div>
+
+  </section>
+
+  <!-- S05 -->
+  <section id="s5" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 05</span><span class="sec-pill">Honest read</span></div>
+      <h2>A Straight Read on October</h2>
+      <p class="sec-desc">The good, and the part we're fixing.</p>
+      <div class="sec-ghost">05</div>
+    </div>
+    <div class="card honest reveal">
+      <p>October is only through the 25th and revenue is already <strong>$320,390</strong>, pacing for about <strong>$405k</strong>, in line with August and September. Booked calls hit <strong>577</strong>, the most of any month, and pricing changed mid-month. With that much more volume, <strong>show rate dipped to 66% and close rate to 34%</strong>. That isn't a ceiling. It's the clearest opportunity in this report, and it's exactly what levers 1 and 2 are built to fix.</p>
+      <div class="mini">
+        <div><b>577</b><span>Booked calls, Oct 1–25</span></div>
+        <div><b>$286k</b><span>Cash collected, Oct 1–25</span></div>
+        <div><b>66%</b><span>Show rate (Jul: 80%)</span></div>
+        <div><b>34%</b><span>Close rate (Aug: 47%)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S06 -->
+  <section id="s6" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 06</span><span class="sec-pill">Projection</span></div>
+      <h2>The Path to $1M a Month</h2>
+      <p class="sec-desc">Mino's goal is a $1M revenue month. This is the math from where October is today, built only from Content Academy's own dashboard numbers. Everything in this section is a projection, not a result or a guarantee.</p>
+      <div class="sec-ghost">06</div>
+    </div>
+
+    <div class="gap-grid">
+      <div class="card hov gap reveal"><span class="eyebrow">Today</span><b data-count="405" data-prefix="~$" data-suffix="k">~$405k</b><span>October full-month pace from the dashboard: $405,072, with $320,390 already in through the 25th.</span><div class="card-glow"></div></div>
+      <div class="card hov gap reveal"><span class="eyebrow">Goal</span><b class="acc">$1M</b><span>Revenue in a single month, across every Content Academy product.</span><div class="card-glow"></div></div>
+      <div class="card hov gap reveal"><span class="eyebrow">The gap</span><b data-count="595" data-prefix="~$" data-suffix="k">~$595k</b><span>About 2.5x October. Big, but most of it is conversion we've already hit in past months, not just more leads.</span><div class="card-glow"></div></div>
+      <div class="card hov gap reveal"><span class="eyebrow">Volume only</span><b data-count="849">849</b><span>Calls taken a month we'd need at today's 34% close and $3,135 AOV, vs ~290 today. That's the hard way.</span><div class="card-glow"></div></div>
+    </div>
+
+    <div class="card pad reveal" style="margin-top:10px">
+      <div class="chart-head"><div><div class="chart-title">One realistic path: $405k → $1M</div><div class="chart-note">Each bar adds one lever on top of the last. Hover a bar for the math.</div></div><span class="proj-flag">Projection</span></div>
+      <div class="chart-box"><canvas id="cPath"></canvas></div>
+      <table class="ptable">
+        <tr><th>Funnel</th><th>Today (Oct pace)</th><th>August (actual)</th><th>$1M path (projection)</th></tr>
+        <tr><td>Closer calls booked / mo</td><td>440</td><td>371</td><td class="goal">750</td></tr>
+        <tr><td>Show rate</td><td>66%</td><td>79%</td><td class="goal">80%</td></tr>
+        <tr><td>Calls taken / mo</td><td>~290</td><td>292</td><td class="goal">600</td></tr>
+        <tr><td>Close rate</td><td>34%</td><td>47%</td><td class="goal">45%</td></tr>
+        <tr><td>New deals / mo</td><td>~99</td><td>~137</td><td class="goal">270</td></tr>
+        <tr><td>Average order</td><td>$3,135</td><td>$2,691</td><td class="goal">$3,400</td></tr>
+        <tr><td>Cash per booked call*</td><td>$806</td><td>$946</td><td class="goal">~$1,224</td></tr>
+        <tr><td>Revenue / mo</td><td>~$405k</td><td>$416k</td><td class="goal">~$1.01M</td></tr>
+      </table>
+      <p class="calc-note">"Closer calls booked" is the sales tracker's scheduled count (355 in Oct 1–25, ~440 for the full month). It is lower than the 577 total booked calls on the main dashboard. *Today and August are the dashboard's actual cash per scheduled call; the $1M path figure is show × close × AOV only, so it leaves out installments and is conservative. The model: revenue = booked × show × close × AOV, plus ~$96k a month of other revenue (payment-plan installments, MinoAI and other sales outside closer calls). That ~$96k is the dashboard's $405,072 October pace minus what October's closer-call funnel accounts for (440 × 66% × 34% × $3,135 ≈ $309.5k).</p>
+    </div>
+
+    <div class="alt-grid">
+      <div class="card hov alt reveal"><span class="eyebrow">Conversion first</span><div class="big">~800</div><h4>Booked calls needed at 80% show and 45% close</h4>At today's $3,135 AOV. We ran 79% show and 47% close in August, so this is a level the team has already hit, not a new one. On today's ~440 calls alone, those two rates take a month from ~$405k to ~$592k.<div class="card-glow"></div></div>
+      <div class="card hov alt reveal"><span class="eyebrow">Bigger deals</span><div class="big">~740 → ~660</div><h4>Calls needed as AOV goes $3,400 → $3,800</h4>AOV already grew from $1,907 in July to $3,135. Three of October's closers already average above $3,400. The Frontier $8k bundle, the ~$20k done-for-you offer and the 1-1 Accelerator push the mix up.<div class="card-glow"></div></div>
+      <div class="card hov alt reveal"><span class="eyebrow">Capacity</span><div class="big">6–7 closers</div><h4>At full load to take 600 calls a month</h4>Top closers carried 114–117 calls taken in August. At 85–110 calls each, 600 calls a month takes 6–7 closers at full load. That's why the bench lever matters.<div class="card-glow"></div></div>
+      <div class="card hov alt reveal"><span class="eyebrow">The leads exist</span><div class="big">~1 in 4</div><h4>Qualified webinar leads we'd need to book</h4>In one week (Oct 18–25): 18,989 visitors → 3,482 registered → 687 qualified for a call. That's ~2,975 a month, so 750 closer calls means booking about 1 in 4. Only 22% make $5k+/mo, so qualifying them is the work.<div class="card-glow"></div></div>
+      <div class="card hov alt reveal"><span class="eyebrow">Why not just more ads</span><div class="big">+$186k–327k</div><h4>Extra ad spend a month if ads alone closed the gap</h4>Today's ~$82k/mo spend runs at a 1.8–3.2 ROAS. Buying the whole ~$595k gap at that ROAS would cost $186k–327k more a month. Converting the leads we already pay for is the cheaper first move.<div class="card-glow"></div></div>
+      <div class="card hov alt reveal"><span class="eyebrow">The standard</span><div class="big">$1,224</div><h4>Cash per booked call on the $1M path</h4>Up from $806 in October, and just above the $1,016 we hit in September. The newest closer is already at $1,165. Our $1k-a-call standard is the stepping stone.<div class="card-glow"></div></div>
+    </div>
+
+    <div class="card calc reveal">
+      <div class="chart-head"><div><div class="chart-title">Scenario calculator</div><div class="chart-note">Move the sliders to see what a month could look like. It opens on October's numbers.</div></div><span class="proj-flag">Projection</span></div>
+      <div class="calc-grid">
+        <div>
+          <div class="sl"><div class="sl-top"><span>Closer calls booked / month</span><b id="vB"></b></div><input type="range" id="iB" min="200" max="1200" step="1"><div class="sl-ref">October pace 440 · August 371</div></div>
+          <div class="sl"><div class="sl-top"><span>Show rate</span><b id="vS"></b></div><input type="range" id="iS" min="50" max="90" step="1"><div class="sl-ref">October 66% · August 79%</div></div>
+          <div class="sl"><div class="sl-top"><span>Close rate</span><b id="vC"></b></div><input type="range" id="iC" min="20" max="60" step="1"><div class="sl-ref">October 34% · August 47%</div></div>
+          <div class="sl"><div class="sl-top"><span>Average order value</span><b id="vA"></b></div><input type="range" id="iA" min="2000" max="6000" step="5"><div class="sl-ref">October $3,135 · July $1,907</div></div>
+          <div class="calc-btns"><button id="pOct">October today</button><button id="pPath" class="primary">Show a realistic path to $1M</button></div>
+        </div>
+        <div class="calc-out">
+          <span class="eyebrow">Projected monthly revenue</span>
+          <div class="big" id="oRev">$0</div>
+          <div class="vs" id="oVs"></div>
+          <div class="pace-track"><div class="pace-fill" id="oBar" style="width:0"></div><div class="pace-mark" style="left:99.6%"></div></div>
+          <div class="pace-legend"><span>$0</span><span style="margin-left:auto">$1M goal</span></div>
+          <div class="calc-stats">
+            <div><b id="oT"></b><span>Calls taken</span></div>
+            <div><b id="oD"></b><span>New deals</span></div>
+            <div><b id="oCpc"></b><span>New-deal $ / booked call</span></div>
+            <div><b id="oCl"></b><span>Closers at ~100 calls</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="calc-note">Projection only, not a forecast or guarantee. Revenue = booked × show × close × AOV, plus ~$96k a month of other revenue, calibrated so October's numbers reproduce the dashboard's $405,072 pace (installments, MinoAI and sales outside closer calls). It doesn't model ad spend, refunds or seasonality.</p>
+    </div>
+  </section>
+
+  <!-- S07 -->
+  <section id="s7" class="sec-block">
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Section 07</span><span class="sec-pill">5 levers</span></div>
+      <h2>The Levers We'd Pull Together</h2>
+      <p class="sec-desc">The machine is built and the demand is there. If we keep going, these are the five levers we'd pull, in order, on the way to $1M. Each one shows its projected impact on the path above. Tap one to see the number behind it and what we'd do.</p>
+      <div class="sec-ghost">07</div>
+    </div>
+    <div id="levers"></div>
+  </section>
+
+  <div class="foot">
+    <h4>Data sources & notes</h4>
+    <ul>
+      <li>Content Academy dashboard (Whop, Hyros, sales tracker), pulled Oct 25, 2026.</li>
+      <li>Revenue = gross Whop revenue across all Content Academy products, before refunds and fees. Cash collected = sales team closes tracked in iClosed.</li>
+      <li>October figures cover Oct 1–25. "Pacing ~$405k" is the dashboard's own October pace ($405,072).</li>
+      <li>Baseline is July 2026, the month before sales.io started. "Aug–Sep avg" averages the two full months since.</li>
+      <li>Hyros ad data before August is incomplete, so ad spend and ROAS aren't compared before vs after.</li>
+      <li>July revenue was re-checked on Oct 25 at $217,953.99. The dashboard's date filter can sometimes show numbers from the wrong date range, so every month here was re-pulled one at a time, and July was re-verified on both the dashboard and sales tabs.</li>
+      <li>Sections 06–07 are projections built from the dashboard numbers above. They are not results or guarantees.</li>
+      <li>Engagement details come from sales.io call reviews, team syncs and working notes, Jul 28 – Oct 25, 2026.</li>
+    </ul>
+    <div class="sig"><div>Prepared by <b>JJ Hernandez · Sales.io</b></div><div>Oct 25, 2026</div></div>
+  </div>
+</main>
+
+<script>
+/* ---------- Data ---------- */
+const MONTHS=['May','Jun','Jul','Aug','Sep','Oct'];
+const D={
+  revenue:[54908.68,106638.10,217953.99,416325.02,403930.59,320390.20],
+  cash:[40833,86053,139163,350875,328325,286178],
+  aov:[1140,1559,1907,2691,2838,3135],
+  cpc:[389,570,487,946,1016,806],
+  booked:[140,197,351,499,455,577],
+  calls:[78,120,229,292,235,236],
+  show:[74,79,80,79,73,66],
+  close:[55,44,41,47,45,34],
+  members:[73,75,129,210,208,192]
+};
+const METRICS={
+  revenue:{title:'Revenue',note:'Gross Whop revenue across all Content Academy products, before refunds and fees. October is Oct 1–25, with the outlined bar showing the ~$405k pace.',fmt:'$k',
+    deltas:[['$218.0k','July'],['$416.3k','August, +91%'],['$403.9k','September, +85%'],['$320.4k','Oct 1–25 · pacing ~$405k']]},
+  cash:{title:'Cash collected',note:'Cash the sales team collected on calls (iClosed). This is a different number from revenue.',fmt:'$k',
+    deltas:[['$139k','July baseline'],['~$340k','Aug–Sep average'],['2.4x','vs July'],['$286k','Oct 1–25']]},
+  aov:{title:'Average order value',note:'Average cash per closed deal on sales calls.',fmt:'$',
+    deltas:[['$1,907','July'],['$2,838','September'],['$3,135','Oct 1–25'],['+64%','vs July']]},
+  cpc:{title:'Cash per call',note:'Cash collected divided by calls taken. Our standard is $1,000 a call.',fmt:'$',
+    deltas:[['$487','July'],['$946','August'],['$1,016','September, ~2.1x'],['$806','Oct 1–25']]}
+};
+const PROD={
+  oct:{lbl:'Oct 1–25',items:[
+    {n:'Content Academy 3.0',v:286693,s:148},
+    {n:'MinoAI',v:14071,s:204},
+    {n:'1-1 Accelerator',v:12475,s:5},
+    {n:'MinoAI Frontier',v:6650,s:8,note:'new in October'},
+    {n:'CA Lite',v:501,s:1}]},
+  jul:{lbl:'July',items:[
+    {n:'Content Academy 3.0',v:175105,s:135},
+    {n:'MinoAI',v:6079,s:80},
+    {n:'1-1 Accelerator',v:31452,s:15},
+    {n:'Content Biz Launch',v:4996},
+    {n:'Content Mastermind',v:322}]}
+};
+let prodKey='oct';let PRODUCTS=PROD.oct.items;
+const TIMELINE=[
+  {h:'Kickoff',sub:'Jul 28 – Aug',items:[
+    ['Jul 28','Sales Framework SOP and Sales Team Handbook','The team\'s "bible" for how we sell: one shared framework, language and standard for every call.'],
+    ['Aug 3','Mon / Wed / Fri Sales Team Syncs','A fixed rhythm for numbers, wins and blockers three times a week, so nothing drifts for long.'],
+    ['Aug 12','Refund-prevention onboarding reframe','Reset how new members are onboarded so expectations are clear from day one and they get to a win fast.'],
+    ['Aug 18','SendBlue automation sequence','Automated follow-up and show-up texts around every booked call.'],
+    ['Aug 24','"Win fast" onboarding hub','One place for new members to get early results, which supports retention and referrals.'],
+    ['Aug','Upsell group training and payment processing','Taught sales basics to the ContentBizLaunch upsell group, and gathered and negotiated payment processor quotes.']]},
+  {h:'September',sub:'Build the machine',items:[
+    ['Sep 4','Diagnosed the funnel shift','Ads were now driving roughly 70% of calls, so we made the 30-minute VSL required before every call to warm up colder leads.'],
+    ['Sep 7','Tiered lead routing and a setter standard','The best leads go to the right closer, and setters work to a clear daily target: 200 dials and 5 sets.'],
+    ['Sep 9–20','Setter team stood up','New setters onboarded with Level 1/2/3 pre-framing, a new comp structure, and closers confirming their own appointments.'],
+    ['Sep 14','Revival script, dialer and closer hiring funnel','An old-lead revival script, the dialer went live, and a 7-step closer hiring funnel was built. Weekly goals were set per closer.'],
+    ['Sep 16–18','Objection training and public scoreboards','"Ignorance gap" objection training, clarity-first selling, public tracking sheets and EOD reports.'],
+    ['Sep 22','Tue / Thu call reviews and role-plays','Two coaching sessions a week on real calls, on top of the three syncs.']]},
+  {h:'October',sub:'Scale & sharpen',items:[
+    ['Oct 5','$1k cash-per-call standard','A clear bar for every closer, a metrics masterclass, and financing used only as a last resort with the reason logged.'],
+    ['Oct 6–14','Two new closers hired on trial','We sourced and role-played candidates. Malachi and Harrison started Oct 14 and are already producing: Malachi has $41.9k at a 55% close rate and Harrison $27.1k, month to date.'],
+    ['Oct 13–14','Klarna and Affirm financing','More ways for qualified buyers to say yes, with lower processing fees than before.'],
+    ['Oct 16','Pricing tested with data','$5,800 showed no gain in cash per call, so we settled on $5k over 6 months. Every booking now gets a personal text.'],
+    ['Oct 19','Hit the $100k weekly goal','Personal iMessage plus SendBlue for show rate, a demo-first lead magnet funnel, and a done-for-you Mino AI offer trial. The last 7 days brought in $118,921.'],
+    ['Oct 20–22','Discovery framework and Frontier training','A Belief → Identity → Action discovery framework and training on the Mino AI Frontier $8k bundle.'],
+    ['Oct 21','EOD logs made non-negotiable','Every rep logs every day, so coaching runs on real data.']]}
+];
+const LEVERS=[
+  {t:'Show rate back to 80% with one locked confirmation process',p:'More of the calls we already book actually happen.',stat:'+$66k/mo',sl:'Projected · show 66% → 80%',
+   num:'66% → 80%',numTxt:'Show rate was 79% in August and 66% in Oct 1–25. The pre-call process changed 5 times in 6 weeks while we tested, and triage calls already show at 70%. Projection: on today\'s ~440 calls, 80% show adds ~$66k a month.',
+   do:['Pick the winning confirmation flow and lock it for every booking','Personal text plus iMessage and SendBlue reminders, run the same way every time','Track show rate by source and by closer every week'],
+   up:'Every point of show rate is more calls taken with zero extra ad spend.'},
+  {t:'Qualify before the closer to lift close rate to 45%',p:'Closers spend their time on people who can buy.',stat:'+$121k/mo',sl:'Projected · close 34% → 45%',
+   num:'34% → 45%',numTxt:'Close rate was 47% in August and 34% in Oct 1–25. Only 22% of webinar survey respondents make $5k+ a month, and the unqualified already have a home in the $49 Starter Pack. Projection: 45% close on top of 80% show adds ~$121k a month.',
+   do:['Tighter booking-form questions and an income minimum','Demo-first content and setter triage before any call reaches a closer','EOD logs and a weekly audit of 6–7 lost calls, so coaching runs on real data'],
+   up:'Higher close rate and more cash per call from the same closer hours.'},
+  {t:'Bigger deals: AOV to $3,400',p:'More revenue from every yes.',stat:'+$42k/mo',sl:'Projected · AOV $3,135 → $3,400',
+   num:'$3,400',numTxt:'AOV already grew from $1,907 in July to $3,135 in October, and three of October\'s closers already average above $3,400. Mino AI Frontier did $6,650 from 8 sales in its first month. Projection: +$265 AOV adds ~$42k a month.',
+   do:['Roll out the Frontier $8k bundle and the done-for-you ~$20k offer','Offer the 1-1 Accelerator as the high-ticket step up','Expand Klarna, Affirm and international financing, with one standard payment-plan SOP'],
+   up:'A higher average order and more back-end revenue from the same leads.'},
+  {t:'Fill the calendar: 750 closer calls a month',p:'The biggest single step, and the leads already exist.',stat:'+$379k/mo',sl:'Projected · 440 → 750 calls',
+   num:'687 / week',numTxt:'Qualified webinar leads in one week (Oct 18–25), about 2,975 a month. 750 closer calls means booking about 1 in 4 of them. October\'s top sources were Comments (115) and the registrants ad set (109). Projection: 750 calls at the rates above gets to ~$1.01M.',
+   do:['Route more qualified webinar registrants straight to setters','Run the lead revival script on old leads (80–90% response)','Scale the top sources first and hold ROAS guardrails on ~$82k/mo of spend'],
+   up:'Volume on top of better conversion is what turns ~$634k into $1M.'},
+  {t:'Build the bench to carry 600 calls',p:'Grow without depending on one or two reps.',stat:'6–7',sl:'Closers at full load',
+   num:'$1,165',numTxt:'Cash per call from our newest closer in his first weeks, above the $1k standard, so the hiring funnel works. 600 calls taken a month is 6–7 closers at the 85–110 calls our top closers already carry.',
+   do:['Finish evaluating the trial closers','Keep the 7-step closer hiring funnel running all the time','Build a setter-to-closer path and hold everyone to the $1k cash-per-call standard'],
+   up:'Room to take twice the calls without the rates slipping.'}
+];
+const OTHER=95535; /* Dashboard Oct pace $405,072 − (440 booked × 66% × 34% × $3,135) */
+const PATH=[['October pace',440,.66,.34,3135],['Show 80%',440,.80,.34,3135],['Close 45%',440,.80,.45,3135],['AOV $3,400',440,.80,.45,3400],['750 calls',750,.80,.45,3400]];
+const proj=(b,sh,c,a)=>b*sh*c*a+OTHER;
+
+/* ---------- Helpers ---------- */
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const fmtUSD=v=>'$'+Math.round(v).toLocaleString('en-US');
+const fmtK=v=>'$'+(v/1000).toFixed(v>=100000?0:1)+'k';
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+function rgba(a){return 'rgba('+css('--glow-rgb')+','+a+')';}
+
+/* ---------- Theme ---------- */
+function setLabels(t){const l=t==='day'?'Day':'Night';const a=$('#mode-lbl');if(a)a.textContent=l;const b=$('#mob-toggle .m-toggle-lbl');if(b)b.textContent=l;}
+function toggleTheme(){const h=document.documentElement;const n=h.dataset.theme==='day'?'night':'day';h.dataset.theme=n;setLabels(n);try{localStorage.setItem('ca-report-theme',n);}catch(e){}renderCharts();}
+try{const s=localStorage.getItem('ca-report-theme');if(s){document.documentElement.dataset.theme=s;setLabels(s);}}catch(e){}
+
+/* ---------- Build: products ---------- */
+const prodColors=()=>[rgba(1),css('--ink'),rgba(.55),rgba(.3),css('--text-faint')];
+function buildProducts(){
+  PRODUCTS=PROD[prodKey].items;
+  const tot=PRODUCTS.reduce((a,p)=>a+p.v,0);
+  $('#prodTot').textContent=fmtUSD(tot);$('#prodLbl').textContent=PROD[prodKey].lbl;
+  $('#prodNote').textContent=PROD[prodKey].lbl+'. Hover a slice or a row to highlight it.';
+  $('#prodList').innerHTML=PRODUCTS.map((p,i)=>`<div class="prod-row" data-i="${i}"><span class="prod-dot"></span><div class="prod-name">${p.n}<small>${p.s!=null?p.s+' sales':'&nbsp;'}${p.note?' · '+p.note:''}</small><div class="prod-bar"><i data-w="${(p.v/PRODUCTS[0].v*100).toFixed(1)}" style="width:${prodKey==='jul'||document.querySelector('#prodList').dataset.shown?(p.v/PRODUCTS[0].v*100).toFixed(1):0}%"></i></div></div><div class="prod-val">${fmtUSD(p.v)}<small>${(p.v/tot*100).toFixed(1)}%</small></div></div>`).join('');
+  $$('.prod-row').forEach(r=>{
+    r.addEventListener('mouseenter',()=>hlProd(+r.dataset.i));
+    r.addEventListener('mouseleave',()=>hlProd(-1));
+  });
+}
+function hlProd(i){
+  $$('.prod-row').forEach(r=>r.classList.toggle('hl',+r.dataset.i===i));
+  if(!charts.prod)return;
+  charts.prod.setActiveElements(i<0?[]:[{datasetIndex:0,index:i}]);
+  charts.prod.tooltip.setActiveElements(i<0?[]:[{datasetIndex:0,index:i}],{x:0,y:0});
+  charts.prod.update();
+}
+
+/* ---------- Build: months ---------- */
+let selMonth=5;
+function buildMonths(){
+  $('#monthSel').innerHTML=MONTHS.map((m,i)=>`<button data-i="${i}" class="${i===selMonth?'on':''}"><b>${m}${i===5?' 1–25':''}</b><span>${i<2?'Before':i===2?'Baseline':'With sales.io'}</span></button>`).join('');
+  $$('#monthSel button').forEach(b=>b.onclick=()=>{selMonth=+b.dataset.i;$$('#monthSel button').forEach(x=>x.classList.toggle('on',x===b));renderMonth();});
+  renderMonth();
+}
+function renderMonth(){
+  const i=selMonth,base=2;
+  const cell=(lbl,val,cur,bv,isPct)=>{
+    let em='';
+    if(i>base){const d=isPct?(cur-bv):((cur-bv)/bv*100);em=`<em class="${d>=0?'up':''}">${d>=0?'+':''}${d.toFixed(0)}${isPct?' pts':'%'} vs July</em>`;}
+    else if(i===base){em='<em>Baseline month</em>';}
+    else em='<em>Before sales.io</em>';
+    return `<div class="card mp"><span>${lbl}</span><b>${val}</b>${em}</div>`;
+  };
+  $('#monthPanel').innerHTML=
+    (i===5?`<div class="card mp"><span>Revenue</span><b>${fmtK(D.revenue[i])}</b><em class="up">Pacing ~$405k · +86% vs July</em></div>`:cell('Revenue',fmtK(D.revenue[i]),D.revenue[i],D.revenue[base]))+
+    cell('Cash collected',fmtK(D.cash[i]),D.cash[i],D.cash[base])+
+    cell('Average order',fmtUSD(D.aov[i]),D.aov[i],D.aov[base])+
+    cell('Cash per call',fmtUSD(D.cpc[i]),D.cpc[i],D.cpc[base])+
+    cell('Booked calls',D.booked[i],D.booked[i],D.booked[base])+
+    cell('Calls taken',D.calls[i],D.calls[i],D.calls[base])+
+    cell('Show rate',D.show[i]+'%',D.show[i],D.show[base],true)+
+    cell('Close rate',D.close[i]+'%',D.close[i],D.close[base],true);
+  $('#monthCap').textContent=i===5?'October covers Oct 1–25 only. Revenue is pacing for ~$405k for the full month.':i<2?'Before sales.io. Shown for context.':i===2?'July is the baseline: sales.io started on July 28.':'A full month with sales.io.';
+}
+
+/* ---------- Build: before/after ---------- */
+const BA=[
+  {t:'Cash collected per month',e:'Sales team · iClosed',b:139163,a:339600,bl:'$139k',al:'~$340k',m:'2.4x',an:'Aug–Sep avg'},
+  {t:'Average order value',e:'Sales team',b:1907,a:3135,bl:'$1,907',al:'$3,135',m:'+64%',an:'Oct 1–25'},
+  {t:'Cash per sales call',e:'Sales team',b:487,a:1016,bl:'$487',al:'$1,016',m:'2.1x',an:'September'},
+  {t:'Revenue per month',e:'All products · Whop',b:217954,a:410128,bl:'$218k',al:'$410k',m:'+88%',an:'Aug–Sep avg'}
+];
+function buildBA(){
+  $('#baGrid').innerHTML=BA.map(x=>{const mx=Math.max(x.b,x.a);return `<div class="card hov ba reveal"><span class="eyebrow">${x.e}</span><h3>${x.t}</h3><div class="ba-mult">${x.m}</div>
+   <div class="ba-row"><span>July</span><div class="ba-track"><div class="ba-fill before" data-w="${(x.b/mx*100).toFixed(1)}"></div></div><span class="ba-val">${x.bl}</span></div>
+   <div class="ba-row"><span>${x.an}</span><div class="ba-track"><div class="ba-fill after" data-w="${(x.a/mx*100).toFixed(1)}"></div></div><span class="ba-val">${x.al}</span></div><div class="card-glow"></div></div>`;}).join('');
+}
+
+/* ---------- Build: timeline ---------- */
+function buildTimeline(){
+  $('#timeline').innerHTML=TIMELINE.map(ph=>`<div class="tl-phase"><div class="tl-phase-h"><h3>${ph.h}</h3><span>${ph.sub}</span></div>${ph.items.map(it=>`<div class="card acc-item tl-item reveal"><button class="acc-btn" aria-expanded="false"><span class="q"><span class="when">${it[0]}</span>${it[1]}</span><span class="plus">+</span></button><div class="acc-body"><div class="acc-inner">${it[2]}</div></div></div>`).join('')}</div>`).join('');
+}
+
+/* ---------- Build: levers ---------- */
+function buildLevers(){
+  $('#levers').innerHTML=LEVERS.map((l,i)=>`<div class="card hov lever reveal" tabindex="0" role="button" aria-expanded="false">
+   <div class="lever-h"><div class="lever-n">0${i+1}</div><div><h3>${l.t}</h3><p>${l.p} <span class="hint">· Tap to open</span></p></div><div class="lever-stat"><b>${l.stat}</b><span>${l.sl}</span></div></div>
+   <div class="lever-body"><div class="lever-grid">
+    <div class="lever-box"><div class="eyebrow">The number behind it</div><div class="num">${l.num}</div><div style="margin-top:6px">${l.numTxt}</div></div>
+    <div class="lever-box"><div class="eyebrow">What we'll do</div><ul>${l.do.map(d=>`<li>${d}</li>`).join('')}</ul></div>
+    <div class="lever-up">Upside: ${l.up}</div>
+   </div></div><div class="card-glow"></div></div>`).join('');
+  $$('.lever').forEach(el=>{
+    const tog=()=>{const open=!el.classList.contains('open');el.classList.toggle('open',open);el.setAttribute('aria-expanded',open);const b=el.querySelector('.lever-body');b.style.maxHeight=open?b.scrollHeight+'px':'0';const h=el.querySelector('.hint');if(h)h.textContent=open?'· Tap to close':'· Tap to open';};
+    el.addEventListener('click',tog);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tog();}});
+  });
+}
+
+/* ---------- Accordions ---------- */
+function setAcc(item,open){item.classList.toggle('open',open);const b=item.querySelector('.acc-body');b.style.maxHeight=open?b.scrollHeight+'px':'0';item.querySelector('.acc-btn').setAttribute('aria-expanded',open);}
+function bindAcc(){
+  $$('.acc-item').forEach(it=>it.querySelector('.acc-btn').addEventListener('click',()=>setAcc(it,!it.classList.contains('open'))));
+  const ea=$('#expandAll');let all=false;
+  ea.onclick=()=>{all=!all;$$('#timeline .acc-item').forEach(it=>setAcc(it,all));ea.textContent=all?'Collapse all':'Expand all';};
+}
+
+/* ---------- Charts ---------- */
+const charts={};let curMetric='revenue';
+function baseOpts(){
+  const tc=css('--text-muted'),gc=css('--grid');
+  Chart.defaults.font.family="'Inter',sans-serif";Chart.defaults.color=tc;
+  return {responsive:true,maintainAspectRatio:false,animation:{duration:700},
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'#0e0e0c',titleColor:'#fff',bodyColor:'#ddd',borderColor:rgba(.6),borderWidth:1,padding:10,cornerRadius:8,displayColors:false}},
+    scales:{x:{grid:{display:false},ticks:{font:{weight:700}}},y:{grid:{color:gc},border:{display:false},beginAtZero:true}}};
+}
+function renderTrend(){
+  const early=$('#showEarly').checked, start=early?0:2;
+  const m=METRICS[curMetric],vals=D[curMetric].slice(start);
+  const labels=MONTHS.slice(start).map(x=>x==='Oct'?'Oct 1–25':x);
+  const ink=css('--ink');
+  const colors=labels.map((l,i)=>{const idx=i+start;return idx<2?css('--text-faint'):idx===2?rgba(.35):rgba(1);});
+  const ds=[{label:m.title,data:vals,backgroundColor:colors,borderRadius:8,borderSkipped:false,maxBarThickness:64,stack:'s'}];
+  if(curMetric==='revenue'){
+    const pace=labels.map((l,i)=>i+start===5?405000-320390.2:null);
+    ds.push({label:'Remaining October pace',data:pace,backgroundColor:rgba(.14),borderColor:rgba(1),borderWidth:2,borderRadius:8,borderSkipped:false,maxBarThickness:64,stack:'s'});
+  }
+  const o=baseOpts();
+  o.scales.x.stacked=true;o.scales.y.stacked=true;
+  o.scales.y.ticks={callback:v=>m.fmt==='$k'?'$'+(v/1000)+'k':'$'+v.toLocaleString()};
+  o.plugins.tooltip.callbacks={
+    title:it=>it[0].label,
+    label:c=>{if(c.datasetIndex===1)return 'Pacing ~$405k for October';const v=c.raw;return m.title+': '+fmtUSD(v);},
+    afterLabel:c=>{if(c.datasetIndex===1)return '';const idx=c.dataIndex+start;if(idx<=2)return idx===2?'Baseline (month before sales.io)':'Before sales.io';const b=D[curMetric][2];const d=(c.raw-b)/b*100;return (d>=0?'+':'')+d.toFixed(0)+'% vs July';}
+  };
+  if(charts.trend)charts.trend.destroy();
+  charts.trend=new Chart($('#cTrend'),{type:'bar',data:{labels,datasets:ds},options:o});
+  $('#chartTitle').textContent=m.title;$('#chartNote').textContent=m.note;
+  $('#bigDelta').innerHTML=m.deltas.map(d=>`<div><b>${d[0]}</b><span>${d[1]}</span></div>`).join('');
+}
+function renderProd(){
+  if(charts.prod)charts.prod.destroy();
+  const cols=prodColors();
+  $$('.prod-row .prod-dot').forEach((d,i)=>d.style.background=cols[i]);
+  const o=baseOpts();delete o.scales;o.cutout='68%';
+  o.plugins.tooltip.callbacks={label:c=>{const p=PRODUCTS[c.dataIndex];return fmtUSD(p.v)+(p.s!=null?' · '+p.s+' sales':'');}};
+  o.onHover=(e,els)=>{$$('.prod-row').forEach(r=>r.classList.toggle('hl',els.length&&+r.dataset.i===els[0].index));};
+  charts.prod=new Chart($('#cProd'),{type:'doughnut',data:{labels:PRODUCTS.map(p=>p.n),datasets:[{data:PRODUCTS.map(p=>p.v),backgroundColor:cols,borderColor:css('--card-bg'),borderWidth:3,hoverOffset:8}]},options:o});
+}
+function renderPath(){
+  if(charts.path)charts.path.destroy();
+  const vals=PATH.map(p=>proj(p[1],p[2],p[3],p[4]));
+  const data=vals.map((v,i)=>i===0?[0,v]:[vals[i-1],v]);
+  data.push([0,1000000]);
+  const labels=PATH.map(p=>p[0]).concat(['$1M goal']);
+  const cols=labels.map((l,i)=>i===0?css('--ink'):i===labels.length-1?rgba(.14):rgba(i===4?1:.55+i*.1));
+  const o=baseOpts();
+  o.scales.y.max=1100000;o.scales.y.ticks={stepSize:200000,callback:v=>v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+(v/1000)+'k'};
+  o.plugins.tooltip.callbacks={title:it=>it[0].label,label:c=>{const i=c.dataIndex;if(i===labels.length-1)return 'Mino\'s goal: $1,000,000 in a month';const p=PATH[i];const v=vals[i];
+    const l1='Projected: '+fmtUSD(v)+(i?' (+'+fmtK(v-vals[i-1])+')':'');return [l1,p[1]+' calls × '+Math.round(p[2]*100)+'% show × '+Math.round(p[3]*100)+'% close × '+fmtUSD(p[4])+' + ~$96k other'];}};
+  charts.path=new Chart($('#cPath'),{type:'bar',data:{labels,datasets:[{data,backgroundColor:cols,borderColor:labels.map((l,i)=>i===labels.length-1?rgba(1):'transparent'),borderWidth:2,borderRadius:8,borderSkipped:false,maxBarThickness:72}]},options:o});
+}
+function calc(){
+  const b=+$('#iB').value,sh=+$('#iS').value/100,c=+$('#iC').value/100,a=+$('#iA').value;
+  $('#vB').textContent=b;$('#vS').textContent=Math.round(sh*100)+'%';$('#vC').textContent=Math.round(c*100)+'%';$('#vA').textContent=fmtUSD(a);
+  const r=proj(b,sh,c,a),t=b*sh,d=t*c;
+  const ro=$('#oRev');ro.textContent=fmtUSD(r);ro.classList.toggle('hit',r>=1e6);
+  $('#oVs').textContent=r>=1e6?'Hits the $1M goal, '+fmtUSD(r-1e6)+' over':Math.round(r/1e4)+'% of $1M · '+fmtUSD(1e6-r)+' to go';
+  $('#oBar').style.width=Math.min(100,r/1e6*100).toFixed(1)+'%';
+  $('#oT').textContent=Math.round(t);$('#oD').textContent=Math.round(d);$('#oCpc').textContent=fmtUSD(sh*c*a);$('#oCl').textContent=Math.ceil(t/100);
+}
+function setCalc(v){['iB','iS','iC','iA'].forEach((k,i)=>$('#'+k).value=v[i]);calc();}
+function bindCalc(){
+  ['iB','iS','iC','iA'].forEach(k=>$('#'+k).addEventListener('input',calc));
+  $('#pOct').onclick=()=>setCalc([440,66,34,3135]);
+  $('#pPath').onclick=()=>setCalc([750,80,45,3400]);
+  setCalc([440,66,34,3135]);
+}
+function renderCharts(){if(typeof Chart==='undefined')return;renderTrend();renderProd();renderPath();}
+
+/* ---------- Count-up ---------- */
+function countUp(el){
+  if(el.dataset.done)return;el.dataset.done=1;
+  const end=+el.dataset.count,dec=+(el.dataset.dec||0),pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';
+  const t0=performance.now(),dur=1400;
+  const step=t=>{const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3),v=end*e;
+    el.textContent=pre+(dec?v.toFixed(dec):Math.round(v).toLocaleString('en-US'))+suf;if(p<1)requestAnimationFrame(step);};
+  requestAnimationFrame(step);
+}
+
+/* ---------- Init ---------- */
+buildProducts();buildMonths();buildBA();buildTimeline();buildLevers();bindAcc();bindCalc();renderCharts();
+$$('#prodSeg button').forEach(b=>b.onclick=()=>{prodKey=b.dataset.p;$$('#prodSeg button').forEach(x=>x.classList.toggle('on',x===b));$('#prodList').dataset.shown=1;buildProducts();renderProd();});
+$$('#metricSeg button').forEach(b=>b.onclick=()=>{curMetric=b.dataset.m;$$('#metricSeg button').forEach(x=>x.classList.toggle('on',x===b));renderTrend();});
+$('#showEarly').onchange=renderTrend;
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const t=e.target;
+  t.classList.add('visible');
+  t.querySelectorAll('[data-count]').forEach(countUp);
+  t.querySelectorAll('[data-w]').forEach(f=>f.style.width=f.dataset.w+'%');
+  io.unobserve(t);}),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+$$('.reveal,.hero,#prodList').forEach(el=>io.observe(el));
+
+const secs=$$('.sec-block'),links=$$('.nav-link,.m-nav a');
+const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id));const a=document.querySelector('.m-nav a.active');if(a&&a.scrollIntoView&&window.innerWidth<=960)a.parentNode.scrollTo({left:a.offsetLeft-16,behavior:'smooth'});}}),{rootMargin:'-10% 0px -80% 0px'});
+secs.forEach(s=>so.observe(s));
+
+const bar=$('#scroll-progress');
+function prog(){const h=document.documentElement,st=h.scrollTop||document.body.scrollTop,ht=h.scrollHeight-h.clientHeight;bar.style.width=(ht>0?st/ht*100:0)+'%';}
+document.addEventListener('scroll',prog,{passive:true});prog();
+
+const spot=$('#cursor-spot');let raf=false,lm=null;
+document.addEventListener('mousemove',e=>{lm=e;if(raf)return;raf=true;requestAnimationFrame(()=>{raf=false;spot.style.setProperty('--mx',lm.clientX+'px');spot.style.setProperty('--my',lm.clientY+'px');spot.classList.add('active');
+  const c=lm.target.closest&&lm.target.closest('.card.hov');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--cx',((lm.clientX-r.left)/r.width*100).toFixed(1)+'%');c.style.setProperty('--cy',((lm.clientY-r.top)/r.height*100).toFixed(1)+'%');}});});
+document.addEventListener('mouseleave',()=>spot.classList.remove('active'));
+window.addEventListener('resize',()=>{$$('.acc-item.open .acc-body,.lever.open .lever-body').forEach(b=>b.style.maxHeight=b.scrollHeight+'px');});
+</script>
+</body>
+</html>
