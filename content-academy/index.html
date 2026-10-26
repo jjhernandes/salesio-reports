@@ -369,6 +369,35 @@ h2{font-size:30px;font-weight:900;letter-spacing:-.5px;line-height:1.05;margin-b
   .ptable{font-size:11.5px;}
   .ptable th,.ptable td{padding:8px 6px;}
 }
+
+.bvj{--bvj-before:#9A958C;--bvj-after:#16A34A;--bvj-ink:var(--text-primary,#0A0A08);--bvj-sub:var(--text-secondary,#444);--bvj-mute:var(--text-muted,#8F897F);--bvj-line:var(--card-bdr,#E2DDD3);--bvj-card:var(--card-bg,#F8F5EF);--bvj-bg:var(--bg,#EAE4D9);font-family:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;}
+[data-theme="night"] .bvj{--bvj-before:#6E6E6E;--bvj-after:#4ade80;}
+.bvj-bar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin:4px 0 16px;}
+.bvj-tog{display:inline-flex;background:var(--bvj-card);border:1px solid var(--bvj-line);border-radius:10px;padding:3px;}
+.bvj-tog button{font:inherit;font-size:13px;font-weight:700;border:0;background:transparent;color:var(--bvj-sub);padding:7px 16px;border-radius:8px;cursor:pointer;}
+.bvj-tog button.on{background:var(--bvj-after);color:#fff;}
+[data-theme="night"] .bvj-tog button.on{color:#04140a;}
+.bvj-key{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--bvj-ink);}
+.bvj-key i{display:inline-block;width:13px;height:13px;border-radius:3px;margin-right:6px;vertical-align:-1px;}
+.bvj-key .mu{color:var(--bvj-mute);}
+.bvj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:14px;}
+.bvj-card{background:var(--bvj-card);border:1px solid var(--bvj-line);border-radius:14px;padding:18px 20px 12px;}
+.bvj-card h3{font-size:17px;font-weight:800;line-height:1.3;margin:0 0 8px;color:var(--bvj-ink);letter-spacing:-.2px;}
+.bvj-big{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;font-size:30px;font-weight:800;line-height:1.1;letter-spacing:-.5px;}
+.bvj-big .f{color:var(--bvj-before);} .bvj-big .ar{color:var(--bvj-mute);font-weight:400;} .bvj-big .t{color:var(--bvj-after);}
+.bvj-chg{font-size:13px;color:var(--bvj-sub);margin:4px 0 6px;}
+.bvj svg{display:block;width:100%;height:auto;overflow:visible;}
+.bvj svg .ax{stroke:var(--bvj-line);stroke-width:1.5;}
+.bvj svg .mk{stroke:var(--bvj-mute);stroke-width:1.5;stroke-dasharray:5 4;}
+.bvj svg .mkt{fill:var(--bvj-sub);font-size:16px;font-weight:700;}
+.bvj svg .val{fill:var(--bvj-ink);font-size:20px;font-weight:800;}
+.bvj svg .lab{fill:var(--bvj-mute);font-size:16px;}
+.bvj svg .b{fill:var(--bvj-before);stroke:var(--bvj-before);} .bvj svg .a{fill:var(--bvj-after);stroke:var(--bvj-after);}
+.bvj svg .sb{stroke:var(--bvj-before);fill:none;} .bvj svg .sa{stroke:var(--bvj-after);fill:none;}
+.bvj svg .hol{fill:var(--bvj-card);}
+.bvj-cap{font-size:13px;color:var(--bvj-sub);margin:0 0 12px;max-width:820px;}
+.bvj-src{font-size:12px;color:var(--bvj-mute);margin-top:12px;}
+
 </style>
 </head>
 <body>
@@ -387,6 +416,7 @@ h2{font-size:30px;font-weight:900;letter-spacing:-.5px;line-height:1.05;margin-b
     <div class="client-tag">Client <b>Content Academy</b></div>
   </div>
   <div class="nav-links">
+    <a class="nav-link" href="#s0"><span class="nl-num">S00</span><span class="nl-name">Before vs. With JJ</span></a>
     <a class="nav-link" href="#s1"><span class="nl-num">S01</span><span class="nl-name">October at a Glance</span></a>
     <a class="nav-link" href="#s2"><span class="nl-num">S02</span><span class="nl-name">The Trend, Month by Month</span></a>
     <a class="nav-link" href="#s3"><span class="nl-num">S03</span><span class="nl-name">Before vs After</span></a>
@@ -407,7 +437,7 @@ h2{font-size:30px;font-weight:900;letter-spacing:-.5px;line-height:1.05;margin-b
 <div class="m-bar">
   <div class="m-brand">Sales<i>.</i>io · Content Academy</div>
   <div class="m-nav">
-    <a href="#s1">October</a><a href="#s2">Trend</a><a href="#s3">Before / After</a><a href="#s4">What we built</a><a href="#s5">Straight read</a><a href="#s6">Path to $1M</a><a href="#s7">Levers</a>
+    <a href="#s0">Before / with JJ</a><a href="#s1">October</a><a href="#s2">Trend</a><a href="#s3">Before / After</a><a href="#s4">What we built</a><a href="#s5">Straight read</a><a href="#s6">Path to $1M</a><a href="#s7">Levers</a>
   </div>
 </div>
 
@@ -426,6 +456,20 @@ h2{font-size:30px;font-weight:900;letter-spacing:-.5px;line-height:1.05;margin-b
       <div class="stat"><div class="stat-num" data-count="1016" data-prefix="$">$1,016</div><div class="stat-lbl">Cash per call</div><div class="stat-from">from $487 in July</div></div>
     </div>
   </div>
+
+
+  <!-- S00 Before vs. with JJ (added Oct 25, 2026) -->
+  <section id="s0" class="sec-block bvj" data-bvj-root>
+    <div class="sec-header">
+      <div class="sec-meta"><span class="sec-label">Before vs. with JJ</span><span class="sec-pill">Data as of Oct 25, 2026</span></div>
+      <h2>Before vs. With JJ</h2>
+      <p class="sec-desc">JJ started Jul 28, so July is the last month before JJ. Numbers were already growing May to July; the big jump comes in August.</p>
+      <div class="sec-ghost">00</div>
+    </div>
+    <div class="bvj-bar"><div class="bvj-tog" role="group" aria-label="Chart type"><button type="button" data-mode="line" class="on">Line</button><button type="button" data-mode="bar">Bar</button></div><div class="bvj-key"><span><i style="background:var(--bvj-before)"></i>Grey = before JJ</span><span><i style="background:var(--bvj-after)"></i>Green = with JJ</span><span class="mu">Hollow or faded = month not finished yet</span></div></div>
+    <div class="bvj-grid" data-bvj="CA"></div>
+    <p class="bvj-src">Source: Content Academy dashboard pull (dashboard + sales tabs), re-verified Oct 25, 2026. Data as of Oct 25, 2026.</p>
+  </section>
 
   <!-- S01 -->
   <section id="s1" class="sec-block">
@@ -974,6 +1018,44 @@ document.addEventListener('mousemove',e=>{lm=e;if(raf)return;raf=true;requestAni
   const c=lm.target.closest&&lm.target.closest('.card.hov');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--cx',((lm.clientX-r.left)/r.width*100).toFixed(1)+'%');c.style.setProperty('--cy',((lm.clientY-r.top)/r.height*100).toFixed(1)+'%');}});});
 document.addEventListener('mouseleave',()=>spot.classList.remove('active'));
 window.addEventListener('resize',()=>{$$('.acc-item.open .acc-body,.lever.open .lever-body').forEach(b=>b.style.maxHeight=b.scrollHeight+'px');});
+</script>
+<script>
+window.BVJ_DATA={"CA": [{"head": "Monthly revenue almost doubled", "frm": "$218K", "to": "$416K", "change": "+91%, July to August", "marker": {"at": 2.5, "label": "JJ starts Jul 28"}, "points": [{"l": "May", "v": 54908.68, "d": "$55K", "after": false, "partial": false}, {"l": "Jun", "v": 106638.1, "d": "$107K", "after": false, "partial": false}, {"l": "Jul", "v": 217953.99, "d": "$218K", "after": false, "partial": false}, {"l": "Aug", "v": 416325.02, "d": "$416K", "after": true, "partial": false}, {"l": "Sep", "v": 403930.59, "d": "$404K", "after": true, "partial": false}, {"l": "Oct 1–25", "v": 320390.2, "d": "$320K", "after": true, "partial": true}]}, {"head": "Cash collected went up 2.5x", "frm": "$139K", "to": "$351K", "change": "+152%, July to August", "marker": {"at": 2.5, "label": "JJ starts Jul 28"}, "points": [{"l": "May", "v": 40833, "d": "$41K", "after": false, "partial": false}, {"l": "Jun", "v": 86053, "d": "$86K", "after": false, "partial": false}, {"l": "Jul", "v": 139163, "d": "$139K", "after": false, "partial": false}, {"l": "Aug", "v": 350875, "d": "$351K", "after": true, "partial": false}, {"l": "Sep", "v": 328325, "d": "$328K", "after": true, "partial": false}, {"l": "Oct 1–25", "v": 286178, "d": "$286K", "after": true, "partial": true}]}, {"head": "Each sale is worth more", "frm": "$1,907", "to": "$2,691", "change": "+41% average sale, July to August", "marker": {"at": 2.5, "label": "JJ starts Jul 28"}, "points": [{"l": "May", "v": 1140, "d": "$1,140", "after": false, "partial": false}, {"l": "Jun", "v": 1559, "d": "$1,559", "after": false, "partial": false}, {"l": "Jul", "v": 1907, "d": "$1,907", "after": false, "partial": false}, {"l": "Aug", "v": 2691, "d": "$2,691", "after": true, "partial": false}, {"l": "Sep", "v": 2838, "d": "$2,838", "after": true, "partial": false}, {"l": "Oct 1–25", "v": 3135, "d": "$3,135", "after": true, "partial": true}]}, {"head": "Cash per scheduled call almost doubled", "frm": "$487", "to": "$946", "change": "+94%, July to August", "marker": {"at": 2.5, "label": "JJ starts Jul 28"}, "points": [{"l": "May", "v": 389, "d": "$389", "after": false, "partial": false}, {"l": "Jun", "v": 570, "d": "$570", "after": false, "partial": false}, {"l": "Jul", "v": 487, "d": "$487", "after": false, "partial": false}, {"l": "Aug", "v": 946, "d": "$946", "after": true, "partial": false}, {"l": "Sep", "v": 1016, "d": "$1,016", "after": true, "partial": false}, {"l": "Oct 1–25", "v": 806, "d": "$806", "after": true, "partial": true}]}, {"head": "More new members every month", "frm": "129", "to": "210", "change": "+63%, July to August", "marker": {"at": 2.5, "label": "JJ starts Jul 28"}, "points": [{"l": "May", "v": 73, "d": "73", "after": false, "partial": false}, {"l": "Jun", "v": 75, "d": "75", "after": false, "partial": false}, {"l": "Jul", "v": 129, "d": "129", "after": false, "partial": false}, {"l": "Aug", "v": 210, "d": "210", "after": true, "partial": false}, {"l": "Sep", "v": 208, "d": "208", "after": true, "partial": false}, {"l": "Oct 1–25", "v": 192, "d": "192", "after": true, "partial": true}]}, {"head": "More sales calls booked", "frm": "351", "to": "499", "change": "+42%, July to August", "marker": {"at": 2.5, "label": "JJ starts Jul 28"}, "points": [{"l": "May", "v": 140, "d": "140", "after": false, "partial": false}, {"l": "Jun", "v": 197, "d": "197", "after": false, "partial": false}, {"l": "Jul", "v": 351, "d": "351", "after": false, "partial": false}, {"l": "Aug", "v": 499, "d": "499", "after": true, "partial": false}, {"l": "Sep", "v": 455, "d": "455", "after": true, "partial": false}, {"l": "Oct 1–25", "v": 577, "d": "577", "after": true, "partial": true}]}]};
+(function(){
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function chart(sp,mode){
+  var W=600,H=270,pl=40,pr=40,top=50,bot=52,n=sp.points.length,step=(W-pl-pr)/n,
+      mx=Math.max.apply(null,sp.points.map(function(p){return p.v;}))*1.2,ph=H-top-bot;
+  function x(i){return pl+(i+.5)*step;} function y(v){return top+(1-v/mx)*ph;}
+  var o='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(sp.head)+'">';
+  o+='<line class="ax" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+(top+ph)+'" y2="'+(top+ph)+'"/>';
+  if(sp.marker){var mxp=x(sp.marker.at);o+='<line class="mk" x1="'+mxp+'" x2="'+mxp+'" y1="18" y2="'+(top+ph)+'"/><text class="mkt" x="'+(mxp+6)+'" y="30">'+esc(sp.marker.label)+'</text>';}
+  if(mode==='bar'){
+    var bw=Math.min(step*.6,120);
+    sp.points.forEach(function(p,i){var c=p.after?'a':'b';
+      o+='<rect class="'+c+'" x="'+(x(i)-bw/2)+'" y="'+y(p.v)+'" width="'+bw+'" height="'+(top+ph-y(p.v))+'" rx="4"'+(p.partial?' fill-opacity=".45" stroke-width="1.5" stroke-dasharray="4 3"':' stroke-width="0"')+'/>';
+      o+='<text class="val" text-anchor="middle" x="'+x(i)+'" y="'+(y(p.v)-8)+'">'+esc(p.d)+'</text>';});
+  } else {
+    for(var i=1;i<n;i++){var p=sp.points[i];
+      o+='<line class="'+(p.after?'sa':'sb')+'" x1="'+x(i-1)+'" y1="'+y(sp.points[i-1].v)+'" x2="'+x(i)+'" y2="'+y(p.v)+'" stroke-width="3.5" stroke-linecap="round"'+(p.partial?' stroke-dasharray="6 5"':'')+'/>';}
+    sp.points.forEach(function(p,i){var c=p.after?'a':'b';
+      o+='<circle class="'+c+(p.partial?' hol':'')+'" cx="'+x(i)+'" cy="'+y(p.v)+'" r="6" stroke-width="2.5"/>';
+      o+='<text class="val" text-anchor="middle" x="'+x(i)+'" y="'+(y(p.v)-15)+'">'+esc(p.d)+'</text>';});
+  }
+  sp.points.forEach(function(p,i){var ls=p.l.split('\n');o+='<text class="lab" text-anchor="middle" x="'+x(i)+'" y="'+(top+ph+22)+'">';
+    ls.forEach(function(s,j){o+='<tspan x="'+x(i)+'" dy="'+(j?18:0)+'">'+esc(s)+'</tspan>';});o+='</text>';});
+  return o+'</svg>';
+}
+function card(sp,mode){return '<div class="bvj-card"><h3>'+esc(sp.head)+'</h3><div class="bvj-big"><span class="f">'+esc(sp.frm)+'</span><span class="ar">→</span><span class="t">'+esc(sp.to)+'</span></div><div class="bvj-chg">'+esc(sp.change)+'</div><div class="bvj-svg">'+chart(sp,mode)+'</div></div>';}
+window.BVJ={draw:function(root,mode){
+  root.querySelectorAll('[data-bvj]').forEach(function(g){var specs=window.BVJ_DATA[g.getAttribute('data-bvj')];g.innerHTML=specs.map(function(s){return card(s,mode);}).join('');});
+  root.querySelectorAll('.bvj-tog button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-mode')===mode);b.setAttribute('aria-pressed',b.getAttribute('data-mode')===mode);});
+}};
+document.querySelectorAll('.bvj[data-bvj-root]').forEach(function(root){
+  root.querySelectorAll('.bvj-tog button').forEach(function(b){b.addEventListener('click',function(){BVJ.draw(root,b.getAttribute('data-mode'));});});
+  BVJ.draw(root,'line');
+});
+})();
 </script>
 </body>
 </html>
