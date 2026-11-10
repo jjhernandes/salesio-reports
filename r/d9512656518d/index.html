@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sales.io · AI Sales Team For Closers</title>
+<style>
+:root{--bg:#050505;--card:#0d0d0e;--line:#26262a;--g:#39ff88;--gold:#f5c542;--mut:#9a9aa3}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:#fff;font-family:Inter,"Helvetica Neue",Arial,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:-20% -10% auto;height:900px;background:radial-gradient(ellipse at 50% 0,rgba(57,255,136,.10),transparent 60%);pointer-events:none;z-index:0}
+section{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:110px 28px}
+.badge{display:inline-flex;gap:8px;align-items:center;border:1px solid #3a3a40;border-radius:999px;padding:6px 14px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#cfcfd6;font-weight:600}
+.badge i{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 10px var(--g)}
+h1{font-size:clamp(40px,6vw,76px);font-weight:800;line-height:1.02;letter-spacing:-.03em;margin:26px 0 22px}
+h2{font-size:clamp(30px,4vw,48px);font-weight:800;letter-spacing:-.02em;line-height:1.08;margin:18px 0 14px}
+p.sub{color:var(--mut);font-size:19px;line-height:1.55;max-width:720px}
+.center{text-align:center}.center p.sub{margin:0 auto}
+.hl{color:var(--g)}
+.hero{padding-top:150px;text-align:center}.hero p.sub{margin:0 auto}
+.reveal{opacity:0;transform:translateY(24px);transition:1s cubic-bezier(.2,.7,.2,1)}.reveal.in{opacity:1;transform:none}
+/* toggle */
+.toggle{display:inline-flex;border:1px solid #333;border-radius:999px;padding:4px;margin:28px 0 8px;background:#0b0b0c;position:relative}
+.toggle button{position:relative;z-index:2;background:none;border:0;color:#aaa;font:600 14px inherit;font-family:inherit;padding:10px 22px;border-radius:999px;cursor:pointer;transition:.3s}
+.toggle button.on{color:#000}
+.toggle .knob{position:absolute;top:4px;bottom:4px;left:4px;border-radius:999px;background:#fff;transition:.45s cubic-bezier(.3,1.3,.5,1);z-index:1}
+body.team .toggle .knob{background:var(--g);box-shadow:0 0 24px rgba(57,255,136,.5)}
+.count{font-size:22px;font-weight:700;margin-top:18px;min-height:30px}.count b{font-size:30px}
+body:not(.team) .count b{color:#ff5a5a}body.team .count b{color:var(--g)}
+.bucketwrap{position:relative;display:grid;grid-template-columns:1fr 380px 1fr;gap:34px;align-items:center;margin-top:46px}
+.col{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px;transition:.3s;position:relative;cursor:default}
+.card:hover,.card.hov{border-color:#fff;transform:translateY(-2px);box-shadow:0 0 0 1px #fff2,0 14px 40px #0008}
+body.team .leak:hover,body.team .leak.hov{border-color:var(--g);box-shadow:0 0 30px rgba(57,255,136,.25)}
+.card h4{font-size:16px;font-weight:700;margin:10px 0 6px}.card p{color:var(--mut);font-size:13.5px;line-height:1.5}
+.tag{font-size:9.5px;letter-spacing:.14em;font-weight:700;text-transform:uppercase;border:1px solid #3a3a40;border-radius:999px;padding:3px 9px;color:#ff7a7a}
+.tag.time{color:#ffb547}.tag.blind{color:#9bb7ff}
+body.team .tag{color:var(--g);border-color:rgba(57,255,136,.4)}
+.plug{display:none;font-size:13px;color:var(--g);margin-top:8px;font-weight:600}
+body.team .plug{display:block}body.team .leak .why{display:none}
+svg.bucket{width:100%;overflow:visible}
+.stream{stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-dasharray:1 9;fill:none;animation:drip .9s linear infinite;transition:opacity .5s}
+@keyframes drip{to{stroke-dashoffset:-20}}
+body.team .stream{opacity:0}
+.hole{fill:#050505;stroke:#fff;stroke-width:2;transition:.5s}
+.chk{opacity:0;transition:.5s}body.team .chk{opacity:1}body.team .hole{fill:var(--g);stroke:var(--g);filter:drop-shadow(0 0 6px var(--g))}
+#liquid{transition:transform 1.6s cubic-bezier(.3,.8,.3,1);transform:translateY(310px)}
+body.team #liquid{transform:translateY(0)}
+.wave{animation:wave 3s ease-in-out infinite alternate}@keyframes wave{to{transform:translateX(-40px)}}
+svg.over{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:3}
+.ln{fill:none;stroke:#fff;stroke-width:2.6;stroke-dasharray:3 6;animation:drip .6s linear infinite;filter:drop-shadow(0 0 4px #fff8)}
+.ln.g{stroke:var(--g);stroke-dasharray:none;filter:drop-shadow(0 0 6px var(--g))}
+/* gold */
+.gold{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-top:46px}
+.gcard{background:linear-gradient(160deg,#16130a,#0b0b0c 60%);border:1px solid #3d3216;border-radius:20px;padding:30px;transition:.35s}
+.gcard:hover{border-color:var(--gold);box-shadow:0 0 40px rgba(245,197,66,.18);transform:translateY(-3px)}
+.gcard.big{padding:42px;display:flex;flex-direction:column;justify-content:space-between}
+.gcard.big h3{font-size:34px;line-height:1.1;font-weight:800;margin:18px 0 14px}
+.gcard h3{font-size:19px;font-weight:700;margin:12px 0 6px}.gcard p{color:var(--mut);line-height:1.55;font-size:15px}
+.gstack{display:flex;flex-direction:column;gap:20px}
+.gold .tag{color:var(--gold);border-color:#5a4a1e}
+.ages{display:flex;gap:10px;margin-top:24px}.ages span{border:1px solid #5a4a1e;color:var(--gold);border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px}
+.star{color:var(--gold);filter:drop-shadow(0 0 8px rgba(245,197,66,.6))}
+/* flow */
+.flow{position:relative;display:grid;grid-template-columns:1fr 1fr 1fr;gap:90px;align-items:center;margin-top:56px}
+.pills{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.pill{border:1px solid #333;background:#0c0c0d;border-radius:999px;padding:11px 18px;font-size:14.5px;font-weight:600;transition:.3s}
+.pill:hover{border-color:var(--g);box-shadow:0 0 16px rgba(57,255,136,.3)}
+.node{background:var(--card);border:1px solid rgba(57,255,136,.45);border-radius:18px;padding:26px;box-shadow:0 0 40px rgba(57,255,136,.12)}
+.node h4{font-size:20px;margin:10px 0 6px}.node p{color:var(--mut);font-size:14px;line-height:1.5}
+.node .tag{color:var(--g);border-color:rgba(57,255,136,.4)}
+.flowln{fill:none;stroke:var(--g);stroke-width:1.6;opacity:.55;filter:drop-shadow(0 0 4px var(--g))}
+.pulse{fill:var(--g);filter:drop-shadow(0 0 6px var(--g))}
+/* org */
+.org{position:relative;margin-top:56px;display:flex;flex-direction:column;align-items:center;gap:56px}
+.ocard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;transition:.3s;position:relative;z-index:2}
+.ocard h4{font-size:15.5px;font-weight:700}.ocard p{color:var(--mut);font-size:12.5px;margin-top:5px;line-height:1.45}
+.ocard.top{border-color:#fff;padding:18px 34px;text-align:center}.ocard.top h4{font-size:19px}
+.ocard.cos{text-align:center;padding:18px 30px}
+.ocard.lit{border-color:var(--g);box-shadow:0 0 26px rgba(57,255,136,.28)}
+.depts{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;width:100%}
+.dept{display:flex;flex-direction:column;gap:34px}
+.dhead{text-align:center;border-style:dashed}.dhead h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#cfcfd6}
+.leaves{display:flex;flex-direction:column;gap:12px;padding-left:22px}
+.orgln{fill:none;stroke:#2c2c31;stroke-width:1.4;transition:.3s}.orgln.lit{stroke:var(--g);stroke-width:2.2;filter:drop-shadow(0 0 5px var(--g))}
+footer{position:relative;z-index:1;border-top:1px solid #1c1c20;text-align:center;padding:50px 20px;color:var(--mut);font-size:14px}
+footer b{color:#fff;font-size:20px;display:block;margin-bottom:8px}
+.shot *{transition:none!important}
+@media(max-width:900px){.bucketwrap,.gold,.flow,.depts{grid-template-columns:1fr}}
+</style></head><body>
+
+<section class="hero reveal">
+<span class="badge"><i></i>AI Sales Team For Closers</span>
+<h1>Your Sales Back Office,<br>Staffed By <span class="hl">Eleven AI Teammates</span></h1>
+<p class="sub">Follow-ups, reschedules, outcome forms, payment links. That stuff eats half your day before you ever get on a call. This team owns all of it, so you just show up and close.</p>
+</section>
+
+<section class="center reveal" id="bucketSec">
+<span class="badge"><i></i>The Bucket</span>
+<h2>Where Your Deals Are Slipping Out</h2>
+<p class="sub">Every hole is money or time you're losing right now. Hover a card to see which hole it is. Then flip the switch.</p>
+<div class="toggle"><span class="knob"></span><button class="on" data-s="today">Today</button><button data-s="team">With The Team</button></div>
+<div class="count" id="count"><b>8</b> leaks draining your pipeline</div>
+<div class="bucketwrap" id="bw">
+<div class="col" id="colL"></div>
+<svg class="bucket" viewBox="0 0 400 440" id="bsvg">
+<defs><clipPath id="bclip"><path d="M92 72 L308 72 L282 392 Q200 404 118 392 Z"/></clipPath>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#39ff88" stop-opacity=".85"/><stop offset="1" stop-color="#0d7a3e" stop-opacity=".9"/></linearGradient></defs>
+<g clip-path="url(#bclip)"><g id="liquid"><path class="wave" d="M40 92 Q80 80 120 92 T200 92 T280 92 T360 92 T440 92 V420 H40Z" fill="url(#lg)"/></g></g>
+<path d="M92 72 L308 72 L282 392 Q200 404 118 392 Z" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+<ellipse cx="200" cy="72" rx="108" ry="14" fill="none" stroke="#fff" stroke-width="3"/>
+<path d="M96 80 Q200 -40 304 80" fill="none" stroke="#fff" stroke-width="2.5" opacity=".7"/>
+<g id="holes"></g></svg>
+<div class="col" id="colR"></div>
+<svg class="over" id="bover"></svg>
+</div>
+</section>
+
+<section class="reveal">
+<div class="center"><span class="badge"><span class="star">★</span>The Gold Stars</span>
+<h2>What Actually Changes For You</h2></div>
+<div class="gold">
+<div class="gcard big"><div><span class="tag">The Biggest Unlock</span><h3><span class="star">★</span> Revive The Deals You Wrote Off</h3>
+<p>You've got leads sitting there from 8, 12, 14 months ago that you gave up on. The team searches every call recording and your whole CRM, then tells you exactly why now is the time to hit them back and what you last talked about. You walk in already knowing the story.</p></div>
+<div class="ages"><span>8 mo</span><span>12 mo</span><span>14 mo</span><span style="border-color:#39ff8866;color:#39ff88">→ back on the calendar</span></div></div>
+<div class="gstack">
+<div class="gcard"><span class="tag">★ More Calls</span><h3>More Live Calls, Booked The Same Hour</h3><p>New leads get a text in seconds and land on your calendar while they're still hot.</p></div>
+<div class="gcard"><span class="tag">★ Your Job</span><h3>You Do The Close. That's It.</h3><p>No admin, no chasing, no forms. You get on the call and do what you're good at.</p></div>
+<div class="gcard"><span class="tag">★ Real Numbers</span><h3>Numbers You Can Trust</h3><p>Commissions, show rates and close rates live, without rebuilding a spreadsheet by hand every Friday.</p></div>
+</div></div></section>
+
+<section class="reveal">
+<div class="center"><span class="badge"><i></i>Inbox One</span>
+<h2>Point Everything One Way<br>Before Calming Anything</h2>
+<p class="sub">Right now stuff comes at you from six places. First move is sending all of it through one door so nothing gets lost.</p></div>
+<div class="flow" id="flow">
+<div class="pills" id="ins"><div class="pill">iClosed bookings</div><div class="pill">Text messages</div><div class="pill">Email replies</div><div class="pill">CRM contacts</div><div class="pill">Zoom and Calendar</div><div class="pill">Call recordings</div></div>
+<div class="node" id="n1"><span class="tag">One Front Door</span><h4>Inbound Coordinator</h4><p>Catches everything that comes in, sorts it, and hands it to the right teammate.</p></div>
+<div class="node" id="n2"><span class="tag">One Source Of Truth</span><h4>Shared Ledger</h4><p>A Google Sheet plus CRM tags. Every lead, call, payment and outcome in one spot everyone reads from.</p></div>
+<svg class="over" id="fover"></svg></div>
+</section>
+
+<section class="reveal">
+<div class="center"><span class="badge"><i></i>The Org Chart</span>
+<h2>Each Teammate Owns A Job, Not A Task</h2>
+<p class="sub">Same as a real sales floor. Hover anyone at the bottom and watch how it rolls up to you.</p></div>
+<div class="org" id="org">
+<div class="ocard top" id="o-top"><h4>You, The Closer</h4><p>Show up. Close.</p></div>
+<div class="ocard cos" id="o-cos" data-up="o-top"><h4>Chief of Staff</h4><p>Owns the day. Sends your morning brief.</p></div>
+<div class="depts">
+<div class="dept"><div class="ocard dhead" id="d1" data-up="o-cos"><h4>Lead Generation</h4></div><div class="leaves">
+<div class="ocard" data-up="d1"><h4>Speed-to-Lead Specialist</h4><p>Texts every new lead in seconds and books them.</p></div>
+<div class="ocard" data-up="d1"><h4>Pipeline Reactivation Specialist</h4><p>Wakes up old leads with a real reason to talk.</p></div></div></div>
+<div class="dept"><div class="ocard dhead" id="d2" data-up="o-cos"><h4>Call Operations</h4></div><div class="leaves">
+<div class="ocard" data-up="d2"><h4>Attendance Coordinator</h4><p>Reminders and confirms so people actually show.</p></div>
+<div class="ocard" data-up="d2"><h4>Scheduling Coordinator</h4><p>Catches every reschedule and rebooks it.</p></div></div></div>
+<div class="dept"><div class="ocard dhead" id="d3" data-up="o-cos"><h4>Deal Desk</h4></div><div class="leaves">
+<div class="ocard" data-up="d3"><h4>Deal Follow-Up Manager</h4><p>Follows up after every call until it's a yes or a no.</p></div>
+<div class="ocard" data-up="d3"><h4>Payments Desk Associate</h4><p>Right payment link, sent the second they say yes.</p></div></div></div>
+<div class="dept"><div class="ocard dhead" id="d4" data-up="o-cos"><h4>Finance and Analytics</h4></div><div class="leaves">
+<div class="ocard" data-up="d4"><h4>Finance Analyst</h4><p>Live view of your commissions and cash.</p></div>
+<div class="ocard" data-up="d4"><h4>Sales Coach</h4><p>10-point scorecard on every call. Straight feedback.</p></div>
+<div class="ocard" data-up="d4"><h4>CRM Records Coordinator</h4><p>Fills every outcome form so the data is clean.</p></div></div></div>
+</div><svg class="over" id="oover"></svg></div>
+</section>
+
+<footer><b>Sales.io</b>sales.io · jj@sales.io</footer>
+
+<script>
+const leaks=[
+["rev","Leads Sit Untouched","New leads come in and nobody hits them for hours.","Pipeline Reactivation Specialist + Inbound Coordinator + Deal Follow-up Manager"],
+["rev","First Text Goes Out Late","By the time you text back, they already booked someone else.","Speed-to-Lead Specialist"],
+["time","Follow-Ups Typed By Hand","You're writing the same follow-up text 40 times a week.","Speed-to-Lead + Pipeline Reactivation + Deal Follow-up"],
+["blind","No Live View Of Commissions","You don't really know what you made until payday.","Finance Analyst"],
+["rev","Payment Link Hunting","They said yes and you're digging for the right link.","Payments Desk Associate"],
+["rev","Reschedule Requests Missed","Someone asks to move and the text gets buried.","Scheduling Coordinator + Attendance Coordinator"],
+["blind","Outcome Forms Left Blank","Nobody fills them, so the data is garbage.","CRM Records Coordinator + Chief of Staff"],
+["blind","Calls Never Scored Honestly","No one tells you where you actually lost the deal.","Sales Coach"]];
+const lbl={rev:"Revenue Leak",time:"Time Sink",blind:"Blind Spot"};
+const ys=[130,195,260,325],holes=[];
+ys.forEach(y=>holes.push([92+26*(y-72)/320,y]));ys.forEach(y=>holes.push([308-26*(y-72)/320,y]));
+const NS="http://www.w3.org/2000/svg",hg=document.getElementById('holes');
+holes.forEach(([x,y],i)=>{const L=i<4,d=L?-1:1;
+hg.insertAdjacentHTML('beforeend',`<path class="stream" style="animation-delay:${-i*.13}s" d="M${x} ${y} q${d*30} 6 ${d*44} ${404-y}"/><circle class="hole" id="h${i}" cx="${x}" cy="${y}" r="7"/><path class="chk" d="M${x-3.5} ${y} l2.5 2.6 l4.5-5" stroke="#000" stroke-width="2" fill="none"/>`)});
+leaks.forEach((l,i)=>{document.getElementById(i<4?'colL':'colR').insertAdjacentHTML('beforeend',
+`<div class="card leak" data-i="${i}" style="text-align:left"><span class="tag ${l[0]}">${lbl[l[0]]}</span><h4>${l[1]}</h4><p class="why">${l[2]}</p><div class="plug">✓ Plugged by ${l[3]}</div></div>`)});
+const bw=document.getElementById('bw'),bo=document.getElementById('bover');
+function rel(el,box){const a=el.getBoundingClientRect(),b=box.getBoundingClientRect();return{l:a.left-b.left,r:a.right-b.left,t:a.top-b.top,b:a.bottom-b.top,cx:(a.left+a.right)/2-b.left,cy:(a.top+a.bottom)/2-b.top}}
+function hover(c,on){bo.innerHTML='';document.querySelectorAll('.leak').forEach(x=>x.classList.remove('hov'));if(!on)return;
+c.classList.add('hov');const i=+c.dataset.i,h=rel(document.getElementById('h'+i),bo),r=rel(c,bo),L=i<4,sx=L?r.r:r.l;
+const mx=(sx+h.cx)/2;bo.innerHTML=`<path class="ln ${document.body.classList.contains('team')?'g':''}" d="M${sx} ${r.cy} C${mx} ${r.cy} ${mx} ${h.cy} ${h.cx} ${h.cy}"/>`}
+document.querySelectorAll('.leak').forEach(c=>{c.onmouseenter=()=>hover(c,1);c.onmouseleave=()=>hover(c,0)});
+const btns=document.querySelectorAll('.toggle button'),knob=document.querySelector('.knob');
+function setS(s){document.body.classList.toggle('team',s=='team');btns.forEach(b=>b.classList.toggle('on',b.dataset.s==s));
+const on=[...btns].find(b=>b.dataset.s==s);knob.style.width=on.offsetWidth+'px';knob.style.transform=`translateX(${on.offsetLeft-4}px)`;
+document.getElementById('count').innerHTML=s=='team'?'<b>0</b> leaks open. The bucket is full.':'<b>8</b> leaks draining your pipeline';bo.innerHTML=''}
+btns.forEach(b=>b.onclick=()=>setS(b.dataset.s));
+/* flow */
+const fl=document.getElementById('flow'),fo=document.getElementById('fover');
+function drawFlow(){let s='';const n1=rel(document.getElementById('n1'),fl),n2=rel(document.getElementById('n2'),fl);
+document.querySelectorAll('#ins .pill').forEach((p,k)=>{const r=rel(p,fl),m=(r.r+n1.l)/2,d=`M${r.r} ${r.cy} C${m} ${r.cy} ${m} ${n1.cy} ${n1.l} ${n1.cy}`;
+s+=`<path class="flowln" d="${d}"/><circle r="3.5" class="pulse"><animateMotion dur="2.4s" begin="${k*.4}s" repeatCount="indefinite" path="${d}"/></circle>`});
+const d2=`M${n1.r} ${n1.cy} L${n2.l} ${n2.cy}`;s+=`<path class="flowln" style="stroke-width:2.4;opacity:.8" d="${d2}"/>`;
+for(let k=0;k<3;k++)s+=`<circle r="4" class="pulse"><animateMotion dur="1.8s" begin="${k*.6}s" repeatCount="indefinite" path="${d2}"/></circle>`;fo.innerHTML=s}
+/* org */
+const og=document.getElementById('org'),oo=document.getElementById('oover');
+function drawOrg(){let s='';document.querySelectorAll('#org [data-up]').forEach((c,k)=>{const p=document.getElementById(c.dataset.up),a=rel(c,og),b=rel(p,og);
+const leaf=!c.classList.contains('dhead')&&c.id!='o-cos';let d;
+if(leaf){const x=a.l-10;d=`M${a.l} ${a.cy} H${x} V${b.b} `;d=`M${a.l} ${a.cy} H${b.l+11} V${b.b}`}else{const my=(a.t+b.b)/2;d=`M${a.cx} ${a.t} V${my} H${b.cx} V${b.b}`}
+c.dataset.ln=k;s+=`<path class="orgln" id="ol${k}" d="${d}"/>`});oo.innerHTML=s}
+function lit(c,on){document.querySelectorAll('.ocard.lit,.orgln.lit').forEach(x=>x.classList.remove('lit'));if(!on)return;
+let n=c;while(n){n.classList.add('lit');if(n.dataset.ln)document.getElementById('ol'+n.dataset.ln).classList.add('lit');n=n.dataset.up?document.getElementById(n.dataset.up):null}}
+document.querySelectorAll('#org .ocard').forEach(c=>{c.onmouseenter=()=>lit(c,1);c.onmouseleave=()=>lit(c,0)});
+const io=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('in')),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(r=>io.observe(r));
+function all(){drawFlow();drawOrg();setS(document.body.classList.contains('team')?'team':'today')}
+addEventListener('resize',all);addEventListener('load',()=>{all();
+const q=new URLSearchParams(location.search);if(q.has('shot'))document.documentElement.classList.add('shot');if(q.has('shot'))document.querySelectorAll('.reveal').forEach(r=>{r.style.transition='none';r.classList.add('in')});
+if(q.get('state')=='team')setS('team');
+(()=>{all();if(q.has('hover'))hover(document.querySelectorAll('.leak')[+q.get('hover')],1);if(q.has('org'))lit(document.querySelectorAll('.leaves .ocard')[+q.get('org')],1)})()});
+</script></body></html>
