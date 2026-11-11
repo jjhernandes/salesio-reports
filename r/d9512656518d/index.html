@@ -83,12 +83,80 @@ footer{position:relative;z-index:1;border-top:1px solid #1c1c20;text-align:cente
 footer b{color:#fff;font-size:20px;display:block;margin-bottom:8px}
 .shot *{transition:none!important}
 @media(max-width:900px){.bucketwrap,.gold,.flow,.depts{grid-template-columns:1fr}}
+/* example demo */
+.bd-intro{margin:34px auto 0;color:#cfcfd6;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.botdemo{width:min(480px,100%);margin:16px auto 0;text-align:left;background:#0c0c0d;border:1px solid rgba(57,255,136,.4);border-radius:20px;box-shadow:0 0 48px rgba(57,255,136,.12);overflow:hidden}
+.bd-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:#101011;border-bottom:1px solid #26262a}
+.bd-id{display:flex;align-items:center;gap:10px;min-width:0}
+.bd-dot{width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 10px var(--g);flex:none}
+.bd-id strong{display:block;font-size:14px;font-weight:700;letter-spacing:-.01em}
+.bd-id em{display:block;margin-top:2px;font-style:normal;font-size:11px;color:var(--mut)}
+.bd-replay{appearance:none;-webkit-appearance:none;flex:none;background:transparent;color:var(--g);border:1px solid rgba(57,255,136,.5);border-radius:999px;padding:7px 12px;font:700 12px/1 inherit;font-family:inherit;letter-spacing:.04em;cursor:pointer}
+.bd-replay:hover{background:rgba(57,255,136,.12)}
+.bd-replay:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+.bd-log{height:348px;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:14px;scroll-behavior:auto;background:radial-gradient(ellipse at 50% 0,rgba(57,255,136,.06),transparent 55%),#070708;transition:opacity .25s ease}
+.bd-log::-webkit-scrollbar{width:8px}
+.bd-log::-webkit-scrollbar-thumb{background:#2c2c32;border-radius:99px}
+.bd-fade{opacity:0}
+.bd-placeholder{margin:auto;color:#7a7a84;font-size:13px;text-align:center}
+.bd-row{display:flex;flex-direction:column;gap:4px;width:fit-content;max-width:100%}
+.bd-row.user{align-self:flex-end;max-width:88%}
+.bd-row.bot{align-self:stretch;width:100%}
+.bd-row.typing{align-self:flex-start;width:auto}
+.bd-row{animation:bdIn .35s ease both}
+@keyframes bdIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.bd-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8e8e98}
+.bd-row.user .bd-label{text-align:right;color:#b7f5d0}
+.bd-bubble{padding:10px 12px;font-size:13.5px;line-height:1.45;background:#121214;border:1px solid #2a2a30;border-radius:14px 14px 14px 4px}
+.bd-row.bot .bd-bubble{width:100%}
+.bd-row.typing .bd-bubble{width:auto}
+.bd-row.user .bd-bubble{background:#102216;border-color:rgba(57,255,136,.45);border-radius:14px 14px 4px 14px}
+.bd-kicker{margin-bottom:8px;color:var(--g);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.bd-lines{display:flex;flex-direction:column;gap:6px}
+.bd-lines div{display:grid;grid-template-columns:auto 1fr;column-gap:8px;align-items:baseline;color:#dedee4}
+.bd-lines b{color:#fff;font-weight:700;margin:0}
+.bd-quote{color:#f3f3f5;font-size:13.5px;line-height:1.5}
+.bd-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.bd-btn{display:inline-flex;align-items:center;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:700;letter-spacing:.02em}
+.bd-btn.approve{background:var(--g);color:#06210f;animation:bdPulse 1.5s ease-in-out 2}
+.bd-btn.send{border:1px solid #3a3a40;color:#fff}
+@keyframes bdPulse{0%,100%{box-shadow:0 0 0 rgba(57,255,136,0)}50%{box-shadow:0 0 16px rgba(57,255,136,.55)}}
+.bd-fine{margin-top:8px;color:var(--mut);font-size:11px}
+.bd-dots{display:inline-flex;gap:4px;padding:2px 0}
+.bd-dots i{width:6px;height:6px;border-radius:50%;background:var(--g);display:block;opacity:.45;animation:bdBounce 1s infinite}
+.bd-dots i:nth-child(2){animation-delay:.15s}
+.bd-dots i:nth-child(3){animation-delay:.3s}
+@keyframes bdBounce{0%,60%,100%{transform:none;opacity:.35}30%{transform:translateY(-3px);opacity:1}}
+.bd-caret{display:inline-block;width:7px;height:.95em;margin-left:1px;background:var(--g);vertical-align:text-bottom;animation:bdBlink 1s steps(1) infinite}
+@keyframes bdBlink{50%{opacity:0}}
+.bd-foot{border-top:1px solid #1c1c20;padding:8px 12px;color:#8e8e98;font-size:11px;text-align:center}
+.bd-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:600px){
+.bd-log{height:330px}
+.bd-bubble,.bd-quote{font-size:13px}
+.bd-id em{font-size:10.5px}
+}
+@media(prefers-reduced-motion:reduce){
+.bd-row,.bd-dots i,.bd-caret,.bd-btn.approve{animation:none}
+.bd-log{scroll-behavior:auto;transition:none}
+}
 </style></head><body>
 
 <section class="hero reveal">
 <span class="badge"><i></i>AI Sales Team For Closers</span>
 <h1>Your Sales Back Office,<br>Staffed By <span class="hl">Eleven AI Teammates</span></h1>
 <p class="sub">Follow-ups, reschedules, outcome forms, payment links. That stuff eats half your day before you ever get on a call. This team owns all of it, so you just show up and close.</p>
+<p class="bd-intro">Example demo · fictional names</p>
+<div class="botdemo" id="botdemoApp" data-phase="idle">
+<div class="bd-top">
+<div class="bd-id"><span class="bd-dot" aria-hidden="true"></span><div><strong>Grok Bot</strong><em>Internal assistant · example</em></div></div>
+<button type="button" class="bd-replay" id="bdReplay" aria-label="Replay example demo">Replay</button>
+</div>
+<div class="bd-log" id="bdLog" aria-hidden="true"><p class="bd-placeholder">A closer asks. The bot answers.</p></div>
+<p class="bd-foot">Fictional example. Nothing is sent from this page.</p>
+</div>
+<p class="bd-sr">Example demo of an internal Grok Bot. Fictional names only. The closer asks for a pre-call brief on sample prospect Alex R. for tomorrow at 2:00 PM. The bot answers with a short brief. The closer asks for a follow-up text after a call with Jordan M. The bot shows a sample draft with Approve and Send. Nothing is sent. The closer asks what is still open at the end of the day. The bot shows a sample pipeline: 3 calls, 2 drafts waiting, and 1 quiet lead.</p>
+<p class="bd-sr" id="bdStatus" aria-live="polite"></p>
 </section>
 
 <section class="center reveal" id="bucketSec">
@@ -214,4 +282,36 @@ addEventListener('resize',all);addEventListener('load',()=>{all();
 const q=new URLSearchParams(location.search);if(q.has('shot'))document.documentElement.classList.add('shot');if(q.has('shot'))document.querySelectorAll('.reveal').forEach(r=>{r.style.transition='none';r.classList.add('in')});
 if(q.get('state')=='team')setS('team');
 (()=>{all();if(q.has('hover'))hover(document.querySelectorAll('.leak')[+q.get('hover')],1);if(q.has('org'))lit(document.querySelectorAll('.leaves .ocard')[+q.get('org')],1)})()});
+</script>
+<script>
+(function(){
+var app=document.getElementById('botdemoApp'),log=document.getElementById('bdLog'),replay=document.getElementById('bdReplay'),status=document.getElementById('bdStatus');
+if(!app||!log||!replay)return;
+var USER_BRIEF="Prep me for tomorrow's 2 PM. Sample prospect: Alex R.";
+var USER_DRAFT="Draft a follow-up text from today's call with Jordan M.";
+var USER_DAY="End of day. What's still open?";
+var gen=0,timers=[],started=false;
+function reduced(){return window.matchMedia('(prefers-reduced-motion: reduce)').matches}
+function phase(name){app.dataset.phase=name}
+function later(ms){return new Promise(function(resolve){var item={};item.id=setTimeout(function(){resolve(true)},ms);item.resolve=resolve;timers.push(item)})}
+function clearTimers(){timers.splice(0).forEach(function(t){clearTimeout(t.id);t.resolve(false)})}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function line(k,v){return '<div><b>'+esc(k)+'</b> '+esc(v)+'</div>'}
+function briefHTML(){return '<div class="bd-kicker">Pre-call brief</div><div class="bd-lines">'+line('Who','Alex R., sample prospect')+line('When','Tomorrow, 2:00 PM')+line('Last note','Intro chat. Asked how weekly calls work.')+line('Still open','Whether a Tuesday time fits.')+line('Opener','"What would make Tuesday easy?"')+'</div>'}
+function draftHTML(){return '<div class="bd-kicker">Follow-up draft</div><p class="bd-quote">'+esc('Jordan, good talking today. You said a Tuesday start could work. I can hold a sample spot until Friday. Reply YES if you want the details.')+'</p><div class="bd-actions"><span class="bd-btn approve">Approve</span><span class="bd-btn send">Send</span></div><p class="bd-fine">Sample draft. Nothing is sent.</p>'}
+function summaryHTML(){return '<div class="bd-kicker">Pipeline · sample day</div><div class="bd-lines">'+line('Tomorrow','3 calls. First is Alex R. at 2:00 PM.')+line('Waiting on you','2 drafts, including Jordan M.')+line('Quiet','1 sample lead, no reply in 4 days.')+'</div>'}
+function stick(){log.scrollTo({top:log.scrollHeight,behavior:'auto'})}
+function makeRow(who,bubble,extra){var row=document.createElement('div');row.className='bd-row '+who+(extra?' '+extra:'');row.innerHTML='<div class="bd-label">'+(who==='user'?'You':'Grok Bot')+'</div><div class="bd-bubble">'+bubble+'</div>';log.appendChild(row);stick();return row}
+function renderFinal(){log.classList.remove('bd-fade');log.replaceChildren();makeRow('user',esc(USER_BRIEF));makeRow('bot',briefHTML());makeRow('user',esc(USER_DRAFT));makeRow('bot',draftHTML());makeRow('user',esc(USER_DAY));makeRow('bot',summaryHTML());stick();phase('summary')}
+async function typeUser(token,text){var row=makeRow('user','<span class="bd-text"></span><span class="bd-caret" aria-hidden="true"></span>'),span=row.querySelector('.bd-text'),i;for(i=1;i<=text.length;i++){if(token!==gen)return false;span.textContent=text.slice(0,i);stick();if(!await later(20))return false}var caret=row.querySelector('.bd-caret');if(caret)caret.remove();return token===gen}
+async function botThen(token,html,name,hold){if(token!==gen)return false;var dots=makeRow('bot','<span class="bd-dots" aria-hidden="true"><i></i><i></i><i></i></span>','typing');if(!await later(720))return false;if(token!==gen)return false;dots.remove();makeRow('bot',html);phase(name);if(!await later(hold))return false;return token===gen}
+async function play(token){clearTimers();if(reduced()){renderFinal();return}log.classList.remove('bd-fade');log.replaceChildren();phase('typing-brief');if(!await typeUser(token,USER_BRIEF))return;if(!await later(280))return;if(!await botThen(token,briefHTML(),'brief',2800))return;phase('typing-draft');if(!await typeUser(token,USER_DRAFT))return;if(!await later(280))return;if(!await botThen(token,draftHTML(),'draft',3000))return;phase('typing-day');if(!await typeUser(token,USER_DAY))return;if(!await later(280))return;if(!await botThen(token,summaryHTML(),'summary',3600))return;if(token!==gen||reduced())return;log.classList.add('bd-fade');if(!await later(260))return;if(token!==gen)return;play(token)}
+function start(){if(started)return;started=true;gen+=1;play(gen)}
+replay.addEventListener('click',function(){started=true;gen+=1;if(status)status.textContent='Example demo restarted.';play(gen)});
+var motion=window.matchMedia('(prefers-reduced-motion: reduce)');
+if(motion.addEventListener)motion.addEventListener('change',function(){gen+=1;play(gen)});else if(motion.addListener)motion.addListener(function(){gen+=1;play(gen)});
+var hero=document.querySelector('.hero');
+if(reduced()||(hero&&hero.classList.contains('in')))start();
+else{if(hero){var mo=new MutationObserver(function(){if(hero.classList.contains('in')){mo.disconnect();start()}});mo.observe(hero,{attributes:true,attributeFilter:['class']})}setTimeout(start,1600)}
+})();
 </script></body></html>
