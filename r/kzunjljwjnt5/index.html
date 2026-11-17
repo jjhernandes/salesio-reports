@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Neural Map · JJ Hernandez</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{--bg:#05060a;--ink:#e9e4ee;--dim:#8a8598;--line:rgba(255,255,255,.08);
+--intact:#38e8b0;--load:#ffc857;--mod:#ff8a4c;--over:#ff3b5c;--accent:#ff9ec4}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;touch-action:none}
+canvas{display:block}
+.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,transparent 40%,rgba(0,0,0,.75) 100%)}
+.scan{position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px);mix-blend-mode:overlay}
+.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase}
+header{position:fixed;top:28px;left:32px;z-index:5;pointer-events:none}
+header .kicker{font-size:11px;color:var(--dim)}
+header h1{font-weight:300;font-size:clamp(22px,3.2vw,40px);letter-spacing:.06em;margin-top:8px;line-height:1.1}
+header h1 b{font-weight:600;color:#fff}
+header .sub{font-size:11px;color:var(--dim);margin-top:10px;max-width:420px;line-height:1.6}
+.legend{position:fixed;top:28px;right:32px;z-index:5;font-size:10.5px;color:var(--dim);display:flex;flex-direction:column;gap:9px;padding:14px 16px;border:1px solid var(--line);background:rgba(10,10,16,.45);backdrop-filter:blur(8px);border-radius:4px}
+.legend .row{display:flex;align-items:center;gap:10px}
+.dot{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:0 0 10px currentColor;background:currentColor}
+.hint{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);z-index:4;font-size:11px;color:var(--dim);pointer-events:none;transition:opacity .4s}
+.hint span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:10px;animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+.index{position:fixed;left:32px;bottom:28px;z-index:5;font-size:10.5px;display:flex;flex-direction:column;gap:2px;max-height:52vh;overflow:auto}
+.index h3{font-size:10px;color:var(--dim);font-weight:400;margin:10px 0 6px}
+.index button{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:5px 8px;color:#cfc9d8;border-left:1px solid transparent;transition:.2s}
+.index button:hover,.index button.on{color:#fff;border-left-color:var(--accent);background:rgba(255,255,255,.03)}
+.index .dot{width:7px;height:7px}
+.tip{position:fixed;z-index:6;pointer-events:none;font-size:10px;padding:6px 9px;background:rgba(8,8,12,.85);border:1px solid var(--line);border-radius:3px;opacity:0;transform:translate(-50%,-140%);transition:opacity .15s;white-space:nowrap}
+.panel{position:fixed;top:0;right:0;height:100%;width:min(460px,92vw);z-index:10;background:linear-gradient(180deg,rgba(14,12,20,.94),rgba(8,8,12,.97));border-left:1px solid var(--line);backdrop-filter:blur(14px);transform:translateX(105%);transition:transform .45s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.panel.open{transform:none}
+.panel .grab{display:none}
+.panel .head{padding:26px 28px 18px;border-bottom:1px solid var(--line);position:relative}
+.panel .close{all:unset;cursor:pointer;position:absolute;top:22px;right:22px;width:32px;height:32px;display:grid;place-items:center;color:var(--dim);font-size:20px;border:1px solid var(--line);border-radius:50%}
+.panel .close:hover{color:#fff}
+.panel .region{font-size:10px;color:var(--dim)}
+.panel h2{font-size:24px;font-weight:500;margin:8px 40px 10px 0;line-height:1.2}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;padding:5px 10px;border:1px solid currentColor;border-radius:20px}
+.panel .body{overflow:auto;padding:6px 28px 40px;flex:1}
+.sec{margin-top:22px}
+.sec h4{font-size:10px;color:var(--dim);font-weight:400;margin-bottom:10px}
+.belief{font-size:19px;line-height:1.45;font-weight:300;color:#fff;border-left:2px solid var(--accent);padding-left:14px}
+.why{font-size:13px;color:#b8b2c4;line-height:1.6}
+.quote{background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:4px;padding:13px 14px;margin-bottom:10px}
+.quote p{font-size:13.5px;line-height:1.55;color:#e8e2ee;font-style:italic}
+.quote .src{font-size:9.5px;color:var(--dim);margin-top:9px;line-height:1.5}
+.txt{font-size:14px;line-height:1.65;color:#d5cfde}
+.rewire{background:linear-gradient(135deg,rgba(56,232,176,.08),rgba(56,232,176,.02));border:1px solid rgba(56,232,176,.25);border-radius:4px;padding:14px;font-size:14px;line-height:1.6}
+.foot{position:fixed;right:32px;bottom:28px;z-index:4;font-size:9.5px;color:#5f5a6c;text-align:right;line-height:1.7}
+@media (max-width:760px){
+ header{top:18px;left:18px;right:18px}
+ header .sub{display:none}
+ .legend{top:auto;bottom:86px;right:12px;padding:10px 12px;gap:7px;font-size:9px}
+ .index{display:none}
+ .foot{display:none}
+ .hint{bottom:30px;width:max-content}
+ .panel{top:auto;bottom:0;left:0;width:100%;height:78vh;border-left:0;border-top:1px solid var(--line);border-radius:16px 16px 0 0;transform:translateY(105%)}
+ .panel.open{transform:none}
+ .panel .grab{display:block;width:42px;height:4px;border-radius:2px;background:rgba(255,255,255,.25);margin:10px auto 0}
+ .panel .head{padding:14px 20px 14px}
+ .panel .close{top:12px;right:14px}
+ .panel .body{padding:4px 20px 40px}
+ .panel h2{font-size:21px}
+ .belief{font-size:17px}
+}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="stage"></div>
+<div class="vignette"></div><div class="scan"></div>
+<header>
+ <div class="kicker mono">Subject file · Brain architecture</div>
+ <h1 class="mono">Neural map — <b>JJ Hernandez</b></h1>
+ <div class="sub mono">Built from 26 recorded calls, Oct 12 to Nov 17, 2026. Every quote is your own words, with the call and timestamp.</div>
+</header>
+<div class="legend mono" id="legend"></div>
+<nav class="index mono" id="index"></nav>
+<div class="hint mono" id="hint"><span></span>Select a region</div>
+<div class="tip mono" id="tip"></div>
+<div class="foot mono">Private · not for distribution<br>Timestamps mark the start of the speaking turn</div>
+<aside class="panel" id="panel" aria-hidden="true">
+ <div class="grab"></div>
+ <div class="head">
+  <button class="close" id="close" aria-label="Close">×</button>
+  <div class="region mono" id="pRegion"></div>
+  <h2 id="pTitle"></h2>
+  <div id="pBadge"></div>
+ </div>
+ <div class="body" id="pBody"></div>
+</aside>
+<script>window.BRAIN_DATA={"regions": [{"id": "amygdala", "name": "Amygdala", "tag": "Money threat", "status": "load", "pos": [-0.2, -0.24, 0.16], "why": "The amygdala flags danger and stores fear learned early. Money fear that started at home fires here.", "belief": "The more I make, the more it feels like it could all fall apart. So I go big, but never big enough to lose everything.", "quotes": [{"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "A drastic difference between the two was actually when I made more money, I felt more scarce. Like I felt like all of it could crumble at any given moment, right?"}, {"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "I saw, like, my dad would always chase money, and I saw my mom, who was, like, demonizing money. And I never realized how that played an impact on me."}, {"call": "🟢 Coaching Call - JJ", "date": "Nov 13, 2026", "ts": "01:04", "text": "I check my bank account every day. I can tell the exact number of my bank account right now to a T."}], "shows": "Big bets like the $100K Sales.io domain felt like one of the scariest moments of your life. You check the balance daily. You told the room that a deal slipping can bring a gut feeling of 'I'm losing, I'm not enough.' You pick moves that are risky enough to grow but never risky enough to lose it all.", "rewire": "Before a money call, write two lines: the worst realistic outcome, and what you'd do the next morning if it happened. Then decide based on the next goal, not the fear. You already said it yourself: everything always works out."}, {"id": "dacc", "name": "Dorsal anterior cingulate", "tag": "Approval", "status": "mod", "pos": [0.0, 0.42, 0.05], "why": "The dorsal ACC lights up for social pain, like being judged or left out. It treats rejection a lot like physical pain.", "belief": "If someone close to me doubts me, it sticks with me. I'll give more, explain more, or list what I've done until they see me right.", "quotes": [{"call": "Iwin x JJ", "date": "Nov 17, 2026", "ts": "03:13", "text": "I try to give them more money. I try to give them like more opportunity. And then I started to realize I'm like, dude, I'm not doing this. I actually think they're good. I'm doing this because I want them to be happy and respect me as a leader."}, {"call": "Iwin x JJ", "date": "Nov 17, 2026", "ts": "03:13", "text": "Literally, it would bother me for eight hours, where I'd think about that"}, {"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "37:18", "text": "any kind of like feedback or any type of like, you know, criticism, I felt like, like, I felt like lesser than, right?"}], "shows": "You gave coaches more money and more opportunity so they'd respect you, and they were angry when you let them go anyway. When an old Iman-era manager questioned your track record, you felt it in your body and replied with a list of what you'd done. You're already pushing back on it, like asking the restaurant to clean the table, which you said you never would have done before.", "rewire": "When you feel the urge to prove something, wait 24 hours and send nothing. For pay and keep-or-cut calls, ask: would I make this same call if they never found out it was me?"}, {"id": "dlpfc", "name": "Dorsolateral prefrontal cortex", "tag": "Chaos vs structure", "status": "load", "pos": [0.28, 0.3, 0.46], "why": "The DLPFC runs planning, working memory and sticking to rules and systems.", "belief": "I'm at my best in chaos. SOPs and structure slow down the money.", "quotes": [{"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "But I used to be very much the, like, I survived strongly and I flourish in chaos."}, {"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "We need to make money. That's all I'd say."}, {"call": "Iwin x JJ", "date": "Nov 17, 2026", "ts": "18:29", "text": "I was always like disorganized"}], "shows": "Systems tend to show up after the team already needs them. The shift has started: after three days of discomfort running a very structured team, you said you were copying their process into your own company and asked yourself, 'Why did I demonize this for so long?'", "rewire": "Anything you explain twice gets a one-page SOP or a Loom that week. Small and ugly is fine. The goal is to stop being the only place the process lives."}, {"id": "striatum", "name": "Basal ganglia (striatum)", "tag": "Escape hatch", "status": "load", "pos": [0.14, 0.0, 0.1], "why": "The basal ganglia pick between competing impulses and keep habit loops running. Avoidance loops live here.", "belief": "When a task feels heavy, I'll do something that looks productive instead. If it doesn't ping me, it doesn't get done.", "quotes": [{"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "That's the exact impulse I felt. I'm going to go walk my dog. I feel it every time."}, {"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "I need to not know my tasks. I need to get a notification with the task."}, {"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "I delete Instagram every day."}], "shows": "There's usually one task that sits on the list all month. You've described Friday 11 PM research rabbit holes. You've already built guardrails: an app blocker that bounces you to Google Calendar, and notification-driven tasks.", "rewire": "Say the impulse out loud ('I'm about to go walk the dog'), then give the task six minutes first. Your own line to Iwin: you thought it would take forever, and it took six minutes."}, {"id": "insula", "name": "Anterior insula", "tag": "Control the day", "status": "load", "pos": [-0.38, 0.0, 0.2], "why": "The anterior insula reads body signals and uncertainty. Routines and rituals calm the alarm it sends.", "belief": "If I don't own my day from 5 AM, someone else is going to run it for me.", "quotes": [{"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "if can wake up before I get any initial messages at like five in the morning and then I can control my day, that's it. I like to control the day."}, {"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "05:52", "text": "I'd rather reach out to you than you guys reach out to me, it should make it easier, I can have more control over the outcomes"}, {"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "if I leave anywhere, I have to close every door in the house."}], "shows": "You protect a quiet morning with coffee and messages before anyone talks to you. You'd rather be the one who reaches out. You push back when people want to 'hop on a call right now' and asked, 'do I just live at the will of other people?' The same need for control makes it hard to let other people own outcomes.", "rewire": "Each week, hand one outcome fully to someone else and only ask for the result. Control the start of your day, not the ending of everyone else's work."}, {"id": "hypothalamus", "name": "Hypothalamus (stress axis)", "tag": "I can carry more", "status": "over", "pos": [0.0, -0.3, 0.06], "why": "The hypothalamus starts the body's stress response. When the load never drops, it never switches off.", "belief": "I can handle way more than I think. If I say I care about these people, I owe it to them to show up for all of it.", "quotes": [{"call": "Morning cup of Sales.io", "date": "Oct 17, 2026", "ts": "01:31", "text": "Is that I can do a lot more than what I think, and you can do a lot more than what you think."}, {"call": "Morning cup of Sales.io", "date": "Oct 17, 2026", "ts": "01:31", "text": "I owe it to this person across from me"}, {"call": "Morning cup of Sales.io", "date": "Oct 17, 2026", "ts": "01:31", "text": "I remember earlier this year, I was like, no, I don't ever want to, you know, be involved with multiple teams"}], "shows": "Fathom recorded 150 of your calls from Oct 16 to Nov 17: 11 on Oct 19, and 10 each on Nov 2 and Nov 11. You run the Content Academy, SheCreates, Social Era and Sales.io syncs, plus one-on-ones, group coaching and Saturday calls. Calls end with lines like 'I have five minutes over, I get to get out of here.'", "rewire": "Set a hard cap on live calls per day. Anything past the cap goes to a coach, a Loom, or Grok Bot. Caring about someone doesn't have to mean being in the room for it."}, {"id": "tpj", "name": "Temporoparietal junction", "tag": "People won't stick", "status": "load", "pos": [-0.4, 0.16, -0.34], "why": "The TPJ is where we guess what other people intend. It decides how much we trust people.", "belief": "Most people do the bare minimum. I want a small core I never have to chase.", "quotes": [{"call": "Gigi x JJ", "date": "Oct 13, 2026", "ts": "08:19", "text": "people are lazy. They're not reliable, and, like, they have no integrity and almost, like, no loyalty to your company sometimes"}, {"call": "Gigi x JJ", "date": "Oct 13, 2026", "ts": "08:19", "text": "they're working seven days a week, I don't have to ask them to do anything."}, {"call": "Content Academy Sales Team Sync", "date": "Oct 26, 2026", "ts": "06:17", "text": "just don't be lazy."}], "shows": "You hire from inside a creator's following so people stay. You cut hard at interviews, and you want the team checking its own numbers without you asking. When trust is low, it's hard to hand work off, so more of it lands back on you.", "rewire": "For each role, write what 'reliable' looks like in three bullet points, so people meet a clear bar and aren't judged against one they have to guess."}, {"id": "mpfc", "name": "Medial prefrontal cortex", "tag": "Being seen", "status": "mod", "pos": [0.02, 0.2, 0.68], "why": "The mPFC handles self-image and pictures how other people see us.", "belief": "Putting myself on camera is the thing I keep pushing back, even though I know a bigger brand is what moves the numbers.", "quotes": [{"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "like recording content, right? That's something I've struggled with for a very long time."}, {"call": "Morning cup of Sales.io", "date": "Oct 17, 2026", "ts": "42:23", "text": "I was always so afraid to admit that to people. So I was like captain of the football team, and then was also the actor, and nobody knew."}, {"call": "Amber x JJ", "date": "Nov 4, 2026", "ts": "17:25", "text": "the million dollar months, $2 million months later on is just simply because I have a bigger personal brand."}], "shows": "You coach a team's content and spot viral moments instantly ('I knew right when that video was done during the interview that that would go viral'), but your own recording keeps slipping down the list.", "rewire": "Post one raw clip a day, pulled from a real call moment. Your team handles the edit. Done counts, polished doesn't."}], "strengths": [{"id": "vmpfc", "name": "Ventromedial prefrontal cortex", "tag": "Honesty first", "status": "intact", "pos": [0.08, -0.12, 0.62], "why": "The vmPFC weighs values and right versus wrong when making decisions.", "belief": "I'd rather hire the honest person with no experience than the impressive one who lies. I learned that the hard way.", "quotes": [{"call": "Closer group interview (Impromptu Zoom)", "date": "Nov 12, 2026", "ts": "27:39", "text": "on every single team, I would rather take the person who's honest and has integrity with me. That has zero experience than something like that."}, {"call": "🟢 Coaching Call - JJ", "date": "Nov 13, 2026", "ts": "01:04", "text": "I literally almost did not land the opportunity at IMAMS because I lied about, like, not commissions, but he asked me to show my bank account."}], "shows": "You cut a candidate on the spot for a fake $50K month and made it the lesson for the room. You sell from honesty, and your team hears it on every hire.", "rewire": "Keep it. Use it on yourself too: say what's true about your capacity, not what keeps everyone happy."}, {"id": "accumbens", "name": "Nucleus accumbens", "tag": "Raise the bar", "status": "intact", "pos": [-0.1, -0.1, 0.36], "why": "The ventral striatum drives motivation and the pull toward the next reward.", "belief": "Even in a record week, I can see the gaps. Good isn't the finish line.", "quotes": [{"call": "Morning cup of Sales.io", "date": "Nov 14, 2026", "ts": "00:13", "text": "I had a record. Record week, training hard, doing things well, but I know there's still gaps, right?"}, {"call": "Morning cup of Sales.io", "date": "Nov 14, 2026", "ts": "00:13", "text": "even in the good, be able to see the opportunity to improve, right?"}], "shows": "You raise your own standard without waiting for a crisis, and you push the team past its records.", "rewire": "Keep it, and put a ceiling on it: pick one gap per week, not every gap at once. You said yourself that fixing everything means you solve nothing."}, {"id": "cerebellum", "name": "Cerebellum", "tag": "Adapt fast", "status": "intact", "pos": [0.0, -0.55, -0.62], "why": "The cerebellum fine-tunes movement and learning by adjusting quickly to error.", "belief": "Put me somewhere uncomfortable and I'll adjust fast, then I'll steal what works.", "quotes": [{"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "It took me three days, three days to adjust. And I broke past the impulse."}, {"call": "🟢 Coaching Call - JJ", "date": "Oct 16, 2026", "ts": "11:36", "text": "I literally took the process they ran and I'm running into my own company."}], "shows": "New team, new structure, new offer: you figure it out and turn what you learned into a system for the next team.", "rewire": "Keep it. Point it at the patterns in this map. You already know how to break an impulse in three days."}]};</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const D=window.BRAIN_DATA;
+const ST={intact:{label:'Intact',c:'#38e8b0'},load:{label:'Functional with load',c:'#ffc857'},mod:{label:'Moderately affected',c:'#ff8a4c'},over:{label:'Overloaded',c:'#ff3b5c'}};
+const ALL=[...D.regions.map(r=>({...r,kind:'Belief'})),...D.strengths.map(r=>({...r,kind:'Strength'}))];
+// legend + index
+const lg=document.getElementById('legend');
+for(const k of ['intact','load','mod','over']){const n=ALL.filter(r=>r.status===k).length;lg.insertAdjacentHTML('beforeend',`<div class="row"><i class="dot" style="color:${ST[k].c}"></i>${ST[k].label} <span style="opacity:.5">· ${n}</span></div>`)}
+const ix=document.getElementById('index');
+ix.insertAdjacentHTML('beforeend','<h3>Beliefs</h3>');
+D.regions.forEach(r=>ix.insertAdjacentHTML('beforeend',`<button data-id="${r.id}"><i class="dot" style="color:${ST[r.status].c}"></i>${r.tag}</button>`));
+ix.insertAdjacentHTML('beforeend','<h3>Strengths</h3>');
+D.strengths.forEach(r=>ix.insertAdjacentHTML('beforeend',`<button data-id="${r.id}"><i class="dot" style="color:${ST[r.status].c}"></i>${r.tag}</button>`));
+ix.addEventListener('click',e=>{const b=e.target.closest('button');if(b)select(b.dataset.id)});
+
+// scene
+const stage=document.getElementById('stage');
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
+renderer.setClearColor(0x05060a);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.outputColorSpace=THREE.SRGBColorSpace;
+stage.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x05060a,innerWidth<760?0.06:0.12);
+const camera=new THREE.PerspectiveCamera(36,innerWidth/innerHeight,0.05,100);
+const mobile=()=>innerWidth<760;
+camera.position.set(2.6,0.9,2.4).multiplyScalar(mobile()?1.85:1);
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;controls.dampingFactor=.06;controls.enablePan=false;controls.minDistance=1.6;controls.maxDistance=7;
+controls.autoRotate=true;controls.autoRotateSpeed=.55;controls.target.set(0,0,0);
+scene.add(new THREE.HemisphereLight(0xffd6e6,0x1a0b18,0.7));
+const key=new THREE.DirectionalLight(0xffe2ec,1.6);key.position.set(3,4,2);scene.add(key);
+const rim=new THREE.DirectionalLight(0x7aa8ff,1.4);rim.position.set(-3,1,-3);scene.add(rim);
+const under=new THREE.PointLight(0xff4f8b,2.2,6);under.position.set(0,-1.6,0.6);scene.add(under);
+
+// noise for gyri
+function hash(x,y,z){let h=Math.sin(x*127.1+y*311.7+z*74.7)*43758.5453;return h-Math.floor(h)}
+function vnoise(x,y,z){const xi=Math.floor(x),yi=Math.floor(y),zi=Math.floor(z);const xf=x-xi,yf=y-yi,zf=z-zi;
+ const s=t=>t*t*(3-2*t);const u=s(xf),v=s(yf),w=s(zf);let r=0;
+ for(let dx=0;dx<2;dx++)for(let dy=0;dy<2;dy++)for(let dz=0;dz<2;dz++){r+=hash(xi+dx,yi+dy,zi+dz)*(dx?u:1-u)*(dy?v:1-v)*(dz?w:1-w)}return r*2-1}
+function ridged(x,y,z){let a=0,f=1,amp=1;for(let i=0;i<3;i++){a+=(1-Math.abs(vnoise(x*f,y*f,z*f)))*amp;f*=2.1;amp*=.45}return a}
+function hemisphere(side){
+ const g=new THREE.SphereGeometry(1,260,180);const p=g.attributes.position;const v=new THREE.Vector3();
+ const cols=new Float32Array(p.count*3);const dark=new THREE.Color(0x6e2238),lite=new THREE.Color(0xf4bccb),tmp=new THREE.Color();
+ for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i);
+  let x=v.x,y=v.y,z=v.z;
+  x*=0.37;y*=0.47;z*=0.8;
+  if(y<0){y*=0.7}
+  if(z>0.25){y*=1-0.18*(z-0.25);x*=1-0.15*(z-0.25)}
+  if(z<-0.3){y*=1-0.1*(-z-0.3)}
+  const lat=Math.max(0,v.x*side);
+  if(y<0&&z>-0.25&&z<0.55){y-=0.07*lat*(1-Math.abs(z-0.15)/0.4)}
+  const medial=side*v.x<0; if(medial){x*=0.3}
+  const n=ridged(v.x*4.6+side*7,v.y*4.6,v.z*4.6);
+  const depth=medial?0.02:0.075;
+  const k=1+depth*(n-1.15);
+  x*=k;y*=k;z*=k;
+  p.setXYZ(i,x+side*0.125,y+0.06,z);
+  const t=Math.min(1,Math.max(0,(n-0.55)/0.9));tmp.copy(dark).lerp(lite,t*t*(3-2*t));cols.set([tmp.r,tmp.g,tmp.b],i*3);
+ }
+ g.setAttribute('color',new THREE.BufferAttribute(cols,3));
+ g.computeVertexNormals();return g;
+}
+const brainMat=new THREE.MeshPhysicalMaterial({vertexColors:true,color:0xffffff,roughness:.5,metalness:0,clearcoat:.4,clearcoatRoughness:.45,sheen:1,sheenColor:new THREE.Color(0xff9ec4),transparent:true,opacity:.8,depthWrite:false,side:THREE.FrontSide,emissive:0x2a0814,emissiveIntensity:.6});
+const brain=new THREE.Group();scene.add(brain);
+const L=new THREE.Mesh(hemisphere(-1),brainMat),R=new THREE.Mesh(hemisphere(1),brainMat);brain.add(L,R);
+// wire overlay for scan look
+const wireMat=new THREE.MeshBasicMaterial({color:0xff9ec4,wireframe:true,transparent:true,opacity:.035,depthWrite:false});
+brain.add(new THREE.Mesh(L.geometry,wireMat),new THREE.Mesh(R.geometry,wireMat));
+// cerebellum with folia
+(function(){const g=new THREE.SphereGeometry(1,160,90);const p=g.attributes.position;const v=new THREE.Vector3();
+ for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i);let x=v.x*.5,y=v.y*.2,z=v.z*.3;
+  const fol=1+0.05*Math.sin(v.y*40);x*=fol;z*=fol;p.setXYZ(i,x,y-0.42,z-0.5)}
+ g.computeVertexNormals();
+ const m=new THREE.Mesh(g,new THREE.MeshPhysicalMaterial({color:0xd98aa2,roughness:.6,sheen:1,sheenColor:new THREE.Color(0xff7aa8),transparent:true,opacity:.66,depthWrite:false}));brain.add(m)})();
+// brainstem
+(function(){const g=new THREE.CylinderGeometry(.09,.06,.6,40,1);const m=new THREE.Mesh(g,new THREE.MeshPhysicalMaterial({color:0xb06c82,roughness:.7,transparent:true,opacity:.45,depthWrite:false}));m.position.set(0,-0.55,-0.22);m.rotation.x=.35;brain.add(m)})();
+// particles halo
+(function(){const n=1400,pos=new Float32Array(n*3);for(let i=0;i<n;i++){const r=1.2+Math.random()*2.4,t=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);pos.set([r*Math.sin(ph)*Math.cos(t),r*Math.cos(ph)*.7,r*Math.sin(ph)*Math.sin(t)],i*3)}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+ scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xff9ec4,size:.008,transparent:true,opacity:.5})))})();
+
+// glow texture
+function glowTex(){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');const gr=x.createRadialGradient(64,64,0,64,64,64);
+ gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(.2,'rgba(255,255,255,.75)');gr.addColorStop(.5,'rgba(255,255,255,.16)');gr.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=gr;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)}
+const GT=glowTex();
+const markers=[];
+for(const r of ALL){
+ const col=new THREE.Color(ST[r.status].c);
+ const grp=new THREE.Group();grp.position.set(...r.pos);grp.userData=r;
+ const core=new THREE.Mesh(new THREE.SphereGeometry(.028,24,16),new THREE.MeshBasicMaterial({color:col,depthTest:false,transparent:true}));core.renderOrder=10;
+ const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:GT,color:col,blending:THREE.AdditiveBlending,depthTest:false,transparent:true,opacity:.9}));halo.scale.setScalar(.26);halo.renderOrder=9;
+ const ring=new THREE.Mesh(new THREE.RingGeometry(.05,.058,48),new THREE.MeshBasicMaterial({color:col,side:THREE.DoubleSide,depthTest:false,transparent:true,opacity:.0}));ring.renderOrder=11;
+ const hit=new THREE.Mesh(new THREE.SphereGeometry(.09,12,8),new THREE.MeshBasicMaterial({visible:false}));
+ grp.add(core,halo,ring,hit);grp.userData.parts={core,halo,ring,hit};brain.add(grp);markers.push(grp);
+}
+// raycast
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();const tip=document.getElementById('tip');
+let hover=null,selected=null,downAt=null;
+function pick(e){const b=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-b.left)/b.width)*2-1;mouse.y=-((e.clientY-b.top)/b.height)*2+1;ray.setFromCamera(mouse,camera);
+ const hits=ray.intersectObjects(markers.map(m=>m.userData.parts.hit));return hits.length?hits[0].object.parent:null}
+renderer.domElement.addEventListener('pointermove',e=>{const m=pick(e);hover=m;document.body.style.cursor=m?'pointer':'grab';
+ if(m){tip.textContent=m.userData.tag+' · '+m.userData.name;tip.style.left=e.clientX+'px';tip.style.top=e.clientY+'px';tip.style.opacity=1}else tip.style.opacity=0});
+renderer.domElement.addEventListener('pointerdown',e=>{downAt=[e.clientX,e.clientY]});
+renderer.domElement.addEventListener('pointerup',e=>{if(!downAt)return;const d=Math.hypot(e.clientX-downAt[0],e.clientY-downAt[1]);downAt=null;if(d>8)return;const m=pick(e);if(m)select(m.userData.id);else if(!mobile())closePanel()});
+// panel
+const panel=document.getElementById('panel');
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function select(id){const r=ALL.find(x=>x.id===id);if(!r)return;selected=markers.find(m=>m.userData.id===id);
+ document.querySelectorAll('.index button').forEach(b=>b.classList.toggle('on',b.dataset.id===id));
+ document.getElementById('pRegion').textContent=r.kind+' · '+r.name;
+ document.getElementById('pTitle').textContent=r.tag;
+ const c=ST[r.status].c;document.getElementById('pBadge').innerHTML=`<span class="badge mono" style="color:${c}"><i class="dot" style="color:${c}"></i>${ST[r.status].label}</span>`;
+ document.getElementById('pBody').innerHTML=`
+ <div class="sec"><h4 class="mono">${r.kind==='Strength'?'What serves you':'The belief'}</h4><div class="belief">${esc(r.belief)}</div></div>
+ <div class="sec"><h4 class="mono">In your words</h4>${r.quotes.map(q=>`<div class="quote"><p>“${esc(q.text)}”</p><div class="src mono">${esc(q.call.replace(/^[^A-Za-z]+/,''))} · ${q.date} · ${q.ts}</div></div>`).join('')}</div>
+ <div class="sec"><h4 class="mono">How it shows up</h4><div class="txt">${esc(r.shows)}</div></div>
+ <div class="sec"><h4 class="mono">${r.kind==='Strength'?'Keep it sharp':'Rewire'}</h4><div class="rewire">${esc(r.rewire)}</div></div>
+ <div class="sec"><h4 class="mono">Why this region</h4><div class="why">${esc(r.why)}</div></div>`;
+ document.getElementById('pBody').scrollTop=0;
+ panel.classList.add('open');panel.setAttribute('aria-hidden','false');document.getElementById('hint').style.opacity=0;controls.autoRotate=false;
+ // focus camera toward marker
+ const wp=new THREE.Vector3();selected.getWorldPosition(wp);const dir=wp.clone();dir.y=0;if(dir.length()<.05)dir.copy(camera.position).setY(0);dir.normalize();const dist=camera.position.length();focusTo=new THREE.Vector3(dir.x*dist*.92,dist*.32+wp.y*.5,dir.z*dist*.92);if(r.id==='cerebellum'){focusTo.set(-dist*.55,dist*.2,-dist*.8)}
+ updateOffset();
+}
+let focusTo=null;
+function closePanel(){panel.classList.remove('open');setTimeout(updateOffset,0);panel.setAttribute('aria-hidden','true');selected=null;document.querySelectorAll('.index button').forEach(b=>b.classList.remove('on'));controls.autoRotate=true;document.getElementById('hint').style.opacity=1}
+document.getElementById('close').addEventListener('click',closePanel);
+addEventListener('keydown',e=>{if(e.key==='Escape')closePanel()});
+// swipe down to close on mobile
+let sy=null;panel.addEventListener('touchstart',e=>{if(e.target.closest('.body')&&document.getElementById('pBody').scrollTop>0)return;sy=e.touches[0].clientY},{passive:true});
+panel.addEventListener('touchend',e=>{if(sy!==null&&e.changedTouches[0].clientY-sy>90)closePanel();sy=null});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+function updateOffset(){const open=panel.classList.contains('open');const w=innerWidth,h=innerHeight;
+ if(open&&!mobile()){const pw=panel.getBoundingClientRect().width||460;camera.setViewOffset(w,h,pw/2,0,w,h)}
+ else if(open&&mobile()){camera.setViewOffset(w,h,0,h*.28,w,h)}else camera.clearViewOffset();camera.updateProjectionMatrix()}
+addEventListener('resize',updateOffset);
+window.__select=select;window.__proj=id=>{const m=markers.find(x=>x.userData.id===id);const v=new THREE.Vector3();m.getWorldPosition(v);v.project(camera);return [(v.x+1)/2*innerWidth,(1-v.y)/2*innerHeight]};window.__stop=()=>{controls.autoRotate=false};window.__close=closePanel;
+const clock=new THREE.Clock();
+(function loop(){requestAnimationFrame(loop);const t=clock.getElapsedTime();
+ for(const m of markers){const {halo,ring,core}=m.userData.parts;const s=m===selected,h=m===hover;
+  const pul=.22+.05*Math.sin(t*2.4+m.position.x*9);halo.scale.setScalar((s?.42:h?.34:pul));
+  ring.material.opacity=s?.9:h?.5:0;ring.lookAt(camera.position);ring.scale.setScalar(1+(s?.25*Math.sin(t*4):0));core.scale.setScalar(s?1.4:1)}
+ if(focusTo){camera.position.lerp(focusTo,.06);if(camera.position.distanceTo(focusTo)<.01)focusTo=null}
+ under.intensity=2+.4*Math.sin(t*.8);
+ controls.update();renderer.render(scene,camera)})();
+window.__ready=true;
+</script>
+</body>
+</html>
